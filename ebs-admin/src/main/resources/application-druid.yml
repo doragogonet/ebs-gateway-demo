@@ -1,0 +1,61 @@
+# データソース配置
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        druid:
+            # 主データソース
+            master:
+                url: jdbc:mysql://localhost:3306/rfid_demo?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: root
+                password: 123456
+            # サブデータソース
+            slave:
+                # サブデータソースのスイッチ、デフォルトが使用しない
+                enabled: false
+                url: 
+                username: 
+                password: 
+            # 初期接続数
+            initialSize: 5
+            # 最小接続プール数
+            minIdle: 10
+            # 最大接続プール数
+            maxActive: 20
+            # 接続待ちタイムアウト時間
+            maxWait: 60000
+            # 接続タイムアウト時間
+            connectTimeout: 30000
+            # ネットワークタイムアウト時間
+            socketTimeout: 60000
+            # 検出間隔
+            timeBetweenEvictionRunsMillis: 60000
+            # 最小生存時間
+            minEvictableIdleTimeMillis: 300000
+            # 最大生存時間
+            maxEvictableIdleTimeMillis: 900000
+            # 接続が有効かどうかを検出する
+            validationQuery: SELECT 1 FROM DUAL
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            webStatFilter: 
+                enabled: true
+            statViewServlet:
+                enabled: true
+                # ホワイトリストを設定し、入力しなければ、すべてのアクセスが許可されます
+                allow:
+                url-pattern: /druid/*
+                # コンソール管理ユーザー名とパスワード
+                login-username: ebs
+                login-password: 123456
+            filter:
+                stat:
+                    enabled: true
+                    # 遅いSQLレコード
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: true
+                wall:
+                    config:
+                        multi-statement-allow: true

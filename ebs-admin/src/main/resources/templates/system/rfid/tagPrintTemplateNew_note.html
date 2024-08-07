@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>EBS-Gateway - タグ印刷</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <!--<link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">-->
+  <link href="assets/css/datatables.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Mar 17 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <style>
+  .editDiv {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #000;
+    float: right;
+  }
+  .borderDivTop {
+    border-top: 1px solid #46A3FF;
+    border-left: 1px solid #46A3FF;
+    border-right: 1px solid #46A3FF;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  .borderDivTop2 {
+    border-top: 1px solid #46A3FF;
+    border-left: 1px solid #46A3FF;
+    border-right: 1px solid #46A3FF;
+  }
+  .borderDivMiddle {
+    border-left: 1px solid #46A3FF;
+    border-right: 1px solid #46A3FF;
+  }
+  .borderDivBottom {
+    border-left: 1px solid #46A3FF;
+    border-right: 1px solid #46A3FF;
+    border-bottom: 1px solid #46A3FF;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+  .div-tag {
+  	display:flex;
+  	align-items: center;
+	justify-content:center;
+	position: absolute;
+	width: 50px;
+	height:30px;
+	border: 2px dashed #46A3FF;
+	transform: translate(0, 0);
+	cursor: move;
+  }
+  
+  .resize-handle {
+	  position: absolute;
+	  width: 10px;
+	  height: 10px;
+	  background-color: transparent;
+	  /*background-color: #000;*/
+	}
+
+	.top-left {
+	  top: -5px;
+	  left: -5px;
+	  cursor: nw-resize;
+	}
+
+	.top {
+	  width: calc(100% - 10px);
+	  top: -5px;
+	  left: 5px;
+	  cursor: ns-resize;
+	}
+
+	.top-right {
+	  top: -5px;
+	  right: -5px;
+	  cursor: ne-resize;
+	}
+
+	.right {
+	  height: calc(100% - 10px);
+	  top: 5px;
+	  right: -5px;
+	  cursor: ew-resize;
+	}
+
+	.bottom-right {
+	  bottom: -5px;
+	  right: -5px;
+	  cursor: se-resize;
+	}
+
+	.bottom {
+	  width: calc(100% - 10px);
+	  bottom: -5px;
+	  left: 5px;
+	  cursor: ns-resize;
+	}
+
+	.bottom-left {
+	  bottom: -5px;
+	  left: -5px;
+	  cursor: sw-resize;
+	}
+
+	.left {
+	  height: calc(100% - 10px);
+	  top: 5px;
+	  left: -5px;
+	  cursor: ew-resize;
+	}
+  
+</style>
+</head>
+
+<body class="toggle-sidebar" >
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <span class="d-lg-block">EBS-Gateway -&nbsp;</span>
+      </a>
+      <a href="tagPrint.html" class="logo d-flex align-items-center">
+        <span class="d-lg-block"> タグ印刷 - 新規 </span>
+      </a>
+    </div><!-- End Logo -->
+    
+    <nav class="header-nav ms-auto">
+		<ul class="d-flex align-items-center">
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <span class="d-none d-md-block dropdown-toggle ps-2">郭</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>郭</h6>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>プロファイル</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>設定</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>ヘルプ</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>ログアウト</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+	</nav>
+
+  </header><!-- End Header -->
+
+  <main id="main" class="main">
+  
+  	<section class="section dashboard" >
+  		<div class="row">
+	          <div class="col-lg-9" >
+		          <div class="card" >
+		            <div class="card-body" style="margin-top:10px">
+		            	<div class="row mb-1">
+		            		<div class="col-lg-4" >
+		            			<button type="button" id="btnReset" class="btn btn-primary " onclick="clickReset()">
+		            			リセット
+		            			</button>
+		            			<button type="button" id="btnDataUpload" class="btn btn-primary file-upload-btn" onclick="clickFileInput()">
+		            			アップロード
+		            			</button>
+		            			<input type="file" id="fileInput" style="display: none;" accept=".csv" />
+		            		</div>
+		            		
+		            		<div class="col-lg-1" style="text-align:right">
+		            			<button type="button" id="btnDelTagDiv" class="btn btn-primary btn-primary-sm " onclick="clickDelTagDiv()" disabled>
+		            			削除
+		            			</button>
+		            		</div>
+		            		<label for="inputText" class="col-sm-1 col-form-label" align="right" >スケール</label>
+		            		<div class="col-lg-2" >
+		            			<select id="tagScale" class="form-select form-select-sm" aria-label="Default select example" onchange="tagScaleChange();">
+			                      <option selected value="1">1：1</option>
+			                      <option value="2">2：1</option>
+			                      <option value="3">3：1</option>
+			                    </select>
+		            		</div>
+		            		<label for="inputText" class="col-sm-1 col-form-label" align="right" >サイズ</label>
+		            		<div class="col-lg-3" >
+		            			<select id="tagSize" class="form-select form-select-sm" aria-label="Default select example" onchange="tagSizeChange();">
+			                      <option selected value="100,20">100mm × 20mm</option>
+			                      <option value="50,50">50mm × 50mm</option>
+			                      <option value="100,100">100mm × 100mm</option>
+			                    </select>
+		            		</div>
+		            	</div>
+		            	<div id="tagDivMain" class="row mb-3" >
+		            		<div id="tagDiv" class="editDiv" style="margin:auto;">
+		            		
+		            		</div>
+		            	</div>
+		            	<div class="row">
+		                	<div class="col-sm-4">
+		                		<button type="button" class="btn btn-primary">保存</button>
+		                		<button type="button" class="btn btn-primary"   onclick="clickPreview();">プレビュー</button>
+		                	</div>
+		                </div>
+		            </div>
+		          </div>
+	        </div>
+	        <div class="col-lg-3" >
+		          <div class="card" style="margin-left:-20px;">
+		            <div class="card-body" style="margin-top:5px">
+		            	<div class="row mb-1">
+		            		<div class="col-lg-3" style="margin: auto">
+		            			<font style="">自動連番</font>
+		            		</div>
+		            		<div class="col-lg-7" >
+		            			
+		            		</div>
+		            		<div class="col-lg-2" >
+		            			<a href="#" onclick="autoAddPlusClick();"><i class="bi bi-plus-lg" style="font-size: 1.2rem;"></i></a>
+		            		</div>
+		            	</div>
+		            	<div class="row mb-2">
+		            		<div class="col-lg-3" style="margin: auto">
+		            			<font style="">TID</font>
+		            		</div>
+		            		<div class="col-lg-7" >
+		            			
+		            		</div>
+		            		<div class="col-lg-2" >
+		            			<a href="#" onclick="tidPlusClick();"><i class="bi bi-plus-lg" style="font-size: 1.2rem;"></i></a>
+		            		</div>
+		            	</div>
+		            	<div class="row borderDivTop" style="padding-top:5px;">
+		            		<div class="col-lg-3" style="margin: auto">
+		            			<font style="">文字</font>
+		            		</div>
+		            		<div class="col-lg-7 mb-1" >
+		            			<input id="wordTxt" type="text" onblur="reWriteWord();" class="form-control form-control-sm">
+		            		</div>
+		            		<div class="col-lg-2" >
+		            			<a href="#" onclick="wordPlusClick();"><i class="bi bi-plus-lg" style="font-size: 1.2rem;"></i></a>
+		            		</div>
+		            	</div>
+		            	<div class="row mb-2 borderDivBottom" >
+		            		<label class="col-sm-3 col-form-label">サイズ</label>
+		            		<div class="col-sm-4">
+			            		 <div class="input-group input-group-sm mb-1">
+			                      <input id="wordSizeTxt" type="number" onblur="resetWordSize();" class="form-control">
+			                      <span class="input-group-text" >pt</span>
+			                    </div>
+		                    </div>
+		                    <div class="col-sm-5">
+		                    </div>
+		            	</div>
+		            	<div class="row borderDivTop" >
+		            		<div class="col-lg-3" style="margin: auto">
+		            			<font style="">画像</font>
+		            		</div>
+		            		<div class="col-lg-7" >
+		            			
+		            		</div>
+		            		<div class="col-lg-2" >
+		            			<a href="#" onclick="imgPlusClick();"><i class="bi bi-plus-lg" style="font-size: 1.2rem;"></i></a>
+		            		</div>
+		            	</div>
+		            	<div class="row borderDivMiddle" >
+		            		<label class="col-sm-3 col-form-label">サイズ</label>
+		            		<div class="col-sm-4">
+			            		 <div class="input-group input-group-sm mb-1">
+			            		  <span class="input-group-text">幅</span>
+			                      <input id="imgWidthTxt" type="number" class="form-control">
+			                    </div>
+		                    </div>
+		                    <div class="col-sm-4">
+		                    	<div class="input-group input-group-sm mb-1">
+			            		  <span class="input-group-text" >高</span>
+			                      <input id="imgHeightTxt" type="number" class="form-control">
+			                    </div>
+		                    </div>
+		            	</div>
+		            	<div class="row mb-2 borderDivBottom" >
+		            		<div class="col-lg-4 " style="margin: auto">
+		            			<font style="">アップロード</font>
+		            		</div>
+		            		<div class="col-lg-5 mb-1" >
+		            			<button type="button" id="btnImg" class="btn btn-outline-primary btn-sm" onclick="clickImageInput()" disabled>アップロード</button>
+		            			<input type="file" id="imageInput" style="display: none;" accept="image/*" />
+		            		</div>
+		            		<div class="col-lg-3" >
+		            			
+		            		</div>
+		            	</div>
+		            	<div class="row borderDivTop" style="padding-top:5px;">
+		            		<div class="col-lg-3 " style="margin: auto">
+		            			<font style="">データ</font>
+		            		</div>
+		            		<div class="col-lg-6 mb-1" >
+		            			<select id="dataSel" class="form-select form-select-sm" aria-label="Default select example" onchange="changeDataSel();">
+			                      <option selected value="0">なし</option>
+			                    </select>
+		            		</div>
+		            		<div class="col-lg-3" >
+		            		</div>
+		            	</div>
+		            	<div class="row borderDivMiddle" >
+		            		<div class="col-sm-5" style="margin: auto;" >
+		            			<div class=""  >
+		            				<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="1" onclick="clickBarCode();" checked disabled>
+			                        <label class="form-check-label" for="gridRadios1">
+			                        バーコード
+			                        </label>
+		            			</div>
+		                    </div>
+		                    <div class="col-lg-5" >
+		                    	<select id="codeBarSel" class="form-select form-select-sm" aria-label="Default select example" onchange="" disabled>
+			                      <option selected value="1">codebar</option>
+			                      <option >code11</option>
+			                      <option >code39</option>
+			                      <option >code93</option>
+			                      <option >code128</option>
+			                      <option >ean8</option>
+			                      <option >ean13</option>
+			                      <option >std25</option>
+			                      <option >int25</option>
+			                      <option >msi</option>
+			                      <option >datamatrix</option>
+			                    </select>
+		                    </div>
+		                   
+		                    <div class="col-lg-2" >
+		            			<a href="#" id="barCodePlus" onclick="barCodePlusClick();" style="pointer-events:none"><i class="bi bi-plus-lg" style="font-size: 1.2rem;"></i></a>
+		            		</div>
+		            	</div>
+		            	<div class="row borderDivMiddle">
+		            		<div class="col-sm-10" style="margin: auto;">
+		            			<div class="" >
+		            				<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="2" onclick="clickQrCode();" disabled>
+			                        <label class="form-check-label" for="gridRadios2">
+			                        QRコード
+			                        </label>
+		            			</div>
+		                    </div>
+		            		 <div class="col-lg-2" >
+		            			<a href="#" id="qrCodePlus" onclick="qrCodePlusClick();" style="pointer-events:none"><i class="bi bi-plus-lg" style="font-size: 1.2rem;"></i></a>
+		            		</div>
+		            	</div>
+		            	<div class="row mb-2 borderDivBottom" >
+		            		<div class="col-sm-10" style="margin: auto;">
+		            			<div class="" >
+		            				<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="3" onclick="clickCode();" disabled>
+			                        <label class="form-check-label" for="gridRadios3">
+			                        そのまま表示
+			                        </label>
+		            			</div>
+		                    </div>
+		            		 <div class="col-lg-2" >
+		            			<a href="#" id="codePlus" onclick="codePlusClick();" style="pointer-events:none"><i class="bi bi-plus-lg" style="font-size: 1.2rem;"></i></a>
+		            		</div>
+		            	</div>
+		            	
+		            	<div class="row borderDivTop" style="padding-top:5px;">
+		            		<div class="col-lg-12" >
+			            		<div class="form-check form-switch" style="margin: auto;">
+			                      <input class="form-check-input" type="checkbox" id="rfidWriteCheck" onclick="rfidWriteCheckClick();">
+			                      <label class="form-check-label" for="flexSwitchCheckDefault">RFID書き込み</label>
+			                    </div>
+		                    </div>
+		            	</div>
+		            	<div class="row borderDivTop2" style="padding-top:5px;">
+		            		<label class="col-sm-4 col-form-label" style="">パスワード</label>
+		                    <div class="col-lg-3" >
+		                    	<input type="text" id="rfidPwd" class="form-control form-control-sm" disabled>
+		                    </div>
+		            	</div>
+		            	<div class="row borderDivMiddle">
+		            		<label class="col-sm-4 col-form-label">EPC</label>
+		            		<div class="col-sm-5">
+		            			<select id="rfidEpc" class="form-select form-select-sm" aria-label="Default select example" onchange="" disabled>
+			                      <option selected value="0">なし</option>
+			                    </select>
+		                    </div>
+		            	</div>
+		            	<div class="row borderDivMiddle">
+		            		<label class="col-sm-4 col-form-label">RESERVED</label>
+		            		<div class="col-sm-5">
+		            			<select id="rfidReserved" class="form-select form-select-sm" aria-label="Default select example" onchange="" disabled>
+			                      <option selected value="0">なし</option>
+			                    </select>
+		                    </div>
+		            	</div>
+		            	<div class="row mb-1 borderDivBottom" >
+		            		<label class="col-sm-4 col-form-label">USER</label>
+		            		<div class="col-sm-5 mb-1"> 
+		            			<select id="rfidUser" class="form-select form-select-sm" aria-label="Default select example" onchange="" disabled>
+			                      <option selected value="0">なし</option>
+			                    </select>
+		                    </div>
+		            	</div>
+		            	
+		            </div>
+		          </div>
+	        </div>
+	      </div>
+	      
+	      <div class="modal fade" id="previewDiv" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered" >
+                  <div class="modal-content" id="divConent">
+                    <div class="modal-header">
+                      <h5 class="modal-title">プレビュー</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="divBody" >
+	                   <div id="previewTagDiv" class="row mb-2" style="margin:auto;">
+	                      
+	                   </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End Vertically centered Modal-->
+  	</section>
+	
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      Copyright &copy; e-Business Solution Co.,Ltd. All Rights Reserved
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <!--<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>-->
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/datatables.js"></script>
+  <script src="assets/js/JsBarcode.all.min.js"></script>
+  <script src="assets/js/qrcode.min.js"></script>
+  
+  <script>
+  	  var tagDivList = [];
+  	  var curTagDiv;
+	  var dpi = getDPI();
+	  var mmPx = parseFloat((1 * dpi[0] * 10 / 254).toFixed(2));
+	  var tag_size = $('#tagSize').val();
+	  var tag_scale = $('#tagScale').val();
+	  reSizeTagDiv();
+	  var lines;
+	  const fileInput = document.getElementById("fileInput");
+  	  
+  	  /**
+	 　* CSVデータを取得
+	   * 
+	   * 
+	   */
+	  fileInput.addEventListener("change", function() {
+	    const fileReader = new FileReader();
+	    const selectedFile = fileInput.files[0];
+	    fileReader.onload = function(event) {
+	      const fileContent = event.target.result;
+	      //console.log(fileContent);
+	      lines = fileContent.split('\n').map(function(line) {
+		      return line.trim(); 
+		  });
+		  //console.log(lines[0]);
+		  //console.log(lines[1]);
+		  if (lines[0] && lines[0].length > 0) {
+		  	let items = lines[0].split(',');
+		  	if (items.length > 0) {
+		  		for (let i = 0; i < items.length; i++) {
+		  			$("#dataSel").append('<option value="' + (i+1) + '">' + items[i] + '</option>');
+		  			$("#rfidEpc").append('<option value="' + (i+1) + '">' + items[i] + '</option>');
+		  			$("#rfidReserved").append('<option value="' + (i+1) + '">' + items[i] + '</option>');
+		  			$("#rfidUser").append('<option value="' + (i+1) + '">' + items[i] + '</option>');
+		  		}
+		  	}
+		  }
+	    }
+	    
+	    fileReader.readAsText(selectedFile);
+	  });
+	  
+	  const imgInput = document.getElementById("imageInput");
+	  /**
+	 　* イメージデータを取得
+	   * 
+	   * 
+	   */
+	  imgInput.addEventListener('change', function(event) {
+	  
+	    var img = document.createElement("img");
+	    img.classList.add("obj");
+	    img.file = file;
+	    //$('#tagDiv').append(img);
+	    if (imgDiv) {
+	    	imgDiv.appendChild(img);
+	    }
+    
+	    var file = event.target.files[0];
+	    var reader = new FileReader();
+	    reader.onload = (function(aImg) {
+	      return function(e) {
+	        aImg.src = e.target.result;
+	      };
+	    })(img);
+	    reader.readAsDataURL(file);
+	  });
+	  //var mmPx =1 / 25.4 * dpi[0];
+		/*function getDPI1() {
+		  const inch = 2.54; // 1 inch is generally considered equal to 2.54 centimeters
+		  const screenWidth = window.screen.width * window.devicePixelRatio; // window width in CSS pixels
+		  const screenHeight = window.screen.height * window.devicePixelRatio; // window height in CSS pixels
+		  const diagonal = Math.sqrt(screenWidth * screenWidth + screenHeight * screenHeight); // Diagonal length in CSS pixels
+		  const dpi = diagonal / inch * 96; // 96 is the number of CSS pixels per inch on traditional displays
+		  return dpi;
+		}*/
+	/**
+ 　　* リセットボタンのイベント
+   　* 
+   　* 
+   　*/
+	function clickReset() {
+		autoAddNum = 0;
+		$('#tagScale option').first().prop('selected', true);
+		$('#tagSize option').first().prop('selected', true);
+		tag_scale = $('#tagScale').val();
+		tag_size = $('#tagSize').val();
+		reSizeTagDiv();
+		$('#fileInput').val("");
+		$('#imageInput').val("");
+		$('#wordSizeTxt').val("");
+		$('#wordTxt').val("");
+		$('#imgWidthTxt').val("");
+		$('#imgHeightTxt').val("");
+		$("#gridRadios1").prop('checked',true);
+		$("#gridRadios2").prop('checked',false);
+		$("#gridRadios3").prop('checked',false);
+		$('#barCodePlus').css('pointer-events','none'); 
+		$('#qrCodePlus').css('pointer-events','none'); 
+		$('#codePlus').css('pointer-events','none');
+		$('#codeBarSel option').first().prop('selected', true);
+		$("#codeBarSel").prop('disabled',true);
+		$("#dataSel option").remove();
+		$("#dataSel").append('<option value="0">なし</option>');
+		$("#rfidWriteCheck").prop('checked',false);
+		rfidWriteCheckClick();
+		initRfidWrite();
+	}
+	function clickBarCode() {
+		if($("#gridRadios1").prop('checked')) {
+			$("#codeBarSel").prop('disabled',false);
+			$('#barCodePlus').css('pointer-events','');
+			$('#qrCodePlus').css('pointer-events','none');
+			$('#codePlus').css('pointer-events','none');
+		} else {
+			$("#codeBarSel").prop('disabled',true);
+		}
+	}
+	function clickQrCode() {
+		if($("#gridRadios2").prop('checked')) {
+			$("#codeBarSel").prop('disabled',true);
+			$('#codeBarSel option').first().prop('selected', true);
+			$('#barCodePlus').css('pointer-events','none');
+			$('#qrCodePlus').css('pointer-events','');
+			$('#codePlus').css('pointer-events','none');
+		}
+	}
+	function clickCode() {
+		if($("#gridRadios3").prop('checked')) {
+			$("#codeBarSel").prop('disabled',true);
+			$('#codeBarSel option').first().prop('selected', true);
+			$('#barCodePlus').css('pointer-events','none');
+			$('#qrCodePlus').css('pointer-events','none');
+			$('#codePlus').css('pointer-events','');
+		}
+	}
+	/**
+ 　　* データのチェンジイベント
+   　* 
+   　* 
+   　*/
+	function changeDataSel() {
+		if ($('#dataSel').val() != "0") {
+			$("#gridRadios1").prop('disabled',false);
+			$("#gridRadios2").prop('disabled',false);
+			$("#gridRadios3").prop('disabled',false);
+			$("#codeBarSel").prop('disabled',false);
+			$('#barCodePlus').css('pointer-events','');
+			//$('#qrCodePlus').css('pointer-events','');
+			//$('#codePlus').css('pointer-events','');
+		} else {
+			$("#gridRadios1").prop('disabled',true);
+			$("#gridRadios2").prop('disabled',true);
+			$("#gridRadios3").prop('disabled',true);
+			$('#codeBarSel option').first().prop('selected', true);
+			$("#codeBarSel").prop('disabled',true);
+			$('#barCodePlus').css('pointer-events','none'); 
+			$('#qrCodePlus').css('pointer-events','none'); 
+			$('#codePlus').css('pointer-events','none'); 
+		}
+	}
+	/**
+ 　　* tag divのスケールのチェンジイベント
+   　* 
+   　* 
+   　*/
+	function tagScaleChange() {
+		tag_scale = $('#tagScale').val();
+		reSizeTagDiv();
+	}
+	/**
+ 　　* tag divのサイズのチェンジイベント
+   　* 
+   　* 
+   　*/
+	function tagSizeChange() {
+		tag_size = $('#tagSize').val();
+		reSizeTagDiv();
+	}
+	/**
+ 　　* tag divのサイズを再設定
+   　* 
+   　* 
+   　*/
+	function reSizeTagDiv() {
+
+		for (let i = 0; i < tagDivList.length; i++) {
+		  tagDivList[i].remove();
+		}
+		var tag_size_w = parseInt(tag_size.split(",")[0]);
+		var tag_size_h = parseInt(tag_size.split(",")[1]);
+		tag_size_w = tag_size_w * mmPx * tag_scale
+		tag_size_h = tag_size_h * mmPx * tag_scale
+		$('#tagDiv').css("width",tag_size_w + "px");
+		$('#tagDiv').css("height",tag_size_h + "px");
+	}
+	/**
+ 　　* イメージアップロードのクリックイベント
+   　* 
+   　* 
+   　*/
+	function clickImageInput() {
+		$('#imageInput').click();
+	}
+	/**
+ 　　* データアップロードのクリックイベント
+   　* 
+   　* 
+   　*/
+	function clickFileInput() {
+    	$('#fileInput').click();
+	}
+	/**
+ 　　* RFID書き込みのクリックイベント
+   　* 
+   　* 
+   　*/
+	function rfidWriteCheckClick() {
+		if($("#rfidWriteCheck").prop('checked')) {
+			$("#rfidPwd").attr('disabled',false);
+			$("#rfidEpc").attr('disabled',false);
+			$("#rfidReserved").attr('disabled',false);
+			$("#rfidUser").attr('disabled',false);
+		} else {
+			$("#rfidPwd").attr('disabled',true);
+			$("#rfidEpc").attr('disabled',true);
+			$("#rfidReserved").attr('disabled',true);
+			$("#rfidUser").attr('disabled',true);
+		}
+	}
+	function initRfidWrite() {
+		$("#rfidPwd").val("");
+		$("#rfidEpc option").remove();
+		$("#rfidEpc").append('<option value="0">なし</option>');
+		$("#rfidReserved option").remove();
+		$("#rfidReserved").append('<option value="0">なし</option>');
+		$("#rfidUser option").remove();
+		$("#rfidUser").append('<option value="0">なし</option>');
+	}
+	/**
+	 * そのままプラスボタンのクリックイベント
+	 * 
+	 * 
+	 */
+	function codePlusClick() {
+			if (lines == null || lines.length == 0) return;
+		    let items = lines[1].split(',');
+		    let index = parseInt($('#dataSel').val())-1
+		    if (items == null || items.length <= index) return;
+			let tmpDiv = addDiv();
+			let text = items[index];
+			$("#"+tmpDiv.id).attr("type","7");	//そのまま
+			$("#"+tmpDiv.id).append(text);
+	}
+	/**
+	 * QRコードプラスボタンのクリックイベント
+	 * 
+	 * 
+	 */
+	function qrCodePlusClick() {
+	
+		   if (lines == null || lines.length == 0) return;
+		    let items = lines[1].split(',');
+		    let index = parseInt($('#dataSel').val())-1
+		    if (items == null || items.length <= index) return;
+		    let tmpDiv = addDiv();
+		    $("#"+tmpDiv.id).attr("type","6");	//qrcode
+		    let text = items[index];
+		    //console.log(text);
+		    var qrcode=new QRCode(tmpDiv.id, {
+		        text: text,
+		        //width: 20*tag_scale,
+		        //height: 20*tag_scale,
+		        width: 20,
+		        height: 20,
+		        colorDark: '#000000',
+		        colorLight: '#ffffff',
+		        correctLevel: QRCode.CorrectLevel.H //纠错等级
+		    });
+	}
+	
+	/**
+	 * バーコードプラスボタンのクリックイベント
+	 * 
+	 * 
+	 */
+	function barCodePlusClick() {
+		if (lines == null || lines.length == 0) return;
+		let items = lines[1].split(",");
+		let index = parseInt($('#dataSel').val())-1
+		if (items == null || items.length <= index) return;
+		let tmpDiv = addDiv();
+		let text = items[index];
+		$("#"+tmpDiv.id).attr("type","5");	//barcode
+		$("#"+tmpDiv.id).append('<svg id="barcode'+ (tagDivList.length) +'"></svg>');
+		JsBarcode("#barcode" + (tagDivList.length), text);
+		
+	}
+	/**
+	 * 画像プラスボタンのクリックイベント
+	 * 
+	 * 
+	 */
+	var imgDiv;
+	function imgPlusClick() {
+		imgDiv = addDiv();
+		$("#"+imgDiv.id).attr("type","4");	//画像
+		$("#btnImg").attr('disabled',false);
+	}
+	/**
+	 * 文字プラスボタンのクリックイベント
+	 * 
+	 * 
+	 */
+	function wordPlusClick() {
+		let tmpDiv = addDiv();
+		$("#"+tmpDiv.id).attr("type","3");	//文字
+		let word = $('#wordTxt').val();
+		if (word == '') {
+			$("#"+tmpDiv.id).append("<font>文字</font>");
+		} else {
+			$("#"+tmpDiv.id).append("<font>"+word+"<font>");
+		}
+		//$("#"+tmpDiv.id).attr("contenteditable", true);
+	}
+	/**
+	 * TIDプラスボタンのクリックイベント
+	 * 
+	 * 
+	 */
+	function tidPlusClick() {
+		let tmpDiv = addDiv();
+		$("#"+tmpDiv.id).attr("type","2");	//TID
+		$("#"+tmpDiv.id).append("TID");
+	}
+	/**
+	 * 自動連番プラスボタンのクリックイベント
+	 * 
+	 * 
+	 */
+	 var autoAddNum = 0;
+	function autoAddPlusClick() {
+		
+		let tmpDiv = addDiv();
+		$("#"+tmpDiv.id).attr("type","1");	//自動連番
+		$("#"+tmpDiv.id).append(++autoAddNum);
+	}
+	
+	function addDiv() {
+		var tmpDiv = document.createElement("div");
+		tmpDiv.setAttribute('id','tagDiv' + (tagDivList.length + 1));
+		tmpDiv.classList.add('div-tag');
+		
+		var div_top_left = document.createElement("div");
+		div_top_left.classList.add('resize-handle');
+		div_top_left.classList.add('top-left');
+		tmpDiv.appendChild(div_top_left);		
+		var div_top_right = document.createElement("div");
+		div_top_right.classList.add('resize-handle');
+		div_top_right.classList.add('top-right');
+		tmpDiv.appendChild(div_top_right);
+		
+		var div_bottom_left = document.createElement("div");
+		div_bottom_left.classList.add('resize-handle');
+		div_bottom_left.classList.add('bottom-left');
+		tmpDiv.appendChild(div_bottom_left);		
+		var div_bottom_right = document.createElement("div");
+		div_bottom_right.classList.add('resize-handle');
+		div_bottom_right.classList.add('bottom-right');
+		tmpDiv.appendChild(div_bottom_right);
+		
+		var div_right = document.createElement("div");
+		div_right.classList.add('resize-handle');
+		div_right.classList.add('right');
+		tmpDiv.appendChild(div_right);
+		var div_left = document.createElement("div");
+		div_left.classList.add('resize-handle');
+		div_left.classList.add('left');
+		tmpDiv.appendChild(div_left);
+		var div_top = document.createElement("div");
+		div_top.classList.add('resize-handle');
+		div_top.classList.add('top');
+		tmpDiv.appendChild(div_top);
+		var div_bottom = document.createElement("div");
+		div_bottom.classList.add('resize-handle');
+		div_bottom.classList.add('bottom');
+		tmpDiv.appendChild(div_bottom);
+		
+		$('#tagDiv').append(tmpDiv);
+		tmpDiv.style.width = parseInt($("#"+tmpDiv.id).css("width")) * tag_scale + "px";
+		tmpDiv.style.height = parseInt($("#"+tmpDiv.id).css("height")) * tag_scale + "px";
+		
+		regDivEvent(tmpDiv);
+		tagDivList.push(tmpDiv);
+		
+		return tmpDiv;
+	}
+	
+    /**
+	 * tag divの子divの相関イベント
+	 * 
+	 * 
+	 */
+    function regDivEvent(dragElement) {
+    	dragElement.addEventListener("mousedown", startDrag);
+		function startDrag(event) {
+		  event.preventDefault();
+		  const currentHandle = event.target;
+		  if (typeof currentHandle.className === 'string') {
+			  const isResizeHandle = currentHandle.className.includes("resize-handle");
+			  if (isResizeHandle) return;
+		  }
+		  const startX = event.clientX;
+		  const startY = event.clientY;
+		  const startLeft = dragElement.offsetLeft;
+		  const startTop = dragElement.offsetTop;
+		  document.addEventListener("mousemove", drag);
+		  document.addEventListener("mouseup", stopDrag);
+		  function drag(event) {
+		    const dx = event.clientX - startX;
+		    const dy = event.clientY - startY;
+		    const newLeft = startLeft + dx;
+		    const newTop = startTop + dy;
+		    //if (newLeft <= document.getElementById("tagDiv").offsetLeft + 30)  { //position: fixed;
+		   if (newLeft <= document.getElementById("tagDiv").offsetLeft)  {	//position: absolute;
+		    	return;
+		    }
+		    //if (newLeft + dragElement.offsetWidth >= document.getElementById("tagDiv").offsetLeft + 30 + document.getElementById("tagDiv").offsetWidth)  {	//position: fixed;
+		    if (newLeft + dragElement.offsetWidth >= document.getElementById("tagDiv").offsetLeft  + document.getElementById("tagDiv").offsetWidth)  {		position: absolute;
+		    
+		    	return;
+		    }
+		    //if (newTop <= document.getElementById("tagDiv").offsetTop + 79)  {	//position: fixed;
+		    if (newTop <= document.getElementById("tagDiv").offsetTop)  {	//position: absolute;
+		    	return;
+		    }
+		    //if (newTop + dragElement.offsetHeight >= document.getElementById("tagDiv").offsetTop + 79 + document.getElementById("tagDiv").offsetHeight)  {	//position: fixed;
+		    if (newTop + dragElement.offsetHeight >= document.getElementById("tagDiv").offsetTop + document.getElementById("tagDiv").offsetHeight)  {	//position: absolute;
+		    	return;
+		    }
+		    dragElement.style.left = newLeft + "px";
+		    dragElement.style.top = newTop + "px";
+		  }
+		  function stopDrag() {
+		    document.removeEventListener("mousemove", drag);
+		    document.removeEventListener("mouseup", stopDrag);
+		  }
+		}
+		var selectedDivId = "";
+		dragElement.addEventListener('dblclick', function(e) {
+			
+			if (curTagDiv && curTagDiv.id == this.id) {
+				curTagDiv.style.borderColor = "#46A3FF";
+				$("#btnDelTagDiv").attr('disabled',true);
+				curTagDiv = null;
+			} else {
+				if (curTagDiv) curTagDiv.style.borderColor = "#46A3FF";
+				curTagDiv = this;
+				curTagDiv.style.borderColor = "#0000FF";
+				$("#btnDelTagDiv").attr('disabled',false);
+			}
+			
+		});
+		
+		const resizeHandles = document.getElementsByClassName("resize-handle");
+		Array.from(resizeHandles).forEach((handle) => {
+		  handle.addEventListener("mousedown", startResize);
+		});
+    }
+    function resetWordSize() {
+
+    	if (curTagDiv != null && $("#wordSizeTxt").val() != '') {
+    		if ($("#"+curTagDiv.id).attr('type') == "3") {
+    			$("#"+curTagDiv.id + " > font").css("font-size",parseInt($("#wordSizeTxt").val()));
+    		}
+    	}
+    }
+    function reWriteWord() {
+    	
+    	if (curTagDiv != null && $("#wordTxt").val() != '') {
+    		if ($("#"+curTagDiv.id).attr('type') == "3") {
+    			$("#"+curTagDiv.id + " > font").text($("#wordTxt").val());
+    		}
+    	}
+    }
+	/**
+	 * tag divの子divのresizeイベント
+	 * 
+	 * 
+	 */
+	function startResize(event) {
+	  event.preventDefault();
+	  const currentHandle = event.target;
+	  const direction = currentHandle.className.split(" ")[1];
+	  const startX = event.clientX;
+	  const startY = event.clientY;
+	  const startWidth = currentHandle.parentNode.offsetWidth;
+	  const startHeight = currentHandle.parentNode.offsetHeight;
+	  const startLeft = currentHandle.parentNode.offsetLeft;
+	  const startTop = currentHandle.parentNode.offsetTop;
+	  document.addEventListener("mousemove", resize);
+	  document.addEventListener("mouseup", stopResize);
+	  function resize(event) {
+	    const dx = event.clientX - startX;
+	    const dy = event.clientY - startY;
+	    let width = startWidth,
+	      height = startHeight,
+	      left = startLeft,
+	      top = startTop;
+	    if (direction.includes("left")) {
+	      width = startWidth - dx + "px";
+	      left = startLeft + dx / 1 + "px";
+	    }
+	    if (direction.includes("right")) {
+	      width = startWidth + dx + "px";
+	      //left = startLeft + dx / 2 + "px";
+	    }
+	    if (direction.includes("top")) {
+	      height = startHeight - dy + "px";
+	      top = startTop + dy / 1 + "px";
+	    }
+	    if (direction.includes("bottom")) {
+	      height = startHeight + dy + "px";
+	      //top = startTop + dy / 2 + "px";
+	    }
+	    if (parseInt(width) <= 0 || parseInt(height) <= 0) return;
+	    const deltaX = event.movementX;
+  		const deltaY = event.movementY;
+	    //if (deltaX <= 0 && parseInt(left) <= document.getElementById("tagDiv").offsetLeft + 30)  {	//position: fixed;
+	    if (deltaX <= 0 && parseInt(left) <= document.getElementById("tagDiv").offsetLeft)  {	//position: absolute;
+	    	return;
+	    }
+	    //if (deltaX >= 0 && parseInt(left) + currentHandle.parentNode.offsetWidth >= document.getElementById("tagDiv").offsetLeft + 30 + document.getElementById("tagDiv").offsetWidth)  {		//position: fixed;
+	  if (deltaX >= 0 && parseInt(left) + currentHandle.parentNode.offsetWidth >= document.getElementById("tagDiv").offsetLeft + document.getElementById("tagDiv").offsetWidth)  {		//position: absolute;
+	    	return;
+	    }
+	    //if (deltaY <= 0 && parseInt(top) <= document.getElementById("tagDiv").offsetTop + 79)  {		//position: fixed;
+	   if (deltaY <= 0 && parseInt(top) <= document.getElementById("tagDiv").offsetTop)  {		//position: absolute;
+	    	return;
+	    }
+	    //if (deltaY >= 0 && parseInt(top) + currentHandle.parentNode.offsetHeight >= document.getElementById("tagDiv").offsetTop + 79 + document.getElementById("tagDiv").offsetHeight)  {	//position: fixed;
+	    if (deltaY >= 0 && parseInt(top) + currentHandle.parentNode.offsetHeight >= document.getElementById("tagDiv").offsetTop + document.getElementById("tagDiv").offsetHeight)  {		//position: absolute;
+	    	return;
+	    }
+	    currentHandle.parentNode.style.width = width;
+	    currentHandle.parentNode.style.height = height;
+	    currentHandle.parentNode.style.left = left;
+	    currentHandle.parentNode.style.top = top;
+	  }
+	  function stopResize() {
+	    document.removeEventListener("mousemove", resize);
+	    document.removeEventListener("mouseup", stopResize);
+	  }
+	}
+	
+	/**
+	 * 削除ボタンをクリック
+	 * 
+	 * 
+	 */
+	function clickDelTagDiv() {
+		$("#"+curTagDiv.id).remove();
+		for (let i = 0; i < tagDivList.length; i++) {
+		  if (tagDivList[i].id == curTagDiv.id) {
+		    tagDivList.splice(i,1);
+		    break;
+		  }
+		  
+		}
+		let isImgDiv = false;
+		for (let i = 0; i < tagDivList.length; i++) {
+		  if ($("#"+tagDivList[i].id).attr("type") == '4') {
+		  	isImgDiv = true;
+		  	break;
+		  }
+		}
+		if (!isImgDiv) {
+			$("#btnImg").attr('disabled',true);
+		}
+		/*if(tagDivList.length == 0) {
+			$("#btnDelTagDiv").attr('disabled',true);
+		} else {
+			$("#btnDelTagDiv").attr('disabled',false);
+		}*/
+		$("#btnDelTagDiv").attr('disabled',true);
+	}
+	
+	/**
+	 * ウィンドウのresizeイベント
+	 * 
+	 * 
+	 */
+	$(window).resize(function() {
+	    for (let i = 0; i < tagDivList.length; i++) {
+		  tagDivList[i].remove();
+		}
+		$("#btnDelTagDiv").attr('disabled',true);
+	});
+	
+	/**
+	 * スクリーンのDPIを取得
+	 * 
+	 * 
+	 */
+	function getDPI() {
+      var arrDPI = new Array();
+      if (window.screen.deviceXDPI != undefined) {
+        arrDPI[0] = window.screen.deviceXDPI;
+        arrDPI[1] = window.screen.deviceYDPI;
+      } else {
+        var tmpNode = document.createElement("DIV");
+        tmpNode.style.cssText =
+          "width:1in;height:1in;position:absolute;left:0px;top:0px;z-index:99;visibility:hidden";
+        document.body.appendChild(tmpNode);
+        arrDPI[0] = parseInt(tmpNode.offsetWidth);
+        arrDPI[1] = parseInt(tmpNode.offsetHeight);
+        tmpNode.parentNode.removeChild(tmpNode);
+      }
+      return arrDPI;
+    }
+    function clickPreview() {
+    
+    	let tag_size_w = parseInt(tag_size.split(",")[0]);
+		let tag_size_h = parseInt(tag_size.split(",")[1]);
+		tag_size_w = tag_size_w * mmPx;
+		tag_size_h = tag_size_h * mmPx;
+		tag_scale
+		
+	   	 let m = document.getElementById("previewDiv");
+		  $(m).modal("show");
+	      //console.log($("#tagDivMain").html());
+	      $("#previewTagDiv").html("");
+	      $("#previewTagDiv").html($("#tagDivMain").html());
+	      $('#previewTagDiv').css("width",tag_size_w + "px");
+		  $('#previewTagDiv').css("height",tag_size_h + "px");
+
+		  $('#previewTagDiv').find('.resize-handle').remove();
+		  //$('#previewTagDiv').find('.div-tag').css("border","0px");
+		  $('#previewTagDiv').find('.div-tag').css("position","relative");
+		  $('#previewTagDiv').find('.editDiv').css("width",tag_size_w + "px");
+		  $('#previewTagDiv').find('.editDiv').css("height",tag_size_h + "px");
+		  let tagDiv = document.getElementById("tagDiv");
+	      var allChildren = $('#previewTagDiv').find('*');
+	      // 遍历所有子元素
+	      let index = 0;
+	      allChildren.each(function() {
+		      $(this).attr('id', function(i, currentId) {
+		        return 'new_' + (++index); 
+		      });
+		      if (this.style.top) {
+	      		this.style.top =  parseInt(this.style.top) - (tagDiv.offsetTop) + "px";
+	      		this.style.left =  parseInt(this.style.left) - (tagDiv.offsetLeft) + "px";
+	      	  }
+	        	//console.log(this); 
+	      });
+	      //console.log($('#previewTagDiv').html());
+	      
+	      
+    }
+ </script>
+
+</body>
+
+</html>

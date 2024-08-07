@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>EBS-Gateway - 在庫管理</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <!--<link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">-->
+  <link href="assets/css/datatables.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Mar 17 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <style>
+  .my-div {
+    height: 300px;
+  }
+  .btn-f {
+	  color: #000079;
+  }
+  
+  .a-f {
+      display: block;
+      border-right: 1px solid #FFF;
+      color: #000079;
+      text-decoration: none;
+    }
+   .col-f {
+   	  color:#8A2BE2 !important;
+   }
+  .dt-scroll-headInner {
+  	width:100%  !important;
+  }
+  .dt-scroll-headInner > table {
+  	width:100%  !important;
+  }
+   .table2>tbody>tr>td:nth-child(1){
+	 border-left:1px solid rgba(0, 0, 0, 0.3);
+   }
+   .table2>tbody>tr>td:nth-child(4){
+	 border-right:1px solid rgba(0, 0, 0, 0.3);
+   }
+   .table-padding td {
+        padding: 0px 5px 0px 5px; /* 设置为你想要的值 */
+    }
+    .td-padding {
+        padding: 0px 5px 0px 5px !important; /* 设置为你想要的值 */
+    }
+    .signalDiv {
+	  float: left;
+	  height: 15px;
+	  width: 15px;
+	  background-color: #9aef6e;
+	  margin-right: 0px;
+	  /*border-bottom: 1px solid #ed5565;*/
+	}
+   /*div.dt-container {
+        width: 1350px;
+        margin: 0 auto;
+    }*/
+</style>
+</head>
+
+<body class="toggle-sidebar">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <span class="d-lg-block">EBS-Gateway -&nbsp;</span>
+      </a>
+      <a href="inventory.html" class="logo d-flex align-items-center">
+        <span class="d-lg-block"> 入出庫 </span>
+      </a>
+    </div><!-- End Logo -->
+    
+     <div class="d-flex align-items-center justify-content-between" style="margin-left: 130px;">
+	     <button type="button" class="btn btn-outline-dark btn-lg" onclick="window.location.href='inventory3.html'">ダッシュボード</button>
+	     <button type="button" class="btn btn-outline-primary btn-lg" onclick="window.location.href='inventory.html'" style="margin-left: 20px;" disabled>入出庫</button>
+    </div>
+    
+    <nav class="header-nav ms-auto">
+		<ul class="d-flex align-items-center">
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <span class="d-none d-md-block dropdown-toggle ps-2">郭</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>郭</h6>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>プロファイル</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>設定</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>ヘルプ</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>ログアウト</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+	</nav>
+
+  </header><!-- End Header -->
+
+  <main id="main" class="main">
+  
+  	<section class="section dashboard" >
+  		<div class="row">
+  			<div class="col-lg-6">
+  				<div class="card" >
+  					<div class="card-body" >
+  						<div class="row mb-4" style="width:100%;text-align:right;margin-top:10px;margin-bottom:10px;margin-right:0px;">
+		            	 
+		                  <div class="col-sm-12" >
+		                  	<img src="assets/img/impinj_r420.jpg" width="30" height="30" class="img-responsive" style="margin-right:30px;">
+		                  	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#divReaderList" style="margin-right:40px;">リーダー選択</button>
+		                    <button type="button" id="btnStart" class="btn btn-primary" onclick="start();">開始</button>
+		                    <button type="button" id="btnStop" class="btn btn-primary" onclick="stop();" disabled>停止</button>
+		                  </div>
+		                </div>
+  						<!-- modal start -->
+		                <div class="modal fade" id="divReaderList" tabindex="-1">
+			                <div class="modal-dialog modal-dialog-scrollable">
+			                  <div class="modal-content">
+			                    <div class="modal-header">
+			                      <h5 class="modal-title">リーダーとアンテナを選択してください。</h5>
+			                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			                    </div>
+			                    <div class="modal-body">
+			                    	<div class="row">
+			                    		<div class="col-sm-6" style="text-align:center">
+							          		<a href="#"><img src="assets/img/impinj_r420.jpg" width="180" height="180" class="img-responsive"></a>
+							          	</div>
+							          	<div class="col-sm-6" style="margin: auto">
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ１</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0001-1001-0101
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ２</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0001-1001-0102
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ３</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0001-1001-0103
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ４</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          		A0001-1002-0104
+								          		</div>
+							          		</div>
+							          	</div>
+							        </div><hr/>
+							        <div class="row">
+								        <div class="col-sm-6" style="text-align:center">
+								          <a href="#"><img src="assets/img/impinj_r700.jpg" width="210" height="210"></a>
+								        </div>
+								        <div class="col-sm-6" style="margin: auto;">
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ１</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0001-1002-0102
+								          		</div>
+							          		</div>
+							          			<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ２</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0001-1002-0103
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ３</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0001-1002-0104
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ４</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0001-1002-0105
+								          		</div>
+							          		</div>
+							          	</div>
+							        </div><hr/>
+							        <div class="row">
+								        <div class="col-sm-6" style="margin: auto;">
+								          <a href="#"><img src="assets/img/zebra_fx9600.jpg" width="240" height="160"></a>
+								        </div>
+								        <div class="col-sm-6" style="margin: auto;">
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ１</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1001-0101
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ２</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1001-0102
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ３</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1001-0103
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ４</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1001-0104
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ５</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1001-0105
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ６</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1002-0101
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ７</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1002-0102
+								          		</div>
+							          		</div>
+							          		<div class="row">
+								          		<div class="col-sm-5" style="margin: auto">
+								          			<input type="checkbox">アンテナ８</input>
+								          		</div>
+								          		<div class="col-sm-7" style="margin: auto">
+								          			 A0002-1002-0103
+								          		</div>
+							          		</div>
+							          	</div>
+							        </div>
+			                    </div>
+			                  </div>
+			                </div>
+			              </div>
+		                <!-- modal end -->
+		                <div class="row mb-1" >
+					        <div class="col-sm-2">
+		                      <input class="form-check-input" type="radio" name="gridRadios" id="gridGs1" value="1" onclick="clickGs1();"checked>
+		                      <label class="form-check-label" for="gridRadios1">
+		                        GS1規格
+		                      </label>
+		                    </div>
+		                    <div class="col-sm-2" >
+		                      <input class="form-check-input" type="radio" name="gridRadios" id="gridNoGs1" value="2" onclick="clickNoGs1();">
+		                      <label class="form-check-label" for="gridRadios2">
+		                        非標準
+		                      </label>
+		                    </div>
+				        </div>
+  						<div class="row mb-1" >
+			                  <div class="col-sm-3">
+				                 <select id="tagGs1" class="form-select form-select-sm"  style="font-size:12px !important;">
+				                      <option selected value="1" >SGTIN</option>
+				                      <option value="2">GDTI</option>
+				                    </select>
+			                  </div>
+				        </div>
+				        <div class="row mb-4">
+					        <div class="col-sm-12">
+		            		 <div class="input-group input-group-sm" >
+		                      <input id="epcCode1" type="text" placeholder="企業コード" class="form-control " style="font-size:12px !important;">
+		                      <span class="input-group-text" style="font-size:12px !important;">－</span>
+		                      <input id="epcCode2" type="text" placeholder="物品コード" class="form-control" style="font-size:12px !important;">
+		                      <span class="input-group-text" style="font-size:12px !important;">－</span>
+		                      <input id="epcCode3" type="text" placeholder="シリアル#" class="form-control" style="font-size:12px !important;">
+		                     </div>
+	                    	</div>
+	                    </div>
+				        <div class="row mb-1">
+			                  <div class="col-sm-3">
+			                    <select id="tagType" class="form-select form-select-sm " style="font-size:12px !important;">
+			                      <option selected value="1">EPC</option>
+			                      <option value="2">TID</option>
+			                      <option value="3">USER</option>
+			                    </select>
+			                  </div>
+				        </div>
+				        <div class="row mb-4">
+					        <div class="col-sm-5">
+			            		 <div class="input-group input-group-sm">
+			            		 	  <span class="input-group-text" style="font-size:12px !important;">データ</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">
+				                      <span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
+			                     </div>
+	                    	</div>
+	                    	<div class="col-sm-4">
+			            		 <div class="input-group input-group-sm">
+			            		 	  <span class="input-group-text" style="font-size:12px !important;">オフセット</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
+				                      <span class="input-group-text" style="font-size:12px !important;">（bit）</span>
+			                     </div>
+	                    	</div>
+	                    	<div class="col-sm-3">
+			            		 <div class="input-group input-group-sm">
+			            		 	  <span class="input-group-text" style="font-size:12px !important;">長さ</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
+				                      <span class="input-group-text" style="font-size:12px !important;">（bit）</span>
+			                     </div>
+	                    	</div>
+	                    </div>
+	                     <div class="row mb-4" style="align-items: center;">
+	                    	<div class="col-sm-3" >
+			            		<div class="form-switch" style="align-items: center;">
+			                      <input class="form-check-input" type="checkbox" id="rdoRssi1" onclick="clickRdoRssi1();">
+			                      <label class="form-check-label" >RSSIフィルタ</label>
+			                    </div>
+		                    </div>
+					        <div class="col-sm-3"  >
+		                      <input class="form-check-input" type="radio" name="rdoRssi" id="rdoRssi2" value="1" onclick="clickRdoRssi2();"  style="margin-left:-20px;" checked>
+		                      <label class="form-check-label" for="gridRadios1">
+		                        下限
+		                      </label>
+		                      <input class="form-check-input" type="radio" name="rdoRssi" id="rdoRssi3" value="2" onclick="clickRdoRssi3();" style="margin-left:20px;">
+		                      <label class="form-check-label" for="gridRadios2">
+		                        上限
+		                      </label>
+		                    </div>
+		                    <div class="col-sm-3" >
+			            		 <div class="input-group input-group-sm">
+			            		 	  <span class="input-group-text" style="font-size:12px !important;">閾値</span>
+				                      <input id="rssiValue" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
+			                     </div>
+	                    	</div>
+				        </div>
+				        <div class="row mb-1">
+			                  <div class="col-sm-4">
+				                  <div class="input-group input-group-sm">
+				                  	<span class="input-group-text" style="font-size:12px !important;">Target</span>
+				                    <select id="tagType" class="form-select form-select-sm " style="font-size:12px !important;">
+				                      <option selected value="1">Session 0 </option>
+				                      <option value="2">Session 1</option>
+				                      <option value="3">Session 2</option>
+				                      <option value="3">Session 3</option>
+				                    </select>
+				                  </div>
+			                  </div>
+				        </div>
+				        <div class="row mb-3">
+			                  <div class="col-sm-8">
+				                  <div class="input-group input-group-sm">
+				                  	<span class="input-group-text" style="font-size:12px !important;">Action</span>
+				                    <select id="tagType" class="form-select form-select-sm " style="font-size:12px !important;">
+				                      <option selected value="1">INV A NOT INV B or ASRT_SL_NOT_DSRT_SL</option>
+				                      <option value="2">INV A or ASRT SL</option>
+				                      <option value="3">NOT INV B or NOT DSRT SL</option>
+				                    </select>
+				                  </div>
+			                  </div>
+				        </div>
+	                    
+  					</div>
+  				</div>
+  			</div>
+	          <div class="col-lg-6">
+	           <div class="card">
+	           		<!-- modal start -->
+	                <div class="modal fade" id="divDetail" tabindex="-1">
+		                <div class="modal-dialog modal-lg">
+		                  <div class="modal-content">
+		                    <div class="modal-header">
+		                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                    </div>
+		                    <div class="modal-body" >
+		                    	<div class="row mb-1" >
+		                    		<div class="col-sm-4">
+		                    			<span style="font-weight: bold;">企業コード</span>
+					              </div>
+						        </div>
+						        <div class="row mb-1" >
+		                    		<div class="col-sm-3">
+					                    <select id="tagGs1" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1" >EPC</option>
+					                      <option value="2">TID</option>
+					                      <option value="3">USER</option>
+					                    </select>
+					              </div>
+						        </div>
+						       <div class="row mb-2">
+							        <div class="col-sm-5">
+				            		 <div class="input-group input-group-sm">
+				            		 <span class="input-group-text" style="font-size:12px !important;">開始</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">
+				                      <select id="tagScale" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1">bit</option>
+					                      <option value="2">byte</option>
+					                    </select>
+				                     </div>
+			                    	</div>
+			                    	<div class="col-sm-4">
+				            		 <div class="input-group input-group-sm ">
+				            		 <span class="input-group-text" style="font-size:12px !important;">長さ</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
+				                     </div>
+			                    	</div>
+			                    	<div class="col-sm-3">
+				            		 <div class="input-group input-group-sm">
+				            		 <span class="input-group-text" style="font-size:12px !important;">形式</span>
+				                      <select id="tagScale" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1">10進数</option>
+					                      <option value="2">16進数</option>
+					                      <option value="3">ASCII</option>
+					                    </select>
+				                     </div>
+			                    	</div>
+			                    </div>
+			                    <hr/>
+			                    <div class="row mb-1" >
+		                    		<div class="col-sm-4">
+		                    			<span style="font-weight: bold;">部品コード</span>
+					              </div>
+						        </div>
+			                    <div class="row mb-1" >
+		                    		<div class="col-sm-3">
+					                    <select id="tagGs1" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1" >EPC</option>
+					                      <option value="2">TID</option>
+					                      <option value="3">USER</option>
+					                    </select>
+					              </div>
+						        </div>
+			                    <div class="row mb-2">
+							        <div class="col-sm-5">
+				            		 <div class="input-group input-group-sm">
+				            		 <span class="input-group-text" style="font-size:12px !important;">開始</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">
+				                      <select id="tagScale" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1">bit</option>
+					                      <option value="2">byte</option>
+					                    </select>
+				                     </div>
+			                    	</div>
+			                    	<div class="col-sm-4">
+				            		 <div class="input-group input-group-sm ">
+				            		 <span class="input-group-text" style="font-size:12px !important;">長さ</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
+				                     </div>
+			                    	</div>
+			                    	<div class="col-sm-3">
+				            		 <div class="input-group input-group-sm">
+				            		 <span class="input-group-text" style="font-size:12px !important;">形式</span>
+				                      <select id="tagScale" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1">10進数</option>
+					                      <option value="2">16進数</option>
+					                      <option value="3">ASCII</option>
+					                    </select>
+				                     </div>
+			                    	</div>
+			                    </div>
+			                    <hr/>
+			                    <div class="row mb-1" >
+		                    		<div class="col-sm-4">
+		                    			<span style="font-weight: bold;">シリアル番号</span>
+					              </div>
+						        </div>
+			                    <div class="row mb-1" >
+		                    		<div class="col-sm-3">
+					                    <select id="tagGs1" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1" >EPC</option>
+					                      <option value="2">TID</option>
+					                      <option value="3">USER</option>
+					                    </select>
+					              </div>
+						        </div>
+			                    <div class="row mb-1">
+							        <div class="col-sm-8">
+				            		 <div class="input-group input-group-sm">
+				            		 <span class="input-group-text" style="font-size:12px !important;">開始</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">
+				                      <select id="tagScale" class="form-select form-select-sm"  style="font-size:12px !important;">
+					                      <option selected value="1">bit</option>
+					                      <option value="2">byte</option>
+					                    </select>
+				                     </div>
+			                    	</div>
+			                    	<div class="col-sm-4">
+				            		 <div class="input-group input-group-sm ">
+				            		 <span class="input-group-text" style="font-size:12px !important;">長さ</span>
+				                      <input id="" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
+				                     </div>
+			                    	</div>
+			                    </div>
+		                    </div>
+		                   
+		                  </div>
+		                </div>
+		              </div>
+	                <!-- modal end -->
+	             <div class="card-body" style="background:black;color:white;">
+	              <!-- Table with stripped rows -->
+	              <table id="detailList" class="table2" >
+	               <thead>
+	                  <tr style="height:0px;display:none">
+	                  	<th width="30%"></th>
+	                  	<th ></th>
+	                  	<th width="20%"></th>
+	                  	<th width="20%"></th>
+	                  </tr>
+	                </thead>
+	                <tbody style="vertical-align: middle;">
+	                  <tr>
+	                  	<td class="td-padding">101-1</td>
+	                  	<td class="td-padding">4912345-12345-1</td>
+	                   	<td class="td-padding">
+	                   		<input class="form-check-input" type="checkbox" style="border: 1px solid #00FFFF;">
+	                   	</td>
+	                   	<td></td>
+	                  </tr>
+	               	  <tr>
+	                  	<td class="td-padding">102-1</td>
+	                  	<td class="td-padding">4912345EA123456345678910</td>
+	                   	<td class="td-padding">
+	                   		<input class="form-check-input" type="checkbox" style="border: 1px solid #00FFFF;">
+	                   	</td>
+	                   	<td class="td-padding"><a href="#" onclick="openDetail();" style="font-size:12px !important;"><i class="bi bi-file-ruled"></i></a></td>
+	                  </tr>
+	                   <tr>
+	                  	<td class="td-padding">102-1</td>
+	                  	<td class="td-padding">4912345EA123456345678910</td>
+	                   	<td class="td-padding">
+	                   		<input class="form-check-input" type="checkbox" style="border: 1px solid #00FFFF;">
+	                   	</td>
+	                   	<td class="td-padding"><a href="#" onclick="openDetail();"><i class="bi bi-file-ruled"></i></a></td>
+	                  </tr>
+	                   <tr>
+	                  	<td class="td-padding">102-1</td>
+	                  	<td class="td-padding">4912345EA123456345678910</td>
+	                   	<td class="td-padding">
+	                   		<input class="form-check-input" type="checkbox" style="border: 1px solid #00FFFF;">
+	                   	</td>
+	                   	<td class="td-padding"><a href="#" onclick="openDetail();"><i class="bi bi-file-ruled"></i></a></td>
+	                  </tr>
+	                  <tr>
+	                  	<td></td>
+	                  	<td></td>
+	                  	<td></td>
+	                  	<td></td>
+	                  </tr>
+	                  
+	                </tbody>
+	              </table><br>
+	              <!-- End Table with stripped rows -->
+	               
+	            </div>
+	          </div>
+	          
+	          <div class="row" style="width:100%;text-align:right;margin-top:-20px;margin-bottom:0px;margin-right:0px;">
+                	<div style="">
+                		<button type="button" class="btn btn-primary" onclick="window.location.href='inventory.html'">入庫</button>
+                		<button type="button" class="btn btn-primary" onclick="window.location.href='inventory2.html'">出庫</button>
+                	</div>
+                </div>
+                
+	        </div>
+	      </div>
+  	</section>
+	
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      Copyright &copy; e-Business Solution Co.,Ltd. All Rights Reserved
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <!--<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>-->
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/datatables.js"></script>
+  
+  <script>
+
+  $(document).ready(function() { 
+	  //$('.datatable-top').css("display","none");
+	  //$('.datatable-bottom .datatable-info').css("display","none");
+
+	  //const dataTable = new DataTable("#detailList");
+	  clickDetail();
+	  for (let i = 0; i < 39; i++) {
+	  	$('#detailList').append("<tr><td></td><td></td><td></td><td></td></tr>");
+	  }
+	  $("#rssiValue").prop("disabled", true);
+	  $("#rdoRssi2").prop("disabled", true);
+  	 $("#rdoRssi3").prop("disabled", true);
+
+  });
+
+  var isInitDetail = false;
+  var tt;
+  function clickDetail() {
+  	if (!isInitDetail) {
+		isInitDetail = true;
+	  	 tt = $("#detailList").dataTable({
+
+			 //"paging": false,
+		     //"ordering": false,
+		     "info": false,
+		     "searching": false,
+		     //"bLengthChange": false,
+		     //"bAutoWidth": true,
+		     //"pageLength": "5",
+		    "scrollX": true, 
+	        //"scrollCollapse": true, // 当数据不足以填充页面时，滚动条会自动折叠
+	        "paging": false, // 禁用分页
+	        "ordering": false,
+
+			}).css({'width': '100%'});
+			//$(".dt-scroll-headInner").css({'width': '100%'});
+			
+	}
+  }
+  function openDetail() {
+  	 let m = document.getElementById("divDetail");
+	 $(m).modal("show");
+  }
+  function clickGs1() {
+  	if($("#gridGs1").prop('checked')) {
+  		$("#tagGs1").prop("disabled", false);
+  		$("#epcCode1").prop("disabled", false);
+  		$("#epcCode2").prop("disabled", false);
+  		$("#epcCode3").prop("disabled", false);
+  	}
+  }
+  function clickNoGs1() {
+  	if($("#gridNoGs1").prop('checked')) {
+  		$("#tagGs1").prop("disabled", true);
+  		$("#epcCode1").prop("disabled", true);
+  		$("#epcCode2").prop("disabled", true);
+  		$("#epcCode3").prop("disabled", true);
+  		$("#tagGs1").val("1");
+  		$("#epcCode1").val("");
+  		$("#epcCode2").val("");
+  		$("#epcCode3").val("");
+  	}
+  }
+  function clickRdoRssi1() {
+  	if($("#rdoRssi1").prop('checked')) {
+  		$("#rssiValue").prop("disabled", false);
+  		$("#rdoRssi2").prop("disabled", false);
+  		$("#rdoRssi3").prop("disabled", false);
+  	} else {
+  		$("#rssiValue").val("");
+  		$("#rssiValue").prop("disabled", true);
+  		$("#rdoRssi2").prop("disabled", true);
+  		$("#rdoRssi3").prop("disabled", true);
+  	
+  	}
+  }
+  function clickRdoRssi2() {
+  	
+  }
+  function clickRdoRssi3() {
+  	
+  }
+  
+ </script>
+
+</body>
+
+</html>
