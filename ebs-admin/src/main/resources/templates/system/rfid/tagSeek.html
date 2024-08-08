@@ -145,13 +145,13 @@
 												<div class="row">
 													<div class="col-sm-12" style="margin: auto;text-align:center">
 														<input type="range" min="10.0" max="29.2" value="27" step="0.1" th:id="slider+${stat1.index}" oninput="updateSliderValue(this)">
-														<p th:id="sliderValue+${stat1.index}" style="">27.0</p>
+														<p th:id="sliderValue+${stat1.index}" style="" data="27.0">27.0</p>
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-sm-6" style="text-align:center">
 														<a href="#">
-															<img th:id="readerImg+${stat1.index}" th:ip="${reader.ipAddress}" port="0" th:readername="${reader.readerName}" th:src="@{/assets/img/{imageName}(imageName=${reader.readerImage})}" width="180" height="180" class="img-responsive">
+															<img th:id="readerImg+${stat1.index}" th:ip="${reader.ipAddress}" port="0" th:readerName="${reader.readerName}" th:src="@{/assets/img/{imageName}(imageName=${reader.readerImage})}" width="180" height="180" class="img-responsive">
 														</a>
 													</div>
 													<div class="col-sm-6" style="margin: auto">
@@ -1144,16 +1144,18 @@
 							  isSelected = true;
 							  let imgId = "selectedReader" + index1;
 							  if ($('#' + imgId).length == 0) {
-								  $('#selectedImgList').append('<img id="' + imgId + '" src="' + $('#readerImg' + index1).attr('src') + '" data="' + index2 + '" width="30" height="30" class="img-responsive" style="margin-right:30px;">');
+								  $('#selectedImgList').append('<img id="' + imgId + '" src="' + $('#readerImg' + index1).attr('src') + '" data="' + (index2+1) + '" width="30" height="30" class="img-responsive" style="margin-right:30px;">');
 								  $('#' + imgId).attr('ip', $('#readerImg' + index1).attr('ip'));
 								  $('#' + imgId).attr('port', $('#readerImg' + index1).attr('port'));
-								  $('#' + imgId).attr('power', $('#sliderValue' + index1).val());
-								  //console.log($('#' + imgId).attr('ip'));
-								  //console.log($('#' + imgId).attr('port'));
-								  ipMap.set($('#' + imgId).attr('ip'),$('#' + imgId).attr('readername'));
+								  $('#' + imgId).attr('power', $('#sliderValue' + index1).html());
+								  //console.log($('#' + imgId).attr('data'));
+								  //console.log($('#' + imgId).attr('power'));
+								  //console.log($('#sliderValue' + index1).html());
+								  ipMap.set($('#' + imgId).attr('ip'),$('#readerImg' + index1).attr('readerName'));
+								  //console.log($('#readerImg' + index1).attr('readerName'));
 							  } else {
 								  let data = $('#' + imgId).attr('data');
-								  $('#' + imgId).attr('data', data + "," + index2);
+								  $('#' + imgId).attr('data', data + "," + (index2+1));
 							  }
 						  }
 					  } else {
@@ -1184,14 +1186,14 @@
 			//readers
 			let readersJson = {};
 			//readers-hostname
-			readersJson.hostname = $(this).attr('ip');
+			readersJson.hostName = $(this).attr('ip');
 			//readers-port
 			readersJson.port = $(this).attr('port');
 			//readers-antennas配列
 			let antennas = $(this).attr('data').split(",");
 			readersJson.antennas = antennas;
 			//readers-power
-			readersJson.put("power",$(this).attr('power'));
+			readersJson.power = $(this).attr('power');
 			//readers-prefilters
 			let preJson = {};
 			if($("#rdoPreFilter").prop('checked')) {
@@ -1206,10 +1208,11 @@
 				//readers-prefilters-tag_pattern-data_offset
 				patternJson.data_offset = $("#preOffset").val();
 				preJson.tag_pattern = patternJson;
+				readersJson.prefilters = preJson;
 			}
-			
-			readersJson.prefilters = preJson;
-			
+
+
+
 			//readers-trigger_info
 			let triggerJson = {};
 			if($("#rdoTrigger").prop('checked')) {
@@ -1217,9 +1220,10 @@
 				triggerJson.stop_type = $("#triggerStop").val();
 				triggerJson.duration_mil = $("#durationMil").val();
 				triggerJson.tag_report = $("#tagReportTrigger").val();
+				readersJson.trigger_info = triggerJson;
 			}
-			readersJson.trigger_info = triggerJson;
-			
+
+
 			//readers-postfilter
 			let postJson = {};
 			if($("#rdoPattern").prop('checked')) {
@@ -1248,7 +1252,7 @@
 				postJson.rssi = rssiJson;
 			}
 			readersJson.postfilter = postJson;
-		
+
 			readersArray.push(readersJson);
 		});
 		
@@ -1272,14 +1276,19 @@
 			}
 			
 			const jsonData = createInventoryJson();
+			console.log(JSON.stringify(jsonData));
 			$.ajax({
 				type: "post",
 				url: ctx + "rfid/tagSeek/startInventory",
-				data: jsonData,
+				contentType: 'application/json',
+				dataType: "json",
+				data: JSON.stringify(jsonData),
 				beforeSend: function () {
 
 				},
-				success: function(r) {
+				success: function(res) {
+
+					console.log("Inventory start response:" + res.data);
 					var tableId = 0;
 					getDataTimer = setInterval(() => {
 						$.ajax({
@@ -1288,29 +1297,29 @@
 							data: {
 								"id": tableId
 							},
-							success: function(data) {
-
-								for(let i = 0;i < data.length;i++) {
+							success: function(res) {
+								console.log(res.data)
+								for(let i = 0;i < res.data.length;i++) {
 									let html = '<tr>';
-									html += '<td className="td-padding">' + ipMap.get(data[i].readerIp) + '</td>';
-									html += '<td className="td-padding">' + data[i].tagId + '</td>';
+									html += '<td className="td-padding">' + ipMap.get(res.data[i].readerIp) + '</td>';
+									html += '<td className="td-padding">' + res.data[i].tagId + '</td>';
 									html += '<td className="td-padding">';
 									html += '<span>';
-									for(let m = 0;m < data[i].tagRssiLevel;m++) {
-										html += '<div className="signalDiv"></div>';
+									for(let m = 0;m < res.data[i].tagRssiLevel;m++) {
+										html += '<div class="signalDiv"></div>';
 									}
 									html += '</span>';
 									html += '</td>';
-									html += '<td className="td-padding"><a href="#" onClick="openOperate(' + data[i].tagId + ');" style="color:white">...</a></td>';
+									html += '<td className="td-padding"><a href="#" onClick="openOperate(' + res.data[i].tagId + ');" style="color:white">...</a></td>';
 									html += '</tr>';
 									$('#detailList tr:last').remove();
 									$('#detailList').prepend(html);
-									tableId = data[i].id;
+									tableId = res.data[i].id;
 								}
 
 							}
 						});
-					}, 3000);
+					}, 1000);
 				}
 			});
 		}
@@ -1324,7 +1333,8 @@
 			url: ctx + "rfid/tagSeek/stopInventory",
 			data: {
 			},
-			success: function(data) {
+			success: function(res) {
+				console.log("Inventory stop response:" + res.data);
 				if (getDataTimer) {
 					clearInterval(getDataTimer);
 				}
