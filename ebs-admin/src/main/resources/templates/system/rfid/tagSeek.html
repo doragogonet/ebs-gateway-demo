@@ -230,72 +230,108 @@
 						                      <label><strong>プレフィルタ</strong></label>
 						                    </div>
 					                    </div>
+										<div class="col-sm-2" >
+											<i id="addPreFilter" class="bx bx-plus-circle" style="font-size:25px;" onclick="openPreFilter(-1, null);"></i>
+										</div>
 					                </div>
-									<div class="row mb-1">
-										<div class="col-sm-4">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">Target</span>
-												<select id="preTarget" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
-													 <option value="0">SL</option>
-								                      <option selected value="1">S0</option>
-								                      <option value="2">S1</option>
-								                      <option value="3">S2</option>
-								                      <option value="4">S3</option>
-												</select>
-											</div>
-										</div>
-									</div>
 									<div class="row mb-3">
-										<div class="col-sm-9">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">Action</span>
-												<select id="preAcction" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
-													<option selected value="0">INV_A_NOT_INV_B</option>
-								                      <option value="1">ASRT_SL_NOT_DSRT_SL</option>
-								                      <option value="2">INV_A</option>
-								                      <option value="3">ASRT_SL</option>
-								                      <option value="4">NOT_INV_B</option>
-								                      <option value="5">NOT_DSRT_SL</option>
-								                      <option value="6">INV_A2BB2A</option>
-								                      <option value="7">NEG_SL</option>
-								                      <option value="8">INV_B_NOT_INV_A</option>
-								                      <option value="9">DSRT_SL_NOT_ASRT_SL</option>
-								                      <option value="10">INV_B</option>
-								                      <option value="11">DSRT_SL</option>
-								                      <option value="12">NOT_INV_A</option>
-								                      <option value="13">NOT_ASRT_SL</option>
-								                      <option value="14">NOT_INV_A2BB2A</option>
-								                      <option value="15">NOT_NEG_SL</option>
-												</select>
+										<div class="col-sm-12" id="preFilterList">
+
+										</div>
+									</div>
+
+									<!-- PreFilter modal start -->
+									<div class="modal fade" id="divPreFilter" tabindex="1">
+										<div class="modal-dialog modal-lg">
+											<div class="modal-content" style="width:100%">
+												<div class="modal-header">
+													<span style="font-weight: bold;font-size:12pt">プレフィルタ</span>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body" >
+													<div class="row mb-1">
+														<div class="col-sm-5">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">プレフィルタ名</span>
+																<input id="preName" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">
+															</div>
+														</div>
+													</div>
+													<div class="row mb-1">
+														<div class="col-sm-3">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">Target</span>
+																<select id="preTarget" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																	<option value="0">SL</option>
+																	<option selected value="1">S0</option>
+																	<option value="2">S1</option>
+																	<option value="3">S2</option>
+																	<option value="4">S3</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="row mb-1">
+														<div class="col-sm-7">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">Action</span>
+																<select id="preAcction" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																	<option selected value="0">INV_A_NOT_INV_B</option>
+																	<option value="1">ASRT_SL_NOT_DSRT_SL</option>
+																	<option value="2">INV_A</option>
+																	<option value="3">ASRT_SL</option>
+																	<option value="4">NOT_INV_B</option>
+																	<option value="5">NOT_DSRT_SL</option>
+																	<option value="6">INV_A2BB2A</option>
+																	<option value="7">NEG_SL</option>
+																	<option value="8">INV_B_NOT_INV_A</option>
+																	<option value="9">DSRT_SL_NOT_ASRT_SL</option>
+																	<option value="10">INV_B</option>
+																	<option value="11">DSRT_SL</option>
+																	<option value="12">NOT_INV_A</option>
+																	<option value="13">NOT_ASRT_SL</option>
+																	<option value="14">NOT_INV_A2BB2A</option>
+																	<option value="15">NOT_NEG_SL</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="row mb-1">
+														<div class="col-sm-3">
+															<select id="preMemryBank" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																<option selected value="1">EPC</option>
+																<option value="2">TID</option>
+																<option value="3">USER</option>
+															</select>
+														</div>
+													</div>
+													<div class="row mb-4">
+														<div class="col-sm-5">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">データ</span>
+																<input id="preData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
+																<span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
+															</div>
+														</div>
+														<div class="col-sm-4">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">オフセット</span>
+																<input id="preOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+																<span class="input-group-text" style="font-size:12px !important;">（bit）</span>
+															</div>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+														<button type="button" class="btn btn-primary" onclick="clickOKPreFilter();">確定</button>
+													</div>
+												</div>
+
 											</div>
 										</div>
 									</div>
-									<div class="row mb-1">
-										  <div class="col-sm-3">
-											<select id="preMemryBank" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
-											  <option selected value="1">EPC</option>
-											  <option value="2">TID</option>
-											  <option value="3">USER</option>
-											</select>
-										  </div>
-									</div>
-									<div class="row mb-4">
-										<div class="col-sm-5">
-											 <div class="input-group input-group-sm">
-												  <span class="input-group-text" style="font-size:12px !important;">データ</span>
-												  <input id="preData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
-												  <span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
-											 </div>
-										</div>
-										<div class="col-sm-4">
-											 <div class="input-group input-group-sm">
-												  <span class="input-group-text" style="font-size:12px !important;">オフセット</span>
-												  <input id="preOffset" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
-												  <span class="input-group-text" style="font-size:12px !important;">（bit）</span>
-											 </div>
-										</div>
-										
-									</div>
+									<!-- PreFilter modal end -->
+
 									<div class="row mb-1">
 										<label><strong>ポストフィルタ</strong></label>
 									</div>
@@ -974,80 +1010,146 @@
 	//フィルタ選択
 	function clickRdoRssiFilter() {
 		  if($("#rdoRssiFilter").prop('checked')) {
-		  	  $("#matchRange").prop("disabled", false);
+			  $("#matchRange").prop("disabled", false);
 			  $("#rssiValueLower").prop("disabled", false);
-  			  $("#rssiValueUpper").prop("disabled", false);
+			  $("#rssiValueUpper").prop("disabled", false);
 		  } else {
 			  $("#rssiValueLower").val("");
-  		   	  $("#rssiValueUpper").val("");
+			  $("#rssiValueUpper").val("");
 			  $("#matchRange").val("0");
 			  $("#matchRange").prop("disabled", true);
 			  $("#rssiValueLower").prop("disabled", true);
-  			  $("#rssiValueUpper").prop("disabled", true);
+			  $("#rssiValueUpper").prop("disabled", true);
 		  }
 	  }
 	  function clickRdoTrigger() {
-  		if($("#rdoTrigger").prop('checked')) {
-	  		$("#triggerStart").prop("disabled", false);
-	  		$("#triggerStop").prop("disabled", false);
-	  		$("#durationMil").prop("disabled", false);
-	  		$("#tagReportTrigger").prop("disabled", false);
-	  	} else {
-	  		$("#durationMil").val("");
-	  		$("#tagReportTrigger").val("");
-	  		$("#triggerStart").prop("disabled", true);
-	  		$("#triggerStop").prop("disabled", true);
-	  		$("#durationMil").prop("disabled", true);
-	  		$("#tagReportTrigger").prop("disabled", true);
-	  	}
-  	  }
-  	  function clickRdoPattern() {
-  		if($("#rdoPattern").prop('checked')) {
-	  		$("#matchPattern").prop("disabled", false);
-	  		$("#tagPatternAType").prop("disabled", false);
-	  		$("#tagPatternAData").prop("disabled", false);
-	  		$("#tagPatternAOffset").prop("disabled", false);
-	  		$("#tagPatternAMask").prop("disabled", false);
-	  		$("#tagPatternBType").prop("disabled", false);
-	  		$("#tagPatternBData").prop("disabled", false);
-	  		$("#tagPatternBOffset").prop("disabled", false);
-	  		$("#tagPatternBMask").prop("disabled", false);
-	  		changeMatchPattern();
-	  	} else {
-	  		$("#tagPatternAData").val("");
-	  		$("#tagPatternAOffset").val("");
-	  		$("#tagPatternAMask").val("");
-	  		$("#tagPatternBData").val("");
-	  		$("#tagPatternBOffset").val("");
-	  		$("#tagPatternBMask").val("");
-	  		$("#matchPattern").prop("disabled", true);
-	  		$("#tagPatternAType").prop("disabled", true);
-	  		$("#tagPatternAData").prop("disabled", true);
-	  		$("#tagPatternAOffset").prop("disabled", true);
-	  		$("#tagPatternAMask").prop("disabled", true);
-	  		$("#tagPatternBType").prop("disabled", true);
-	  		$("#tagPatternBData").prop("disabled", true);
-	  		$("#tagPatternBOffset").prop("disabled", true);
-	  		$("#tagPatternBMask").prop("disabled", true);
-	  	}
-  	  }
-	  function clickRdoPreFilter() {
-	  	if($("#rdoPreFilter").prop('checked')) {
-	  		$("#preTarget").prop("disabled", false);
-	  		$("#preAcction").prop("disabled", false);
-	  		$("#preMemryBank").prop("disabled", false);
-	  		$("#preData").prop("disabled", false);
-	  		$("#preOffset").prop("disabled", false);
-	  	} else {
-	  		$("#preData").val("");
-	  		$("#preOffset").val("");
-	  		$("#preTarget").prop("disabled", true);
-	  		$("#preAcction").prop("disabled", true);
-	  		$("#preMemryBank").prop("disabled", true);
-	  		$("#preData").prop("disabled", true);
-	  		$("#preOffset").prop("disabled", true);
-	  	}
+		if($("#rdoTrigger").prop('checked')) {
+			$("#triggerStart").prop("disabled", false);
+			$("#triggerStop").prop("disabled", false);
+			$("#durationMil").prop("disabled", false);
+			$("#tagReportTrigger").prop("disabled", false);
+		} else {
+			$("#durationMil").val("");
+			$("#tagReportTrigger").val("");
+			$("#triggerStart").prop("disabled", true);
+			$("#triggerStop").prop("disabled", true);
+			$("#durationMil").prop("disabled", true);
+			$("#tagReportTrigger").prop("disabled", true);
+		}
 	  }
+	  function clickRdoPattern() {
+		if($("#rdoPattern").prop('checked')) {
+			$("#matchPattern").prop("disabled", false);
+			$("#tagPatternAType").prop("disabled", false);
+			$("#tagPatternAData").prop("disabled", false);
+			$("#tagPatternAOffset").prop("disabled", false);
+			$("#tagPatternAMask").prop("disabled", false);
+			$("#tagPatternBType").prop("disabled", false);
+			$("#tagPatternBData").prop("disabled", false);
+			$("#tagPatternBOffset").prop("disabled", false);
+			$("#tagPatternBMask").prop("disabled", false);
+			changeMatchPattern();
+		} else {
+			$("#tagPatternAData").val("");
+			$("#tagPatternAOffset").val("");
+			$("#tagPatternAMask").val("");
+			$("#tagPatternBData").val("");
+			$("#tagPatternBOffset").val("");
+			$("#tagPatternBMask").val("");
+			$("#matchPattern").prop("disabled", true);
+			$("#tagPatternAType").prop("disabled", true);
+			$("#tagPatternAData").prop("disabled", true);
+			$("#tagPatternAOffset").prop("disabled", true);
+			$("#tagPatternAMask").prop("disabled", true);
+			$("#tagPatternBType").prop("disabled", true);
+			$("#tagPatternBData").prop("disabled", true);
+			$("#tagPatternBOffset").prop("disabled", true);
+			$("#tagPatternBMask").prop("disabled", true);
+		}
+	  }
+	  function clickRdoPreFilter() {
+		if($("#rdoPreFilter").prop('checked')) {
+			$("#preTarget").prop("disabled", false);
+			$("#preAcction").prop("disabled", false);
+			$("#preMemryBank").prop("disabled", false);
+			$("#preData").prop("disabled", false);
+			$("#preOffset").prop("disabled", false);
+			$("#addPreFilter").css("cursor", "pointer");
+		} else {
+			$("#preData").val("");
+			$("#preOffset").val("");
+			$("#preTarget").prop("disabled", true);
+			$("#preAcction").prop("disabled", true);
+			$("#preMemryBank").prop("disabled", true);
+			$("#preData").prop("disabled", true);
+			$("#preOffset").prop("disabled", true);
+			$("#addPreFilter").css("cursor", "default");
+		}
+	  }
+	var curIndex;
+	function openPreFilter(index,preJson) {
+		curIndex = index;
+		if(!$("#rdoPreFilter").prop('checked')) {
+			return;
+		}
+		if (index != -1 && preJson != null) {
+			$("#preName").val(preJson.preName);
+			$("#preTarget").val(preJson.preTarget);
+			$("#preAcction").val(preJson.preAcction);
+			$("#preMemryBank").val(preJson.preMemryBank);
+			$("#preData").val(preJson.preData);
+			$("#preOffset").val(preJson.preOffset);
+		}
+		let m = document.getElementById("divPreFilter");
+		$(m).modal("show");
+	}
+	var preCount = 0;
+	function clickOKPreFilter() {
+
+		let name = $("#preName").val();
+		if (name == "") {
+			alert("プレフィルタ名を入力してください。");
+			return;
+		}
+		let m = document.getElementById("divPreFilter");
+		$(m).modal("hide");
+		let preJson = {};
+		preJson.preName = name;
+		preJson.preTarget = $("#preTarget").val();
+		preJson.preAcction = $("#preAcction").val();
+		preJson.preMemryBank = $("#preMemryBank").val();
+		preJson.preData = $("#preData").val();
+		preJson.preOffset = $("#preOffset").val();
+		let jstr =  JSON.stringify(preJson);
+
+		if (curIndex == -1) {
+			let html = "";
+			html = '<div class="row" id="preFilterList'+preCount+'" data=\''+jstr+'\'>';
+			html += '	<div class="col-sm-3"><label style="cursor:pointer" onclick="clickEditPreFilter('+preCount+');">'+name+'</label></div>';
+			html += '	<div class="col-sm-3"><i class="bx bx-trash" style="font-size:18px;cursor:pointer" onclick="clickDelPreFilter('+preCount+');"></i></div>';
+			html += '</div>';
+			$('#preFilterList').append(html);
+
+			preCount++;
+		} else {
+			$("#preFilterList"+curIndex).attr("data",jstr);
+		}
+	}
+	function clickDelPreFilter(index) {
+		if(!$("#rdoPreFilter").prop('checked')) {
+			return;
+		}
+		if ($("#preFilterList" + index)) {
+			$("#preFilterList" + index).remove();
+		}
+	}
+	function clickEditPreFilter(index) {
+		if(!$("#rdoPreFilter").prop('checked')) {
+			return;
+		}
+		let jsonObj = JSON.parse($("#preFilterList"+index).attr("data"));
+		openPreFilter(index,jsonObj);
+	}
 
 	//操作画面を表示
 	function openOperate(tagId) {
@@ -1192,6 +1294,28 @@
 		let rootJson = {};
 		//readers配列
 		let readersArray = [];
+
+		//readers-prefilters
+		let preJsonArray = [];
+		if($("#rdoPreFilter").prop('checked')) {
+			$('#preFilterList div[id^="preFilterList"]').each(function () {
+
+				if ($(this).attr('data')) {
+					let preJsonObj = JSON.parse($(this).attr('data'));
+					if (preJsonObj != null) {
+						let preJson = {}
+						preJson.target = preJsonObj.preTarget;
+						preJson.action = preJsonObj.preAcction;
+						let patternJson = {};
+						patternJson.memory_bank = preJsonObj.preMemryBank;
+						patternJson.data = preJsonObj.preData;
+						patternJson.data_offset = preJsonObj.preOffset;
+						preJson.tag_pattern = patternJson;
+						preJsonArray.push(preJson);
+					}
+				}
+			});
+		}
 		
 		$('#selectedImgList img').each(function() {
 			//readers
@@ -1206,23 +1330,9 @@
 			//readers-power
 			readersJson.power = $(this).attr('power') * 10 - 100;
 			//readers-prefilters
-			let preJson = {};
 			if($("#rdoPreFilter").prop('checked')) {
-				preJson.target = $("#preTarget").val();
-				preJson.action = $("#preAcction").val();
-				//readers-prefilters-tag_pattern
-				let patternJson = {};
-				//readers-prefilters-tag_pattern-memory_bank
-				patternJson.memory_bank = $("#preMemryBank").val();
-				//readers-prefilters-tag_pattern-data
-				patternJson.data = $("#preData").val();
-				//readers-prefilters-tag_pattern-data_offset
-				patternJson.data_offset = $("#preOffset").val();
-				preJson.tag_pattern = patternJson;
-				readersJson.prefilters = preJson;
+				readersJson.prefilters = preJsonArray;
 			}
-
-
 
 			//readers-trigger_info
 			let triggerJson = {};
@@ -1279,7 +1389,7 @@
 			isGS1 = true;
 		}
 		rootJson.isGS1 = isGS1;
-		
+		console.log("rfid json:" + JSON.stringify(rootJson));
 		return rootJson;
 	}
 
@@ -1306,6 +1416,7 @@
 
 			const jsonData = createInventoryJson();
 			console.log(JSON.stringify(jsonData));
+
 			$.ajax({
 				type: "post",
 				url: ctx + "rfid/tagSeek/startInventory",
