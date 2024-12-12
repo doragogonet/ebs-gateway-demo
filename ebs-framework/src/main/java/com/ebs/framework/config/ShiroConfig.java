@@ -238,6 +238,7 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/ebs/**", "anon");
         filterChainDefinitionMap.put("/assets/**", "anon");
         filterChainDefinitionMap.put("/captcha/captchaImage**", "anon");
+        filterChainDefinitionMap.put("/ws/**", "anon");
       
         filterChainDefinitionMap.put("/logout", "logout");
       

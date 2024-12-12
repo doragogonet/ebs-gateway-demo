@@ -111,4 +111,8 @@ public class GatewayServiceImpl implements IGatewayService
     public int batchInsertRfidData(List<PageRfidData> list) {
         return gatewayMapper.batchInsertRfidData(list);
     }
+    @Override
+    public int deleteRfidDataById(Long id) {
+        return gatewayMapper.deleteRfidDataById(id);
+    }
 }

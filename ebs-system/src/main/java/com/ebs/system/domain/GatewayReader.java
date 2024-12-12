@@ -17,6 +17,16 @@ public class GatewayReader extends BaseEntity {
     private String status;
     private String readerImage;
 
+    private int readerPort;
+
+    public int getReaderPort() {
+        return readerPort;
+    }
+
+    public void setReaderPort(int readerPort) {
+        this.readerPort = readerPort;
+    }
+
     public void setReaderImage(String readerImage) {
         this.readerImage = readerImage;
     }

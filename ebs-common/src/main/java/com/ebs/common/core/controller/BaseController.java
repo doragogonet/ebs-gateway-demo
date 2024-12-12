@@ -115,7 +115,7 @@ public class BaseController
         return AjaxResult.success(message);
     }
 
-    public static AjaxResult success(Object data)
+    public AjaxResult success(Object data)
     {
         return AjaxResult.success("操作成功", data);
     }

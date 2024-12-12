@@ -31,4 +31,6 @@ public interface GatewayMapper
 
     public List<PageRfidData> selectRfidDataList(PageRfidData rfid);
     public int batchInsertRfidData(List<PageRfidData> list);
+
+    public int deleteRfidDataById(Long id);
 }

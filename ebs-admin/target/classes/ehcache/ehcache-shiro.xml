@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="ruoyi" updateCheck="false">
+
+    <!-- ディスクキャッシュの位置 -->
+    <diskStore path="java.io.tmpdir"/>
+    
+    <!-- デフォルトキャッシュ -->
+    <defaultCache
+            maxEntriesLocalHeap="1000"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="false">
+    </defaultCache>
+
+    <!-- ログインログキャッシュ 10分間ロック -->
+    <cache name="loginRecordCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="false">
+    </cache>
+
+    <!-- システムアクティブユーザキャッシュ -->
+    <cache name="sys-userCache"
+           maxEntriesLocalHeap="10000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           statistics="false">
+    </cache>
+    
+    <!-- システムユーザ認証キャッシュ-->
+    <cache name="sys-authCache"
+           maxEntriesLocalHeap="10000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+           statistics="false"/>
+    
+    <!-- システムキャッシュ -->
+    <cache name="sys-cache"
+           maxEntriesLocalHeap="1000"
+           eternal="true"
+           overflowToDisk="true"
+           statistics="false">
+    </cache>
+    
+    <!-- システムパラメータキャッシュ -->
+    <cache name="sys-config"
+           maxEntriesLocalHeap="1000"
+           eternal="true"
+           overflowToDisk="true"
+           statistics="false">
+    </cache>
+    
+    <!-- システム辞書キャッシュ -->
+    <cache name="sys-dict"
+           maxEntriesLocalHeap="1000"
+           eternal="true"
+           overflowToDisk="true"
+           statistics="false">
+    </cache>
+    
+    <!-- システムセッションキャッシュ -->
+    <cache name="shiro-activeSessionCache"
+           maxEntriesLocalHeap="10000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           statistics="false"/>
+    
+</ehcache>
+	
