@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>EBS-Gateway - タグ操作</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/css/datatables.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Mar 17 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <style>
+  .my-div {
+    height: 300px;
+  }
+  .btn-f {
+	  color: #000079;
+  }
+  
+  .a-f {
+      display: block;
+      border-right: 1px solid #FFF;
+      color: #000079;
+      text-decoration: none;
+    }
+   .col-f {
+   	  color:#8A2BE2 !important;
+   }
+
+   .img-li {
+   	 list-style: none;
+   }
+   
+   .table2>tbody>tr>td:nth-child(1){
+	 border-left:1px solid rgba(0, 0, 0, 0.3);
+   }
+   .table2>tbody>tr>td:nth-child(4){
+	 border-right:1px solid rgba(0, 0, 0, 0.3);
+   }
+   .table-padding td {
+        padding: 0px 5px 0px 5px;
+    }
+    .td-padding {
+        padding: 0px 5px 0px 5px !important;
+    }
+    .signalDiv {
+	  float: left;
+	  height: 15px;
+	  width: 15px;
+	  background-color: #9aef6e;
+	  margin-right: 0px;
+	  /*border-bottom: 1px solid #ed5565;*/
+	}
+</style>
+</head>
+
+<body class="toggle-sidebar">
+
+  <!-- ======= Header ======= -->
+	<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="goHome();" class="logo d-flex align-items-center">
+        <span class="d-lg-block">EBS-Gateway - タグ操作</span>
+      </a>
+    </div><!-- End Logo -->
+	<nav class="header-nav ms-auto">
+		<ul class="d-flex align-items-center">
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <span class="d-none d-md-block dropdown-toggle ps-2">[[${user.loginName}]]</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>[[${user.loginName}]]</h6>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" th:href="@{logout}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>ログアウト</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+	</nav>
+  </header><!-- End Header -->
+	<main id="main" class="main">
+		<section class="section dashboard" >
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-body">
+							<div class="row mb-4" style="width:100%;text-align:right;margin-top:10px;margin-bottom:10px;margin-right:0px;">
+								<div class="col-sm-12" >
+									<span id="selectedImgList"></span>
+									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#divReaderList" style="margin-right:40px;">リーダー選択</button>
+									<button type="button" id="btnStart" class="btn btn-primary" onclick="inventoryStart();" disabled>開始</button>
+									<button type="button" id="btnStop" class="btn btn-primary" onclick="inventoryStop();" disabled>停止</button>
+								  </div>
+							</div>
+							<!-- modal start -->
+							<div class="modal fade" id="divReaderList" tabindex="-1">
+								<div class="modal-dialog modal-dialog-scrollable">
+									<div class="modal-content">
+										<div class="modal-header">
+										  <h5 class="modal-title">リーダーとアンテナを選択してください。</h5>
+										  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div th:each="reader,stat1:${readList}" >
+												<div class="row">
+													<div class="col-sm-12" style="margin: auto;text-align:center">
+														<input type="range" min="10.0" max="29.2" value="27" step="0.1" th:id="slider+${stat1.index}" oninput="updateSliderValue(this)">
+														<p th:id="sliderValue+${stat1.index}" style="" data="27.0">27.0</p>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-6" style="text-align:center">
+														<a href="#">
+															<img th:id="readerImg+${stat1.index}" th:ip="${reader.ipAddress}" th:port="${reader.readerPort}" th:readerName="${reader.readerName}" th:src="@{/assets/img/{imageName}(imageName=${reader.readerImage})}" width="180" height="180" class="img-responsive">
+														</a>
+													</div>
+													<div class="col-sm-6" style="margin: auto">
+														<div th:each="ant,stat2:${reader.readerAntennaList}" class="row">
+															<div class="col-sm-5" style="margin: auto">
+																<input th:id="readerImg+${stat1.index}+_ant+${stat2.index}" th:antname="${ant.antennaName}" type="checkbox" class="form-check-input">&nbsp;[[${ant.antennaName}]]</input>
+															</div>
+															<div class="col-sm-7" style="margin: auto">
+																 [[${ant.orientation}]]
+															</div>
+														</div>
+													</div>
+													<hr/>
+												</div>
+
+												<div class="modal-footer">
+												  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+												  <button type="button" class="btn btn-primary" onclick="clickReaderSelect();">選択</button>
+												</div>
+										  	</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- modal end -->
+							<form class="needs-validation" id="readerForm" autocomplete="off">
+									<div class="row mb-1" >
+										<div class="col-sm-2">
+										  <input class="form-check-input" type="radio" name="rdoGS" id="gridGs1" value="1" onclick="clickGs1();">
+										  <label class="form-check-label" >
+											GS1規格
+										  </label>
+										</div>
+										<div class="col-sm-2" >
+										  <input class="form-check-input" type="radio" name="rdoGS" id="gridNoGs1" value="2" onclick="clickNoGs1();" checked>
+										  <label class="form-check-label" >
+											非標準
+										  </label>
+										</div>
+									</div>
+									<div class="row mb-1" >
+										  <div class="col-sm-3">
+											 <select id="tagGs1" class="form-select form-select-sm"  style="font-size:12px !important;" disabled>
+												  <option selected value="gdti" >GDTI-96</option>
+							                      <option value="gsrn">GSRN-96</option>
+							                      <option value="sscc">SSCC-96</option>
+							                      <option value="sgtin">SGTIN-96</option>
+							                      <option value="sgln">SGLN-96</option>
+							                      <option value="grai">GRAI-96</option>
+							                      <option value="giai">GIAI-96</option>
+							                      <option value="cpi">CPI-96</option>
+							                      <option value="gsrnp">GSRNP-96</option>
+							                      <option value="gdti_174" >GDTI-174</option>
+							                      <option value="sgin_198">SGTIN-198</option>
+							                      <option value="sgln_195">SGLN-195</option>
+							                      <option value="grai_170">GRAI-170</option>
+							                      <option value="giai_202">GIAI-202</option>
+												</select>
+										  </div>
+									</div>
+									<div class="row mb-4">
+										<div class="col-sm-12">
+										 <div class="input-group input-group-sm" >
+										  <input id="epcCode1" type="text" placeholder="企業コード" class="form-control " style="font-size:12px !important;" disabled>
+										  <span class="input-group-text" style="font-size:12px !important;">－</span>
+										  <input id="epcCode2" type="text" placeholder="物品コード" class="form-control" style="font-size:12px !important;" disabled>
+										  <span class="input-group-text" style="font-size:12px !important;">－</span>
+										  <input id="epcCode3" type="text" placeholder="シリアル#" class="form-control" style="font-size:12px !important;" disabled>
+										 </div>
+										</div>
+									</div>
+									<div class="row mb-1" style="align-items: center;">
+				                    	<div class="col-sm-3" >
+						            		<div class="form-switch" style="align-items: center;">
+						                      <input class="form-check-input" type="checkbox" id="rdoPreFilter" onclick="clickRdoPreFilter();">
+						                      <label><strong>プレフィルタ</strong></label>
+						                    </div>
+					                    </div>
+										<div class="col-sm-2" >
+											<i id="addPreFilter" class="bx bx-plus-circle" style="font-size:25px;" onclick="openPreFilter(-1, null);"></i>
+										</div>
+					                </div>
+									<div class="row mb-3">
+										<div class="col-sm-12" id="preFilterList">
+
+										</div>
+									</div>
+
+									<!-- PreFilter modal start -->
+									<div class="modal fade" id="divPreFilter" tabindex="1">
+										<div class="modal-dialog modal-lg">
+											<div class="modal-content" style="width:100%">
+												<div class="modal-header">
+													<span style="font-weight: bold;font-size:12pt">プレフィルタ</span>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body" >
+													<div class="row mb-1">
+														<div class="col-sm-5">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">プレフィルタ名</span>
+																<input id="preName" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">
+															</div>
+														</div>
+													</div>
+													<div class="row mb-1">
+														<div class="col-sm-3">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">Target</span>
+																<select id="preTarget" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																	<option value="0">SL</option>
+																	<option selected value="1">S0</option>
+																	<option value="2">S1</option>
+																	<option value="3">S2</option>
+																	<option value="4">S3</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="row mb-1">
+														<div class="col-sm-7">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">Action</span>
+																<select id="preAction" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																	<option selected value="0">INV_A_NOT_INV_B</option>
+																	<option value="1">ASRT_SL_NOT_DSRT_SL</option>
+																	<option value="2">INV_A</option>
+																	<option value="3">ASRT_SL</option>
+																	<option value="4">NOT_INV_B</option>
+																	<option value="5">NOT_DSRT_SL</option>
+																	<option value="6">INV_A2BB2A</option>
+																	<option value="7">NEG_SL</option>
+																	<option value="8">INV_B_NOT_INV_A</option>
+																	<option value="9">DSRT_SL_NOT_ASRT_SL</option>
+																	<option value="10">INV_B</option>
+																	<option value="11">DSRT_SL</option>
+																	<option value="12">NOT_INV_A</option>
+																	<option value="13">NOT_ASRT_SL</option>
+																	<option value="14">NOT_INV_A2BB2A</option>
+																	<option value="15">NOT_NEG_SL</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="row mb-1">
+														<div class="col-sm-3">
+															<select id="preMemoryBank" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																<option selected value="1">EPC</option>
+																<option value="2">TID</option>
+																<option value="3">USER</option>
+															</select>
+														</div>
+													</div>
+													<div class="row mb-4">
+														<div class="col-sm-5">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">データ</span>
+																<input id="preData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
+																<span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
+															</div>
+														</div>
+														<div class="col-sm-4">
+															<div class="input-group input-group-sm">
+																<span class="input-group-text" style="font-size:12px !important;">オフセット</span>
+																<input id="preOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+																<span class="input-group-text" style="font-size:12px !important;">（bit）</span>
+															</div>
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+														<button type="button" class="btn btn-primary" onclick="clickOKPreFilter();">確定</button>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<!-- PreFilter modal end -->
+
+									<div class="row mb-1">
+										<label><strong>ポストフィルタ</strong></label>
+									</div>
+									<div class="row mb-4" style="align-items: center;">
+										<div class="col-sm-3" >
+											<div class="form-switch" style="align-items: center;">
+											  <input class="form-check-input" type="checkbox" id="rdoRssiFilter" onclick="clickRdoRssiFilter();">
+											  <label class="form-check-label" >RSSIフィルタ</label>
+											</div>
+										</div>
+									</div>
+		                			<div class="row mb-3" style="align-items: center;">
+										<div class="col-sm-5">
+						                  <div class="input-group input-group-sm">
+						                  	<span class="input-group-text" style="font-size:12px !important;">マッチ範囲</span>
+						                    <select id="matchRange" class="form-select form-select-sm " style="font-size:12px !important;" onchange="changeMatchRange();">
+						                      <option selected value="0">WITHIN_RANGE</option>
+						                      <option value="1">OUTSIDE_RANGE</option>
+						                      <option value="2">GREATER_THAN_LOWER_LIMIT</option>
+						                      <option value="3">LOWER_THAN_UPPER_LIMIT</option>
+						                    </select>
+						                  </div>
+					                  </div>
+										<div class="col-sm-2"  >
+										   <div class="input-group input-group-sm">
+						            		 	  <span class="input-group-text" style="font-size:12px !important;">下限</span>
+							                      <input id="rssiValueLower" type="number" placeholder="" class="form-control" style="font-size:12px !important;">
+						                     </div>
+										</div>
+										<div class="col-sm-2" >
+											 <div class="input-group input-group-sm">
+												  <span class="input-group-text" style="font-size:12px !important;">上限</span>
+												  <input id="rssiValueUpper" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
+											 </div>
+										</div>
+									</div>
+									<div class="row mb-1" style="align-items: center;">
+				                    	<div class="col-sm-3" >
+						            		<div class="form-switch" style="align-items: center;">
+						                      <input class="form-check-input" type="checkbox" id="rdoPattern" onclick="clickRdoPattern();">
+						                      <label class="form-check-label" >パターン</label>
+						                    </div>
+					                    </div>
+					                </div>
+									<div class="row mb-1">
+										<div class="col-sm-4">
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">マッチパターン</span>
+												<select id="matchPattern" class="form-select form-select-sm " style="font-size:12px !important;" onchange="changeMatchPattern();" disabled>
+													<option selected value="0">A</option>
+													<option value="1">A_AND_B</option>
+													<option value="2">A_AND_NOTB</option>
+													<option value="3">NOTA_AND_B</option>
+													<option value="4">NOTA_AND_NOTB</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row mb-1">
+										<label>パターンA</label>
+									</div>
+									<div class="row mb-1">
+										<div class="col-sm-3">
+											<select id="tagPatternAType" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+												<option selected value="1">EPC</option>
+												<option value="2">TID</option>
+												<option value="3">USER</option>
+											</select>
+										</div>
+									</div>
+									<div class="row mb-1">
+										<div class="col-sm-4">
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">データ</span> 
+												<input id="tagPatternAData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
+												<span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">オフセット</span>
+												<input id="tagPatternAOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+												<span class="input-group-text" style="font-size:12px !important;">（bit）</span>
+											</div>
+										</div>
+										<div class="col-sm-4">
+					            		 <div class="input-group input-group-sm">
+					            		 	  <span class="input-group-text" style="font-size:12px !important;">マスク</span>
+						                      <input id="tagPatternAMask" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+						                      <span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
+					                     </div>
+			                    	</div>
+									</div>
+									<div class="row mb-1">
+										<label>パターンB</label>
+									</div>
+									<div class="row mb-1">
+										<div class="col-sm-3">
+											<select id="tagPatternBType" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+												<option selected value="1">EPC</option>
+												<option value="2">TID</option>
+												<option value="3">USER</option>
+											</select>
+										</div>
+									</div>
+									<div class="row mb-4">
+										<div class="col-sm-4">
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">データ</span>
+												<input id="tagPatternBData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
+												<span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">オフセット</span>
+												<input id="tagPatternBOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+												<span class="input-group-text" style="font-size:12px !important;">（bit）</span>
+											</div>
+										</div>
+										<div class="col-sm-4">
+					            		 <div class="input-group input-group-sm">
+					            		 	  <span class="input-group-text" style="font-size:12px !important;">マスク</span>
+						                      <input id="tagPatternBMask" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+						                      <span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
+					                     </div>
+			                    	</div>
+									</div>
+
+									<div class="row mb-1" style="align-items: center;">
+				                    	<div class="col-sm-3" >
+						            		<div class="form-switch" style="align-items: center;">
+						                      <input class="form-check-input" type="checkbox" id="rdoTrigger" onclick="clickRdoTrigger();">
+						                      <label><strong>トリガー情報</strong></label>
+						                    </div>
+					                    </div>
+					                </div>
+					                <div class="row mb-1">
+						                  <div class="col-sm-3">
+							                  <div class="input-group input-group-sm">
+							                  	<span class="input-group-text" style="font-size:12px !important;">タグ報告トリガー</span>
+							                    <input id="tagReportTrigger" type="number" placeholder="" min="0" max="1" class="form-control" style="font-size:12px !important;" disabled>
+							                  </div>
+						                  </div>
+							        </div>
+									<div class="row mb-1">
+										<div class="col-sm-5">
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">開始トリガー</span>
+												<select id="triggerStart" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+													  <option value="0">DISTANCE</option>
+								                      <option value="1">GPI</option>
+								                      <option value="2">HANDHELD</option>
+								                      <option selected value="3">IMMEDIATE</option>
+								                      <option value="4">PERIODIC</option>
+								                      <option value="5">TIMELAPSE</option>
+								                      <option value="6">NONE</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row mb-1">
+										<div class="col-sm-7">
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">停止トリガー</span>
+												<select id="triggerStop" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+													 <option value="0">DURATION</option>
+								                      <option value="1">GPI_WITH_TIMEOUT</option>
+								                      <option value="2">HANDHELD_WITH_TIMEOUT</option>
+								                      <option selected value="3">IMMEDIATE</option>
+								                      <option value="4">N_ATTEMPTS_WITH_TIMEOUT</option>
+								                      <option value="5">NONE</option>
+								                      <option value="6">TAG_OBSERVATION_WITH_TIMEOUT</option>
+								                      <option value="7">TIMELAPSE</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-sm-3" >
+											<div class="input-group input-group-sm">
+												<span class="input-group-text" style="font-size:12px !important;">期間</span>
+												<input id="durationMil" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+												<span class="input-group-text" style="font-size:12px !important;">ミリ秒</span>
+											</div>
+										</div>
+									</div>
+								</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					   <div class="card">
+						 <div class="card-body" style="background:black;color:white;">
+						  <!-- Table with stripped rows -->
+						  <table id="detailList" class="table2" >
+						   <thead>
+							  <tr style="height:0px;display:none">
+								<th style="width:30%">リーダ/アンテナ</th>
+								<th >RFIDタグ</th>
+								<th style="width:30%"></th>
+								<th style="width:15%"></th>
+								<th style="width:5%"></th>
+							  </tr>
+							</thead>
+							<tbody style="vertical-align: middle;">
+
+							</tbody>
+						  </table><br>
+						  <!-- End Table with stripped rows -->
+
+						</div>
+					  </div>
+					</div>
+			</div>
+			<!-- operate modal start -->
+			<div class="modal fade" id="divOperate" tabindex="1">
+				<div class="modal-dialog modal-sm">
+				  <div class="modal-content" style="width:80%">
+					<div class="modal-header">
+						<span style="font-weight: bold;font-size:12pt">操作</span>
+					  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" >
+						<div class="row mb-3" >
+							<a href="#" onclick="openRead();" style="color:black">Read</a>
+						</div>
+						<div class="row mb-3" >
+							<a href="#" onclick="openWrite();" style="color:black">Write</a>
+						</div>
+						<div class="row mb-1" >
+							<a href="#" onclick="openLock();" style="color:black">Lock/Unlock</a>
+						</div>
+					</div>
+
+				  </div>
+				</div>
+			  </div>
+			<!-- operate modal end -->
+
+			<!-- read modal start -->
+			<div class="modal fade" id="divRead" tabindex="2">
+				<div class="modal-dialog ">
+				  <div class="modal-content" style="width:120%">
+					<div class="modal-header">
+						<span style="font-weight: bold;font-size:12pt">Read</span>
+					  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" >
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">タグID（Hex）</span>
+							</div>
+							<div class="col-sm-8">
+								<input id="readTagId" type="text" placeholder="" class="form-control form-control-sm" >
+							</div>
+						</div>
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">パスワード（Hex）</span>
+							</div>
+							<div class="col-sm-8">
+								<input id="readPwd" type="text" placeholder="" class="form-control form-control-sm" value="00000000">
+							</div>
+						</div>
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">TID</span>
+							</div>
+							<div class="col-sm-8" style="">
+								<textarea id="readTid" class="form-control form-control-sm" style="height: 55px" disabled></textarea>
+							</div>
+						</div>
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">RESERVED</span>
+							</div>
+							<div class="col-sm-8">
+								<input id="readReserved" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+							</div>
+						</div>
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">EPC</span>
+							</div>
+							<div class="col-sm-8">
+								<input id="readEpc" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+							</div>
+						</div>
+						<div class="row mb-3" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">USER</span>
+							</div>
+							<div class="col-sm-8" style="">
+								<textarea id="readUser" class="form-control form-control-sm" style="height: 100px" disabled></textarea>
+							</div>
+						</div>
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">GS1 EPC標準</span>
+							</div>
+							<div class="col-sm-8">
+								<span id="readGS1"></span>
+							</div>
+						</div>
+						<div class="row mb-4" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">EPC</span>
+							</div>
+							<div class="col-sm-8" style="word-wrap: break-word;">
+								<textarea id="readDataHex" class="form-control form-control-sm" style="height: 200px" disabled></textarea>
+							</div>
+						</div>
+
+						<div class="row mb-1" style="width:100%;text-align:right;">
+							<div class="col-sm-12">
+								<button type="button" class="btn btn-primary" onclick="clickRead();">Read</button>
+							</div>
+						</div>
+					</div>
+
+				  </div>
+				</div>
+			  </div>
+			<!-- read modal end -->
+
+			<!-- lock modal start -->
+			<div class="modal fade" id="divLock" tabindex="3">
+				<div class="modal-dialog ">
+				  <div class="modal-content" style="width:120%">
+					<div class="modal-header">
+						<span style="font-weight: bold;font-size:12pt">Lock/Unlock</span>
+					  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" >
+						<div class="row mb-4" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">タグID（Hex）</span>
+							</div>
+							<div class="col-sm-8">
+								<input id="lockTagId" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+							</div>
+						</div>
+						<div class="row mb-4" >
+							<div class="col-sm-4" style="margin: auto;">
+								<span style="font-weight: bold;">パスワード（Hex）</span>
+							</div>
+							<div class="col-sm-8" >
+								<input id="lockTagPwd" type="text" placeholder="" class="form-control form-control-sm" value="00000000">
+							</div>
+						</div>
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">操作</span>
+							</div>
+						</div>
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								 <select id="lockTagType" class="form-select form-select-sm"  style="font-size:12px !important;">
+									  <option selected value="0" >READ_WRITE</option>
+				                      <option value="1">PERMA_LOCK</option>
+				                      <option value="2">PERMA_UNLOCK</option>
+				                      <option value="3">UNLOCK</option>
+									</select>
+							</div>
+						</div>
+						
+						<div class="row mb-1" >
+                    		<div class="col-sm-4">
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock1" value="0"   checked>&nbsp;KILL_PASSWORD</input>
+                    		</div>
+				        </div>
+				        <div class="row mb-1" >
+                    		<div class="col-sm-4">
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock2" value="1"   checked>&nbsp;ACCESS_PASSWORD</input>
+                    		</div>
+				        </div>
+				        <div class="row mb-1" >
+                    		<div class="col-sm-4">
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock3" value="2"   checked>&nbsp;EPC</input>
+                    		</div>
+				        </div>
+				        <div class="row mb-1" >
+                    		<div class="col-sm-4">
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock4" value="3" >&nbsp;TID</input>
+                    		</div>
+				        </div>
+				        <div class="row mb-4" >
+                    		<div class="col-sm-4">
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock5" value="4" >&nbsp;USER</input>
+                    		</div>
+				        </div>
+
+						<div class="row mb-1" style="width:100%;text-align:right;">
+							<div class="col-sm-12">
+								<button type="button" class="btn btn-primary" onclick="clickLockUnlock();">実行</button>
+							</div>
+						</div>
+					</div>
+
+				  </div>
+				</div>
+			  </div>
+			<!-- lock modal end -->
+
+			<!-- write modal start -->
+			<div class="modal fade" id="divWrite" tabindex="4">
+				<div class="modal-dialog ">
+				  <div class="modal-content" style="width:120%">
+					<div class="modal-header">
+						<span style="font-weight: bold;font-size:12pt">Write</span>
+					  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" >
+						<div class="row mb-1" >
+							<div class="col-sm-4">
+								<span style="font-weight: bold;">タグID（Hex）</span>
+							</div>
+							<div class="col-sm-8">
+								<input id="writeTagId" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+							</div>
+						</div>
+						<div class="row mb-4" >
+							<div class="col-sm-4" style="margin: auto;">
+								<span style="font-weight: bold;">パスワード（Hex）</span>
+							</div>
+							<div class="col-sm-8" >
+								<input id="writeTagPwd" type="text" placeholder="" class="form-control form-control-sm" value="00000000">
+							</div>
+						</div>
+
+						<ul class="nav nav-tabs nav-ui" role="tablist" style="margin-left:-8px !important;">
+							<li class="nav-item"  role="presentation">
+							  <button class="nav-link btn-f active" id="docBox-tab"  data-bs-toggle="tab" data-bs-target="#nogs1" type="button" role="tab" aria-selected="true" onclick="clickGS1(1);">非標準</button>
+							</li>
+							<li class="nav-item" role="presentation">
+							  <button class="nav-link btn-f " id="docList-tab"  data-bs-toggle="tab"  data-bs-target="#gs1" type="button" role="tab" aria-selected="false" onclick="clickGS1(2);">GS1 EPC標準</button>
+							</li>
+						  </ul>
+						  <div class="tab-content">
+							<div class="tab-pane fade show active" id="nogs1" role="tabpanel" aria-labelledby="home-tab">
+								<div class="row mb-1" style="margin-left:-20px !important;">
+									<div class="col-lg-12">
+										<div class="card" style="margin-bottom: 10px;border-top-left-radius: 0px !important;">
+											<div class="card-body" style="padding:0 10px 10px 10px !important;">
+												<div class="row mb-1" style="margin-top:5px;">
+													<label  class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">メモリBank</label>
+													<div class="col-sm-4">
+														 <select id="writeTagType" class="form-select form-select-sm"  style="font-size:12px !important;">
+															  <option selected value="0" >RESERVED</option>
+															  <option value="1">EPC</option>
+															  <option value="3">USER</option>
+															</select>
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label  class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">オフセット（Bytes）</label>
+													<div class="col-sm-4">
+														 <input id="writeOffsetByte" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">長さ（Bytes）</label>
+													<div class="col-sm-4">
+														 <input id="writeLengthByte" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												<div class="row mb-4" >
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">データ(Hex）</label>
+													<div class="col-sm-8">
+														 <input id="writeDataHex" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												<div class="row mb-1" style="width:100%;text-align:left;">
+													<div class="col-sm-12">
+														<button type="button" class="btn btn-primary" onclick="clickCheck();">チェック</button>
+														<button type="button" id="btnWrite2" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled >書込み</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane fade" id="gs1" role="tabpanel" aria-labelledby="profile-tab">
+								<div class="row mb-1" style="margin-left:-20px !important;">
+									<div class="col-lg-12">
+										<div class="card" style="border-top-left-radius: 0px !important;">
+											<div class="card-body" style="padding:0 10px 10px 10px !important;">
+												<div class="row mb-1" style="margin-top:5px;">
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">GS1 EPC標準</label>
+													<div class="col-sm-4">
+														 <select id="writeSg1Type" class="form-select form-select-sm"  style="font-size:12px !important;" onchange="changeWriteSg1Type();">
+															  <option selected value="gdti" >GDTI-96</option>
+															  <option value="gsrn">GSRN-96</option>
+															  <option value="sscc">SSCC-96</option>
+															  <option value="sgtin">SGTIN-96</option>
+															  <option value="sgln">SGLN-96</option>
+															  <option value="grai">GRAI-96</option>
+															  <option value="giai">GIAI-96</option>
+															  <option value="cpi">CPI-96</option>
+															  <option value="gsrnp">GSRNP-96</option>
+															  <option value="gdti_174" >GDTI-174</option>
+															  <option value="sgtin_198">SGTIN-198</option>
+															  <option value="sgln_195">SGLN-195</option>
+															  <option value="grai_170">GRAI-170</option>
+															  <option value="giai_202">GIAI-202</option>
+															</select>
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label class="col-sm-4 " align="left" style="font-weight: bold;">EPC Header</label>
+													<div class="col-sm-4">
+														 <span id="gs1HeaderBin">0010 1100</span>
+													</div>
+												</div>
+												<div class="row mb-1" style="">
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">Filter</label>
+													<div class="col-sm-8">
+														 <select id="writeFilterType" class="form-select form-select-sm"  style="font-size:12px !important;">
+															  <option selected value="0" >All Others</option>
+															  <option value="1">Point of Sale (POS) Trade Item</option>
+															  <option value="2">Full Case forTransport</option>
+															  <option value="3">Reserved 3</option>
+															  <option value="4">Inner Pack Trade Item Grouping for Handling</option>
+															  <option value="5">Reserved 5</option>
+															  <option value="6">Unit Load</option>
+															  <option value="7">Unit inside Trade Item or component inside a product not intended for individual sale</option>
+															</select>
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">Extension Digit</label>
+													<div class="col-sm-2">
+														 <select id="writeExtension" class="form-select form-select-sm"  style="font-size:12px !important;" \>
+															  <option selected value="0" >0</option>
+															  <option value="1">1</option>
+															  <option value="2">2</option>
+															  <option value="3">3</option>
+															  <option value="4">4</option>
+															  <option value="5">5</option>
+															  <option value="6">6</option>
+															  <option value="7">7</option>
+															  <option value="8">8</option>
+															  <option value="9">9</option>
+															</select>
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">GS1事業者コード</label>
+													<div class="col-sm-8">
+														 <input id="writeCode1" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												 <div class="row mb-1" >
+													<label id="itemCodeLbl" class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">Indicator/Pad＋商品コード</label>
+													<div class="col-sm-8">
+														 <input id="writeCode2" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												 <div class="row mb-4" >
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">Serial Number</label>
+													<div class="col-sm-8">
+														 <input id="writeCode3" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												<div class="row mb-1" style="width:100%;text-align:left;">
+													<div class="col-sm-5" style="">
+														<button type="button" class="btn btn-primary btn-sm" onclick="clickEncode();">エンコード</button>
+													</div>
+													<div class="col-sm-4 card-icon-tag rounded-circle d-flex " style="color: #012970;">
+														<i class="bx bxs-downvote"></i>
+													</div>
+												</div>
+												<div class="row mb-4" >
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">データ(Hex）</label>
+													<div class="col-sm-8">
+														<input id="writeDataHex2" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												<div class="row mb-1" style="width:100%;text-align:left;">
+													<div class="col-sm-12">
+														<button type="button" class="btn btn-primary" onclick="clickCheck();">チェック</button>
+														<button type="button" id="btnWrite" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled>書込み</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							 </div>
+						</div>
+
+					</div>
+
+				  </div>
+				</div>
+			  </div>
+			<!-- write modal end -->
+
+		</section>
+	</main><!-- End #main -->
+
+	<!-- ======= Footer ======= -->
+	<footer id="footer" class="footer">
+    <div class="copyright">
+      Copyright &copy; e-Business Solution Co.,Ltd. All Rights Reserved
+    </div>
+  </footer><!-- End Footer -->
+
+	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Template Main JS File -->
+<script th:src="@{/assets/js/main.js}"></script>
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/datatables.js}"></script>
+<script th:src="@{/ajax/libs/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+<script th:src="@{/ebs/js/ebs-ui.js?v=4.7.8}"></script>
+<script th:inline="javascript">
+
+	var ctx = [[@{/}]];
+	var ipMap;
+	var curTagId;
+	var ips;
+	var isInitDetail = false;
+	var getDataTimer;
+	var curIndex = 1; //1:非GS1標準 2:GS1標準
+	//初期処理
+	$(document).ready(function() {
+
+		  for (let i = 0; i < 39; i++) {
+			  $('#detailList').append("<tr><td></td><td></td><td></td><td></td><td></td></tr>");
+		  }
+		  if (!isInitDetail) {
+				isInitDetail = true;
+				$("#detailList").dataTable({
+
+					"paging": false,
+					"ordering": false,
+					"info": false,
+					"searching": false,
+				}).css({'width': '100%'});
+		  }
+		  $("#matchRange").prop("disabled", true);
+		  $("#rssiValueLower").prop("disabled", true);
+	 	  $("#rssiValueUpper").prop("disabled", true);
+
+		  //jsonファイルより画面に設定
+		  let readerParamInfo = [[${readerParamInfo}]];
+		  console.log(readerParamInfo);
+		  if (readerParamInfo) {
+			setPageContent(readerParamInfo);
+		  }
+	  });
+	//GS１選択
+	function clickGs1() {
+		  if($("#gridGs1").prop('checked')) {
+			  $("#tagGs1").prop("disabled", false);
+			  $("#epcCode1").prop("disabled", false);
+			  $("#epcCode2").prop("disabled", false);
+			  $("#epcCode3").prop("disabled", false);
+		  }
+	  }
+	//非GS１選択
+	function clickNoGs1() {
+		  if($("#gridNoGs1").prop('checked')) {
+
+			  $("#tagGs1").prop("disabled", true);
+			  $("#epcCode1").prop("disabled", true);
+			  $("#epcCode2").prop("disabled", true);
+			  $("#epcCode3").prop("disabled", true);
+			  $("#tagGs1").val("1");
+			  $("#epcCode1").val("");
+			  $("#epcCode2").val("");
+			  $("#epcCode3").val("");
+		  }
+	  }
+	//フィルタ選択
+	function clickRdoRssiFilter() {
+		  if($("#rdoRssiFilter").prop('checked')) {
+			  $("#matchRange").prop("disabled", false);
+			  $("#rssiValueLower").prop("disabled", false);
+			  $("#rssiValueUpper").prop("disabled", false);
+		  } else {
+			  $("#rssiValueLower").val("");
+			  $("#rssiValueUpper").val("");
+			  $("#matchRange").val("0");
+			  $("#matchRange").prop("disabled", true);
+			  $("#rssiValueLower").prop("disabled", true);
+			  $("#rssiValueUpper").prop("disabled", true);
+		  }
+	  }
+	  function clickRdoTrigger() {
+		if($("#rdoTrigger").prop('checked')) {
+			$("#triggerStart").prop("disabled", false);
+			$("#triggerStop").prop("disabled", false);
+			$("#durationMil").prop("disabled", false);
+			$("#tagReportTrigger").prop("disabled", false);
+		} else {
+			$("#durationMil").val("");
+			$("#tagReportTrigger").val("");
+			$("#triggerStart").prop("disabled", true);
+			$("#triggerStop").prop("disabled", true);
+			$("#durationMil").prop("disabled", true);
+			$("#tagReportTrigger").prop("disabled", true);
+		}
+	  }
+	  function clickRdoPattern() {
+		if($("#rdoPattern").prop('checked')) {
+			$("#matchPattern").prop("disabled", false);
+			$("#tagPatternAType").prop("disabled", false);
+			$("#tagPatternAData").prop("disabled", false);
+			$("#tagPatternAOffset").prop("disabled", false);
+			$("#tagPatternAMask").prop("disabled", false);
+			$("#tagPatternBType").prop("disabled", false);
+			$("#tagPatternBData").prop("disabled", false);
+			$("#tagPatternBOffset").prop("disabled", false);
+			$("#tagPatternBMask").prop("disabled", false);
+			changeMatchPattern();
+		} else {
+			$("#tagPatternAData").val("");
+			$("#tagPatternAOffset").val("");
+			$("#tagPatternAMask").val("");
+			$("#tagPatternBData").val("");
+			$("#tagPatternBOffset").val("");
+			$("#tagPatternBMask").val("");
+			$("#matchPattern").prop("disabled", true);
+			$("#tagPatternAType").prop("disabled", true);
+			$("#tagPatternAData").prop("disabled", true);
+			$("#tagPatternAOffset").prop("disabled", true);
+			$("#tagPatternAMask").prop("disabled", true);
+			$("#tagPatternBType").prop("disabled", true);
+			$("#tagPatternBData").prop("disabled", true);
+			$("#tagPatternBOffset").prop("disabled", true);
+			$("#tagPatternBMask").prop("disabled", true);
+		}
+	  }
+	  function clickRdoPreFilter() {
+		if($("#rdoPreFilter").prop('checked')) {
+			$("#preTarget").prop("disabled", false);
+			$("#preAction").prop("disabled", false);
+			$("#preMemoryBank").prop("disabled", false);
+			$("#preData").prop("disabled", false);
+			$("#preOffset").prop("disabled", false);
+			$("#addPreFilter").css("cursor", "pointer");
+		} else {
+			$("#preData").val("");
+			$("#preOffset").val("");
+			$("#preTarget").prop("disabled", true);
+			$("#preAction").prop("disabled", true);
+			$("#preMemoryBank").prop("disabled", true);
+			$("#preData").prop("disabled", true);
+			$("#preOffset").prop("disabled", true);
+			$("#addPreFilter").css("cursor", "default");
+		}
+	  }
+	var preCurIndex;
+	function openPreFilter(index,preJson) {
+		preCurIndex = index;
+		if(!$("#rdoPreFilter").prop('checked')) {
+			return;
+		}
+		if (index != -1 && preJson != null) {
+			$("#preName").val(preJson.preName);
+			$("#preTarget").val(preJson.preTarget);
+			$("#preAction").val(preJson.preAction);
+			$("#preMemoryBank").val(preJson.preMemoryBank);
+			$("#preData").val(preJson.preData);
+			$("#preOffset").val(preJson.preOffset);
+		}
+		let m = document.getElementById("divPreFilter");
+		$(m).modal("show");
+	}
+	var preCount = 0;
+	function clickOKPreFilter() {
+
+		let name = $("#preName").val();
+		if (name == "") {
+			alert("プレフィルタ名を入力してください。");
+			return;
+		}
+		let m = document.getElementById("divPreFilter");
+		if (m) $(m).modal("hide");
+
+		let preJson = {};
+		preJson.preName = name;
+		preJson.preTarget = $("#preTarget").val();
+		preJson.preAction = $("#preAction").val();
+		preJson.preMemoryBank = $("#preMemoryBank").val();
+		preJson.preData = $("#preData").val();
+		preJson.preOffset = $("#preOffset").val();
+		let jstr =  JSON.stringify(preJson);
+
+		if (preCurIndex == -1) {
+			let html = "";
+			html = '<div class="row" id="preFilterList'+preCount+'" data=\''+jstr+'\'>';
+			html += '	<div class="col-sm-3"><label style="cursor:pointer" onclick="clickEditPreFilter('+preCount+');">'+name+'</label></div>';
+			html += '	<div class="col-sm-3"><i class="bx bx-trash" style="font-size:18px;cursor:pointer" onclick="clickDelPreFilter('+preCount+');"></i></div>';
+			html += '</div>';
+			$('#preFilterList').append(html);
+
+			preCount++;
+		} else {
+			$("#preFilterList"+preCurIndex).attr("data",jstr);
+		}
+	}
+	function clickDelPreFilter(index) {
+		if(!$("#rdoPreFilter").prop('checked')) {
+			return;
+		}
+		if ($("#preFilterList" + index)) {
+			$("#preFilterList" + index).remove();
+		}
+	}
+	function clickEditPreFilter(index) {
+		if(!$("#rdoPreFilter").prop('checked')) {
+			return;
+		}
+		let jsonObj = JSON.parse($("#preFilterList"+index).attr("data"));
+		openPreFilter(index,jsonObj);
+	}
+
+	//操作画面を表示
+	function openOperate(tagId) {
+		  curTagId = tagId;
+		  let m = document.getElementById("divOperate");
+		  $(m).modal("show");
+	  }
+	//読み込み画面を表j
+	function openRead() {
+		  let m = document.getElementById("divRead");
+		  $(m).modal("show");
+		  $("#readTagId").val(curTagId);
+		  $('#readPwd').val("00000000");
+		  $('#readTid').val("");
+		  $('#readEpc').val("");
+		  $('#readUser').val("");
+		  $('#readReserved').val("");
+		  $('#readDataHex').val("");
+		  $('#readGS1').html("");
+	  }
+	//書き込み画面を表示
+	function openWrite() {
+		  let m = document.getElementById("divWrite");
+		  $(m).modal("show");
+		$("#writeTagId").val(curTagId);
+		$('#writeTagPwd').val("00000000");
+	  }
+	//ロック画面を表示
+	function openLock() {
+		let m = document.getElementById("divLock");
+		$(m).modal("show");
+		$("#lockTagId").val(curTagId);
+		$('#lockTagPwd').val("00000000");
+	}
+	//SG1タイプ変更
+	function changeWriteSg1Type() {
+		  let type = $('#writeSg1Type').val();
+
+		  switch (type) {
+			  case "1" :	//GDTI-96
+				  $('#gs1HeaderBin').text("0010 1100");
+				  break;
+			  case "2" :	//GSRN-96
+				  $('#gs1HeaderBin').text("0010 1101");
+				  break;
+			  case "3" :	//SSCC-96
+				  $('#gs1HeaderBin').text("0011 0001");
+				  break;
+			  case "4" :	//SGTIN-96
+				  $('#gs1HeaderBin').text("0011 0000");
+				  break;
+			  case "5" :	//SGLN-96
+				  $('#gs1HeaderBin').text("0011 0010");
+				  break;
+			  case "6" :	//GRAI-96
+				  $('#gs1HeaderBin').text("0011 0011");
+				  break;
+			  case "7" :	//GIAI-96
+				  $('#gs1HeaderBin').text("0011 0100");
+				  break;
+			  case "8" :	//CPI-96
+				  $('#gs1HeaderBin').text("0011 1100");
+				  break;
+			  case "9" :	//GSRNP-96
+				  $('#gs1HeaderBin').text("0010 1110");
+				  break;
+			  case "10" :	//GDTI-174
+				  $('#gs1HeaderBin').text("0011 1110");
+				  break;
+			  case "11" :	//SGTIN-198
+				  $('#gs1HeaderBin').text("0011 0110");
+				  break;
+			  case "12" :	//SGLN-195
+				  $('#gs1HeaderBin').text("0011 1001");
+				  break;
+			  case "13" :	//GRAI-170
+				  $('#gs1HeaderBin').text("0011 0111");
+				  break;
+			  case "14" :	//GIAI-202
+				  $('#gs1HeaderBin').text("0011 1000");
+				  break;
+
+		  }
+
+	  }
+	//インデックス画面へ
+	function goHome() {
+		  window.location.href= ctx + "index";
+	  }
+	//リーダーとアンテナ選択
+	function clickReaderSelect() {
+		  let isSelected = false;
+		  let m = document.getElementById("divReaderList");
+		  $(m).modal("hide");
+		  let index1 = 0;
+		  ipMap = new Map();
+		  $('#selectedImgList').empty();
+		  while (true) {
+			  if ($('#readerImg' + index1).length) {
+				  let index2 = 0;
+				  while (true) {
+
+					  if ($('#readerImg' + index1 + '_ant' + index2).length) {
+						  if ($('#readerImg' + index1 + '_ant' + index2).is(':checked')) {
+							  isSelected = true;
+							  let imgId = "selectedReader" + index1;
+							  if ($('#' + imgId).length == 0) {
+								  $('#selectedImgList').append('<img id="' + imgId + '" src="' + $('#readerImg' + index1).attr('src') + '" data="' + (index2+1) + '" width="30" height="30" class="img-responsive" style="margin-right:30px;">');
+								  $('#' + imgId).attr('ip', $('#readerImg' + index1).attr('ip'));
+								  $('#' + imgId).attr('port', $('#readerImg' + index1).attr('port'));
+								  $('#' + imgId).attr('power', $('#sliderValue' + index1).html());
+								  //console.log($('#' + imgId).attr('data'));
+								  //console.log($('#' + imgId).attr('power'));
+								  //console.log($('#sliderValue' + index1).html());
+								  ipMap.set($('#' + imgId).attr('ip'),$('#readerImg' + index1).attr('readerName'));
+								  //console.log($('#readerImg' + index1).attr('readerName'));
+							  } else {
+								  let data = $('#' + imgId).attr('data');
+								  $('#' + imgId).attr('data', data + "," + (index2+1));
+							  }
+						  }
+					  } else {
+						  break;
+					  }
+					  index2++;
+				  }
+			  } else {
+				  break;
+			  }
+			  index1++;
+		  }
+		  if (isSelected) {
+			  $("#btnStart").prop("disabled", false);
+		  } else {
+			  $("#btnStart").prop("disabled", true);
+		  }
+	}
+	
+	
+	function createInventoryJson() {
+	
+		let rootJson = {};
+		//readers配列
+		let readersArray = [];
+
+		//readers-prefilters
+		let preJsonArray = [];
+		if($("#rdoPreFilter").prop('checked')) {
+			$('#preFilterList div[id^="preFilterList"]').each(function () {
+
+				if ($(this).attr('data')) {
+					let preJsonObj = JSON.parse($(this).attr('data'));
+					if (preJsonObj != null) {
+						let preJson = {}
+						preJson.target = preJsonObj.preTarget;
+						preJson.action = preJsonObj.preAction;
+						let patternJson = {};
+						patternJson.memory_bank = preJsonObj.preMemoryBank;
+						patternJson.data = preJsonObj.preData;
+						patternJson.data_offset = preJsonObj.preOffset;
+						preJson.tag_pattern = patternJson;
+						preJsonArray.push(preJson);
+					}
+				}
+			});
+		}
+		
+		$('#selectedImgList img').each(function() {
+			//readers
+			let readersJson = {};
+			//readers-hostname
+			readersJson.hostName = $(this).attr('ip');
+			//readers-port
+			readersJson.port = $(this).attr('port');
+			//readers-antennas配列
+			let antennas = $(this).attr('data').split(",");
+			readersJson.antennas = antennas;
+			//readers-power
+			readersJson.power = $(this).attr('power') * 10 - 100;
+			//readers-prefilters
+			if($("#rdoPreFilter").prop('checked')) {
+				readersJson.prefilters = preJsonArray;
+			}
+
+			//readers-trigger_info
+			let triggerJson = {};
+			if($("#rdoTrigger").prop('checked')) {
+				triggerJson.start_type = $("#triggerStart").val();
+				triggerJson.stop_type = $("#triggerStop").val();
+				triggerJson.duration_mil = $("#durationMil").val();
+				triggerJson.tag_report = $("#tagReportTrigger").val();
+				readersJson.trigger_info = triggerJson;
+			}
+
+
+			//readers-postfilter
+			let postJson = {};
+			if($("#rdoPattern").prop('checked')) {
+				postJson.match = $("#matchPattern").val();
+				//readers-postfilter-tag_pattern_a
+				let patternAJson = {};
+				patternAJson.memory_bank = $("#tagPatternAType").val();
+				patternAJson.data = $("#tagPatternAData").val();
+				patternAJson.data_offset = $("#tagPatternAOffset").val();
+				patternAJson.data_mask = $("#tagPatternAMask").val();
+				postJson.tag_pattern_a = patternAJson;
+				//readers-postfilter-tag_pattern_b
+				let patternBJson = {};
+				patternBJson.memory_bank = $("#tagPatternBType").val();
+				patternBJson.data = $("#tagPatternAData").val();
+				patternBJson.data_offset = $("#tagPatternAOffset").val();
+				patternBJson.data_mask = $("#tagPatternAMask").val();
+				postJson.tag_pattern_b = patternBJson;
+			}
+			//readers-postfilter-rssi
+			if($("#rdoRssiFilter").prop('checked')) {
+				let rssiJson = {};
+				rssiJson.match_range = $("#matchRange").val();
+				rssiJson.lower_limit = $("#rssiValueLower").val();
+				rssiJson.upper_limit = $("#rssiValueUpper").val();
+				postJson.rssi = rssiJson;
+			}
+			readersJson.postfilter = postJson;
+
+			readersArray.push(readersJson);
+		});
+		
+		rootJson.readers = readersArray;
+		rootJson.token = new Date().toLocaleString();
+
+		rootJson.tagGs1 = $("#tagGs1").val();
+		rootJson.epcCode1 = $("#epcCode1").val();
+		rootJson.epcCode2 = $("#epcCode2").val();
+		rootJson.epcCode3 = $("#epcCode3").val();
+		let isGS1 = false;
+		if($("#gridGs1").prop('checked')) {
+			isGS1 = true;
+		}
+		rootJson.isGS1 = isGS1;
+		console.log("rfid json:" + JSON.stringify(rootJson));
+		return rootJson;
+	}
+
+	//タグ検出開始
+	function inventoryStart() {
+		$('#detailList').find('tbody').empty();
+		for (let i = 0; i < 39; i++) {
+			$('#detailList').append("<tr><td></td><td></td><td></td><td></td><td></td></tr>");
+		}
+
+		var index = 1;
+	
+		if (validateForm().form()) {
+
+			$("#btnStart").prop("disabled", true)
+			$("#btnStop").prop("disabled", false)
+			
+			initWebSocket();
+		
+			let isGS1 = false;
+			if($("#gridGs1").prop('checked')) {
+				isGS1 = true;
+			}
+
+			const jsonData = createInventoryJson();
+			console.log(JSON.stringify(jsonData));
+
+			$.ajax({
+				type: "post",
+				url: ctx + "rfid/tagSeek/startInventory",
+				contentType: 'application/json',
+				dataType: "json",
+				data: JSON.stringify(jsonData),
+				beforeSend: function () {
+
+				},
+				success: function(res) {
+
+					console.log("Inventory start response:" + res.data);
+				}
+			});
+		}
+	}
+	// function inventoryStart_bk() {
+	// 	var index = 1;
+	// 	$("#btnStart").prop("disabled", true)
+	// 	$("#btnStop").prop("disabled", false)
+	//
+	// 	if (validateForm().form()) {
+	//
+	// 		let isGS1 = false;
+	// 		if($("#gridGs1").prop('checked')) {
+	// 			isGS1 = true;
+	// 		}
+	//
+	// 		const jsonData = createInventoryJson();
+	// 		console.log(JSON.stringify(jsonData));
+	// 		$.ajax({
+	// 			type: "post",
+	// 			url: ctx + "rfid/tagSeek/startInventory",
+	// 			contentType: 'application/json',
+	// 			dataType: "json",
+	// 			data: JSON.stringify(jsonData),
+	// 			beforeSend: function () {
+	//
+	// 			},
+	// 			success: function(res) {
+	//
+	// 				console.log("Inventory start response:" + res.data);
+	// 				var tableId = 0;
+	// 				getDataTimer = setInterval(() => {
+	// 					$.ajax({
+	// 						type: "get",
+	// 						url: ctx + "rfid/tagSeek/getData",
+	// 						data: {
+	// 							"id": tableId
+	// 						},
+	// 						success: function(res) {
+	// 							console.log(res.data)
+	// 							for(let i = 0;i < res.data.length;i++) {
+	// 								let html = '<tr>';
+	// 								html += '<td className="td-padding">' + ipMap.get(res.data[i].readerIp) + '</td>';
+	// 								html += '<td className="td-padding">' + res.data[i].tagId + '</td>';
+	// 								html += '<td className="td-padding">';
+	// 								html += '<span>';
+	// 								for(let m = 0;m < res.data[i].tagRssiLevel;m++) {
+	// 									html += '<div class="signalDiv"></div>';
+	// 								}
+	// 								html += '</span>';
+	// 								html += '</td>';
+	// 								html += '<td className="td-padding"><a href="#" onClick="openOperate(\'' + res.data[i].tagId + '\');" style="color:white">...</a></td>';
+	// 								html += '</tr>';
+	// 								$('#detailList tr:last').remove();
+	// 								$('#detailList').prepend(html);
+	// 								tableId = res.data[i].id;
+	// 							}
+	//
+	// 						}
+	// 					});
+	// 				}, 1000);
+	// 			}
+	// 		});
+	// 	}
+	// }
+	//タグ検出
+	function inventoryStop() {
+		$("#btnStart").prop("disabled", false);
+		$("#btnStop").prop("disabled", true);
+		if (websock) {
+			websock.close();
+		}
+		$.ajax({
+			type: "get",
+			url: ctx + "rfid/tagSeek/stopInventory",
+			data: {
+			},
+			success: function(res) {
+				console.log("Inventory stop response:" + res.data);
+				if (getDataTimer) {
+					clearInterval(getDataTimer);
+				}
+			}
+		});
+
+	}
+	function createTagReadJson() {
+
+		let rootJson = {};
+		//readers配列
+		let readersArray = [];
+		$('#selectedImgList img').each(function() {
+			//readers
+			let readersJson = {};
+			//readers-hostname
+			readersJson.hostName = $(this).attr('ip');
+			//readers-port
+			readersJson.port = $(this).attr('port');
+			//readers-antennas配列
+			let antennas = $(this).attr('data').split(",");
+			readersJson.antennas = antennas;
+			//readers-power
+			readersJson.power = $(this).attr('power') * 10 - 100;
+			//readers-access
+			let accessJson = {};
+			accessJson.tag_id = $('#readTagId').val();
+			accessJson.password = $('#readPwd').val();
+			accessJson.lock_type = $('#lockTagType').val();
+			let target = "";
+			if ($("#rdoLock1").prop('checked')) {
+				target = "1"
+			} else if ($("#rdoLock2").prop('checked')) {
+				target = "2";
+			} else if ($("#rdoLock3").prop('checked')) {
+				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
+			}
+			accessJson.lock_target = target;
+			//readers-access-tag_pattern
+			let tag_patternJson = {};
+			//$('#writeCode2').val()
+			//readers-access-tag_pattern-memory_bank
+			tag_patternJson.memory_bank = "1";
+			accessJson.tag_pattern = tag_patternJson;
+			readersJson.access = accessJson;
+
+			readersArray.push(readersJson);
+		});
+
+		rootJson.readers = readersArray;
+		rootJson.token = new Date().toLocaleString();
+
+		return rootJson;
+	}
+	//タグ読み込み
+	function clickRead() {
+		const jsonData = createTagReadJson();
+		console.log(JSON.stringify(jsonData));
+		  $.ajax({
+			  type: "post",
+			  url: ctx + "rfid/tagSeek/tagRead",
+			  contentType: 'application/json',
+			  dataType: "json",
+			  data: JSON.stringify(jsonData),
+			  success: function(res) {
+				  console.log(res.data)
+				  if (res.data) {
+					  if (res.data.tid) $('#readTid').val(res.data.tid);
+					  if (res.data.epc) $('#readEpc').val(res.data.epc);
+					  if (res.data.user) $('#readUser').val(res.data.user);
+					  if (res.data.reserved) $('#readReserved').val(res.data.reserved);
+					  if (res.data.gs1Data) $('#readDataHex').val(res.data.gs1Data);
+					  if (res.data.gs1Name) $('#readGS1').html(res.data.gs1Name);
+				  }
+			  }
+		  });
+	  }
+	function createTagLockJson() {
+		let rootJson = {};
+		//readers配列
+		let readersArray = [];
+		$('#selectedImgList img').each(function() {
+			//readers
+			let readersJson = {};
+			//readers-hostname
+			readersJson.hostName = $(this).attr('ip');
+			//readers-port
+			readersJson.port = $(this).attr('port');
+			//readers-antennas配列
+			let antennas = $(this).attr('data').split(",");
+			readersJson.antennas = antennas;
+			//readers-power
+			readersJson.power = $(this).attr('power') * 10 - 100;
+			//readers-access
+			let accessJson = {};
+			accessJson.tag_id = $('#lockTagId').val();
+			accessJson.password = $('#lockTagPwd').val();
+			accessJson.lock_type = $('#lockTagType').val();
+			let target = "";
+			if ($("#rdoLock1").prop('checked')) {
+				target = "1"
+			} else if ($("#rdoLock2").prop('checked')) {
+				target = "2";
+			} else if ($("#rdoLock3").prop('checked')) {
+				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
+			}
+			accessJson.lock_target = target;
+			//readers-access-tag_pattern
+			let tag_patternJson = {};
+			//readers-access-tag_pattern-memory_bank
+			tag_patternJson.memory_bank = "1";
+			accessJson.tag_pattern = tag_patternJson;
+			readersJson.access = accessJson;
+
+			readersArray.push(readersJson);
+		});
+
+		rootJson.readers = readersArray;
+		rootJson.token = new Date().toLocaleString();
+
+		return rootJson;
+	}
+	//ロックとアンロック
+	function clickLockUnlock() {
+
+		  let taskTxt = "Lock";
+		  let action = "tagLock";
+		  let type = $('#lockTagType').val();
+		  if (type == "2" || type == "3") {
+			  action = "tagUnlock";
+			  taskTxt = "Unlock";
+		  }
+		const jsonData = createTagLockJson();
+		  $.ajax({
+			  type: "post",
+			  url: ctx + "rfid/tagSeek/" + action,
+			  contentType: 'application/json',
+			  dataType: "json",
+			  data: JSON.stringify(jsonData),
+			  success: function(res) {
+				  console.log(res);
+				  $.modal.msg(taskTxt + "が成功しました");
+				  console.log(taskTxt + "success");
+			  }
+		  });
+	  }
+	//タグエンコード
+	function clickEncode() {
+		const jsonData = {};
+		jsonData.tagGs1 = $('#writeSg1Type').val();
+		jsonData.epcCode1 = $('#writeCode1').val();
+		jsonData.epcCode2 = $('#writeCode2').val();
+		jsonData.epcCode3 = $('#writeCode3').val();
+		jsonData.extension = $('#writeExtension').val();
+		jsonData.filter = $('#writeFilterType').val();
+		let readersArray = [];
+		jsonData.readers = readersArray;
+		$.ajax({
+			type: "post",
+			url: ctx + "rfid/tagSeek/tagEncode",
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(jsonData),
+			success: function(res) {
+				console.log(res);
+				if(res.data && res.data.epc) {
+					$('#writeDataHex2').val(res.data.epc);
+					console.log("tagEncode success");
+				}
+
+			}
+		});
+	}
+	function createTagCheckJson() {
+
+		let rootJson = {};
+		//readers配列
+		let readersArray = [];
+		$('#selectedImgList img').each(function() {
+			//readers
+			let readersJson = {};
+			//readers-hostname
+			readersJson.hostName = $(this).attr('ip');
+			//readers-port
+			readersJson.port = $(this).attr('port');
+			//readers-antennas配列
+			let antennas = $(this).attr('data').split(",");
+			readersJson.antennas = antennas;
+			//readers-power
+			readersJson.power = $(this).attr('power') * 10 - 100;
+			//readers-access
+			let accessJson = {};
+			accessJson.tag_id = $('#writeTagId').val();
+			accessJson.password = $('#writeTagPwd').val();
+			accessJson.lock_type = $('#lockTagType').val();
+			let target = "";
+			if ($("#rdoLock1").prop('checked')) {
+				target = "1"
+			} else if ($("#rdoLock2").prop('checked')) {
+				target = "2";
+			} else if ($("#rdoLock3").prop('checked')) {
+				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
+			}
+			accessJson.lock_target = target;
+			//readers-access-tag_pattern
+			let tag_patternJson = {};
+			//$('#writeCode2').val()
+			//readers-access-tag_pattern-memory_bank
+			tag_patternJson.memory_bank = "1";
+			accessJson.tag_pattern = tag_patternJson;
+			readersJson.access = accessJson;
+
+			readersArray.push(readersJson);
+		});
+
+		rootJson.readers = readersArray;
+		rootJson.token = new Date().toLocaleString();
+
+		return rootJson;
+	}
+	//タグチェック
+	function clickCheck() {
+
+		const jsonData = createTagCheckJson();
+		console.log(JSON.stringify(jsonData));
+		$.ajax({
+			type: "post",
+			url: ctx + "rfid/tagSeek/tagCheck",
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(jsonData),
+			success: function(res) {
+				console.log(res.data)
+				if (res.data && res.data.epc) {
+					console.log(res.data.epc)
+
+					$('#btnWrite').prop("disabled", false);
+					$('#btnWrite2').prop("disabled", false);
+				}
+			}
+		});
+	}
+	//GS1／非GS1切り替え
+	function clickGS1(index) {
+		curIndex = index;
+	}
+	function createTagWriteJson(dataType,data,offset,count) {
+		let rootJson = {};
+		//readers配列
+		let readersArray = [];
+		$('#selectedImgList img').each(function() {
+			//readers
+			let readersJson = {};
+			//readers-hostname
+			readersJson.hostName = $(this).attr('ip');
+			//readers-port
+			readersJson.port = $(this).attr('port');
+			//readers-antennas配列
+			let antennas = $(this).attr('data').split(",");
+			readersJson.antennas = antennas;
+			//readers-power
+			readersJson.power = $(this).attr('power') * 10 - 100;
+			//readers-access
+			let accessJson = {};
+			accessJson.tag_id = $('#writeTagId').val();
+			accessJson.password = $('#writeTagPwd').val();
+			accessJson.lock_type = $('#lockTagType').val();
+			let target = "";
+			if ($("#rdoLock1").prop('checked')) {
+				target = "1"
+			} else if ($("#rdoLock2").prop('checked')) {
+				target = "2";
+			} else if ($("#rdoLock3").prop('checked')) {
+				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
+			}
+			accessJson.lock_target = target;
+			//readers-access-tag_pattern
+			let tag_patternJson = {};
+			//readers-access-tag_pattern-memory_bank
+			tag_patternJson.memory_bank = dataType;
+			tag_patternJson.data = data;
+			tag_patternJson.data_offset = offset;
+			tag_patternJson.data_length = count;
+			accessJson.tag_pattern = tag_patternJson;
+			readersJson.access = accessJson;
+
+			readersArray.push(readersJson);
+		});
+
+		rootJson.readers = readersArray;
+		rootJson.token = new Date().toLocaleString();
+
+		return rootJson;
+	}
+	//タグ書き込み
+	function clickWrite() {
+		let dataType;
+		let data;
+		let offset;
+		let count;
+		if (curIndex == 1) {
+			dataType = $('#writeTagType').val();
+			data = $('#writeDataHex').val();
+			offset = $('#writeOffsetByte').val();
+			count = $('#writeLengthByte').val();
+
+			//チェック
+			if (!checkWriteData(data,offset,count)) {
+
+				$.modal.msg("入力値が不正でした。");
+				return;
+			}
+		} else {
+			dataType = "1";
+			data = $('#writeDataHex2').val();
+			offset = 4 + '';
+			count = (data.length / 2) + '';
+			//チェック
+			if (!checkWriteData(data,offset,count)) {
+				$.modal.msg("入力値が不正でした。");
+				return;
+			}
+		}
+		const jsonData = createTagWriteJson(dataType,data,offset,count);
+		console.log(JSON.stringify(jsonData));
+		$.ajax({
+			type: "post",
+			url: ctx + "rfid/tagSeek/tagWrite",
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(jsonData),
+			success: function(res) {
+				console.log(res);
+				if (res.data == 1) {
+					$.modal.msg("タグ書き込みが成功しました");
+					$('#btnWrite').prop("disabled", true);
+					$('#btnWrite2').prop("disabled", true);
+				} else {
+					$.modal.msg("タグ書き込みが失敗しました");
+				}
+			}
+		});
+
+	}
+	//書き込み内容をチェック
+	function checkWriteData(value,offset,length) {
+		console.log("value:"+value)
+		console.log("offset:"+offset)
+		console.log("length:"+length)
+		if (value == null || value.length == 0) {
+			return false;
+		}
+		if (offset == null || offset.length == 0) {
+			return false;
+		}
+		if (length == null || length.length == 0) {
+			return false;
+		}
+		//16進法チェック
+		if (!/^[A-Fa-f0-9]+$/.test(value)) {
+			console.log("1チェック error")
+
+			return false;
+		}
+		//長さは必ず4の倍数
+		if (value.length % 4 != 0) {
+			console.log("2チェック error")
+			return false;
+		}
+		//数字チェック
+		if (!/^[0-9]+$/.test(offset)) {
+			console.log("3チェック error")
+
+			return false;
+		}
+		//数字チェック
+		if (!/^[0-9]+$/.test(length)) {
+			console.log("4チェック error")
+
+			return false;
+		}
+		if (value.length / 2 != parseInt(length)) {
+			console.log("5チェック error")
+			console.log(value.length / 4)
+			return false;
+		}
+		return true;
+	}
+	//チェック方法
+	$.validator.addMethod("isNumber", function(value, element) {
+		return this.optional(element) || /^[0-9]+$/.test(value);
+	}, "半角数字を入力してください");
+	//フォームチェック
+	function validateForm() {
+		return $("#readerForm").validate({
+			rules: {
+				preOffset: {
+					isNumber: true
+				},
+				tagLength: {
+					isNumber: true
+				}
+			},
+			messages: {
+				preOffset: {
+					isNumber: "半角数字を入力してください"
+				},
+				tagLength: {
+					isNumber: "半角数字を入力してください"
+				}
+			}
+		});
+	}
+
+	function updateSliderValue(obj) {
+		let value = obj.value;
+		if (value.indexOf('.') == -1) {
+			value += ".0";
+		}
+		document.getElementById("sliderValue" + obj.id.substr(6)).innerText = value;
+	}
+
+	function changeMatchPattern() {
+		let match = $('#matchPattern').val();
+		let isDisabled = false;
+		if (match != '0') {
+			isDisabled = false;
+		} else {
+			isDisabled = true;
+		}
+		$('#tagPatternBType').prop("disabled", isDisabled);
+		$('#tagPatternBData').prop("disabled", isDisabled);
+		$('#tagPatternBOffset').prop("disabled", isDisabled);
+		$('#tagPatternBLength').prop("disabled", isDisabled);
+	}
+	
+	function changeMatchRange() {
+		let match = $('#matchRange').val();
+		if (match == '2') {
+			$("#rssiValueLower").prop("disabled", false);
+			$("#rssiValueUpper").val("");
+			$("#rssiValueUpper").prop("disabled", true);
+		} else if (match == '3') {
+			$("#rssiValueLower").val("");
+			$("#rssiValueLower").prop("disabled", true);
+			$("#rssiValueUpper").prop("disabled", false);
+		} else {
+			$("#rssiValueLower").prop("disabled", false);
+			$("#rssiValueUpper").prop("disabled", false);
+		}
+		
+	}
+	var websock;
+	function initWebSocket() {
+		const wsuri = "ws://localhost/ws/ebs_rfid";  // WebSocketサーバーのURI
+		if (typeof WebSocket === "undefined") {     // ブラウザがWebSocketをサポートしているかどうかを確認する
+			console.log("WebSocketはブラウザではサポートされていません");
+		} else {
+			console.log(wsuri);
+			// WebSocket接続を作成
+			websock = new WebSocket(wsuri);
+			// WebSocketの各イベントを処理するメソッドを設定
+			websock.onmessage = this.websocketOnMessage; // データ受信
+			websock.onopen = this.websocketOnOpen; // 接続成功時
+			websock.onerror = this.websocketOnError; // エラーがある場合再接続
+			websock.onclose = this.websocketClose; // 接続を閉じる場合
+		}
+	}
+
+	function websocketOnOpen() {
+		let actions = { "open": "画面から接続..." };   // メッセージ対象を作成
+		websocketSend(JSON.stringify(actions));   // JSON格式のメッセージを送信
+	}
+
+	// エラーがある場合再接続
+	function websocketOnError() {
+		initWebSocket();   // WebSocketを再接続
+	}
+
+	// データ受信
+	function websocketOnMessage(res) {
+		console.log(res.data);
+		var rfidData = [];
+		try {
+			rfidData = JSON.parse(res.data);
+		} catch (error) {
+			console.log(error);
+			return;
+		}
+
+		for(let i = 0;i < rfidData.length;i++) {
+			let tb = $('#detailList');
+			let tr = tb.find('tr#rfid_' + rfidData[i].tagId);
+			if (tr.length > 0) {
+				let td2Text = "";
+				for(let m = 0;m < rfidData[i].tagRssiLevel;m++) {
+					td2Text += '<div class="signalDiv"></div>';
+				}
+				$(tr).find('td:eq(2)').html(td2Text);
+				$(tr).find('td:eq(3)').html(rfidData[i].tagTime);
+				continue;
+			}
+			let html = '<tr id="rfid_' + rfidData[i].tagId + '">';
+			html += '<td className="td-padding" style="width:25%">' + ipMap.get(rfidData[i].readerIp) + '</td>';
+			html += '<td className="td-padding">' + rfidData[i].tagId + '</td>';
+			html += '<td className="td-padding" style="width:25%">';
+			html += '<span>';
+			for(let m = 0;m < rfidData[i].tagRssiLevel;m++) {
+				html += '<div class="signalDiv"></div>';
+			}
+			html += '</span>';
+			html += '</td>';
+			html += '<td className="td-padding" style="width:25%">' + rfidData[i].tagTime + '</td>';
+			html += '<td className="td-padding" style="width:5%"><a href="#" onClick="openOperate(\'' + rfidData[i].tagId + '\');" style="color:white">...</a></td>';
+			html += '</tr>';
+			$('#detailList tr:last').remove();
+			$('#detailList').prepend(html);
+		}
+	}
+
+	// サーバーへ送信
+	function websocketSend(Data) {
+		websock.send(Data);
+	}
+
+	// 接続を閉じる場合
+	function websocketClose(e) {
+		console.log('接続を閉じる', e);
+	}
+	
+	//チェック登録
+	$(validateForm());
+
+	function setPageContent(readerParam) {
+
+		//リーダー選択
+		let index1 = 0;
+		while (true) {
+			if ($('#readerImg' + index1).length) {
+
+				let ants = null;
+				for (let i = 0; i < readerParam.readers.length; i++) {
+					//console.log(readerParam.readers[i].hostName);
+					//console.log($('#readerImg' + index1).attr('ip'));
+					if ($('#readerImg' + index1).attr('ip') == readerParam.readers[i].hostName) {
+						$('#readerImg' + index1).prop("checked", true);
+						//パワー
+						$('#slider' + index1).val(readerParam.readers[i].power);
+						$('#sliderValue' + index1).html(readerParam.readers[i].power);
+						$('#sliderValue' + index1).attr("data", readerParam.readers[i].power);
+						ants = readerParam.readers[i].antennas;
+						break;
+					}
+				}
+				let index2 = 0;
+				while (true) {
+					if (ants == null) break;
+					if ($('#readerImg' + index1 + '_ant' + index2).length) {
+
+						for (let j = 0; j < ants.length; j++) {
+							if (ants[j] == index2 + 1) {
+								$('#readerImg' + index1 + '_ant' + index2).prop("checked", true);
+								break;
+							}
+						}
+					} else {
+						break;
+					}
+					index2++;
+				}
+			} else {
+				break;
+			}
+			index1++;
+		}
+		clickReaderSelect();
+
+		//ポストフィルタ
+		if (readerParam.readers[0].postfilter) {
+			$("#rdoRssiFilter").prop('checked', true);
+			clickRdoRssiFilter();
+			$("#matchRange").val(readerParam.readers[0].postfilter.rssi.match_range);
+			changeMatchRange();
+			$("#rssiValueLower").val(readerParam.readers[0].postfilter.rssi.lower_limit);
+			$("#rssiValueUpper").val(readerParam.readers[0].postfilter.rssi.upper_limit);
+			if (readerParam.readers[0].postfilter.match) {
+				$("#rdoPattern").prop('checked', true);
+				clickRdoPattern();
+				$("#matchPattern").val(readerParam.readers[0].postfilter.match);
+				changeMatchPattern();
+				$("#tagPatternAType").val(readerParam.readers[0].postfilter.tag_pattern_a.memory_bank);
+				$("#tagPatternAData").val(readerParam.readers[0].postfilter.tag_pattern_a.data);
+				$("#tagPatternAOffset").val(readerParam.readers[0].postfilter.tag_pattern_a.data_offset);
+				$("#tagPatternAMask").val(readerParam.readers[0].postfilter.tag_pattern_a.data_mask);
+				$("#tagPatternBType").val(readerParam.readers[0].postfilter.tag_pattern_b.memory_bank);
+				$("#tagPatternBData").val(readerParam.readers[0].postfilter.tag_pattern_b.data);
+				$("#tagPatternBOffset").val(readerParam.readers[0].postfilter.tag_pattern_b.data_offset);
+				$("#tagPatternBMask").val(readerParam.readers[0].postfilter.tag_pattern_b.data_mask);
+			}
+		}
+
+		//プレフィルタ
+		if (readerParam.readers[0].prefilters) {
+			preCurIndex = -1;
+			for (let j = 0; j < readerParam.readers[0].prefilters.length; j++) {
+				$("#rdoPreFilter").prop('checked', true);
+				clickRdoPreFilter();
+				let pre = readerParam.readers[0].prefilters[j];
+				$("#preName").val(j+1);
+				$("#preTarget").val(pre.target);
+				$("#preAction").val(pre.action);
+				$("#preMemoryBank").val(pre.tag_pattern.memory_bank);
+				$("#preData").val(pre.tag_pattern.data);
+				$("#preOffset").val(pre.tag_pattern.data_offset);
+				clickOKPreFilter();
+			}
+		}
+
+		//トリガー情報
+		if (readerParam.readers[0].trigger_info) {
+			let trigger = readerParam.readers[0].trigger_info;
+			$("#rdoTrigger").prop('checked', true);
+			clickRdoTrigger();
+			$("#tagReportTrigger").val(trigger.tag_report);
+			$("#triggerStart").val(trigger.start_type);
+			$("#triggerStop").val(trigger.stop_type);
+			$("#durationMil").val(trigger.duration_mil);
+		}
+		//access
+		if (readerParam.readers[0].access) {
+			let access = readerParam.readers[0].access;
+			//タグを読込
+			$('#readTagId').val(access.tag_id);
+			$('#readPwd').val(access.password);
+
+			//タグをロック
+			$('#lockTagId').val(access.tag_id);
+			$('#lockTagPwd').val(access.password);
+			$('#lockTagType').val(access.lock_type);
+			if (access.lock_target == "1") {
+				$("#rdoLock1").prop('checked', true);
+			} else if (access.lock_target == "2") {
+				$("#rdoLock2").prop('checked', true);
+			} else if (access.lock_target == "3") {
+				$("#rdoLock3").prop('checked', true);
+			} else if (access.lock_target == "4") {
+				$("#rdoLock4").prop('checked', true);
+			} else if (access.lock_target == "5") {
+				$("#rdoLock5").prop('checked', true);
+			}
+			//タグを書込み
+			$('#writeTagId').val(access.tag_id);
+			$('#writeTagPwd').val(access.password);
+			$('#writeTagType').val(access.tag_pattern.memory_bank);
+			$('#writeOffsetByte').val(access.tag_pattern.data_offset);
+			$('#writeLengthByte').val(access.tag_pattern.data_length);
+			$('#writeDataHex').val(access.tag_pattern.data);
+		}
+
+		if (readerParam.isGS1) {
+			$("#gridGs1").prop('checked', true);
+			$("#gridNoGs1").prop('checked', false);
+			clickGs1();
+			//GS1
+			$("#tagGs1").val(readerParam.tagGs1);
+			//epcCode1
+			$("#epcCode1").val(readerParam.epcCode1);
+			//epcCode2
+			$("#epcCode2").val(readerParam.epcCode2);
+			//epcCode3
+			$("#epcCode3").val(readerParam.epcCode3);
+		} else {
+			$("#gridNoGs1").prop('checked', true);
+			$("#gridGs1").prop('checked', false);
+			clickNoGs1();
+		}
+	}
+
+</script>
+
+</body>
+
+</html>
