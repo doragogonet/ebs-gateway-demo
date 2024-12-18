@@ -275,7 +275,7 @@
 														<div class="col-sm-7">
 															<div class="input-group input-group-sm">
 																<span class="input-group-text" style="font-size:12px !important;">Action</span>
-																<select id="preAcction" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																<select id="preAction" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
 																	<option selected value="0">INV_A_NOT_INV_B</option>
 																	<option value="1">ASRT_SL_NOT_DSRT_SL</option>
 																	<option value="2">INV_A</option>
@@ -298,7 +298,7 @@
 													</div>
 													<div class="row mb-1">
 														<div class="col-sm-3">
-															<select id="preMemryBank" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+															<select id="preMemoryBank" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
 																<option selected value="1">EPC</option>
 																<option value="2">TID</option>
 																<option value="3">USER</option>
@@ -983,6 +983,13 @@
 		  $("#matchRange").prop("disabled", true);
 		  $("#rssiValueLower").prop("disabled", true);
 	 	  $("#rssiValueUpper").prop("disabled", true);
+
+		  //jsonファイルより画面に設定
+		  let readerParamInfo = [[${readerParamInfo}]];
+		  console.log(readerParamInfo);
+		  if (readerParamInfo) {
+			setPageContent(readerParamInfo);
+		  }
 	  });
 	//GS１選択
 	function clickGs1() {
@@ -1070,8 +1077,8 @@
 	  function clickRdoPreFilter() {
 		if($("#rdoPreFilter").prop('checked')) {
 			$("#preTarget").prop("disabled", false);
-			$("#preAcction").prop("disabled", false);
-			$("#preMemryBank").prop("disabled", false);
+			$("#preAction").prop("disabled", false);
+			$("#preMemoryBank").prop("disabled", false);
 			$("#preData").prop("disabled", false);
 			$("#preOffset").prop("disabled", false);
 			$("#addPreFilter").css("cursor", "pointer");
@@ -1079,24 +1086,24 @@
 			$("#preData").val("");
 			$("#preOffset").val("");
 			$("#preTarget").prop("disabled", true);
-			$("#preAcction").prop("disabled", true);
-			$("#preMemryBank").prop("disabled", true);
+			$("#preAction").prop("disabled", true);
+			$("#preMemoryBank").prop("disabled", true);
 			$("#preData").prop("disabled", true);
 			$("#preOffset").prop("disabled", true);
 			$("#addPreFilter").css("cursor", "default");
 		}
 	  }
-	var curIndex;
+	var preCurIndex;
 	function openPreFilter(index,preJson) {
-		curIndex = index;
+		preCurIndex = index;
 		if(!$("#rdoPreFilter").prop('checked')) {
 			return;
 		}
 		if (index != -1 && preJson != null) {
 			$("#preName").val(preJson.preName);
 			$("#preTarget").val(preJson.preTarget);
-			$("#preAcction").val(preJson.preAcction);
-			$("#preMemryBank").val(preJson.preMemryBank);
+			$("#preAction").val(preJson.preAction);
+			$("#preMemoryBank").val(preJson.preMemoryBank);
 			$("#preData").val(preJson.preData);
 			$("#preOffset").val(preJson.preOffset);
 		}
@@ -1112,17 +1119,18 @@
 			return;
 		}
 		let m = document.getElementById("divPreFilter");
-		$(m).modal("hide");
+		if (m) $(m).modal("hide");
+
 		let preJson = {};
 		preJson.preName = name;
 		preJson.preTarget = $("#preTarget").val();
-		preJson.preAcction = $("#preAcction").val();
-		preJson.preMemryBank = $("#preMemryBank").val();
+		preJson.preAction = $("#preAction").val();
+		preJson.preMemoryBank = $("#preMemoryBank").val();
 		preJson.preData = $("#preData").val();
 		preJson.preOffset = $("#preOffset").val();
 		let jstr =  JSON.stringify(preJson);
 
-		if (curIndex == -1) {
+		if (preCurIndex == -1) {
 			let html = "";
 			html = '<div class="row" id="preFilterList'+preCount+'" data=\''+jstr+'\'>';
 			html += '	<div class="col-sm-3"><label style="cursor:pointer" onclick="clickEditPreFilter('+preCount+');">'+name+'</label></div>';
@@ -1132,7 +1140,7 @@
 
 			preCount++;
 		} else {
-			$("#preFilterList"+curIndex).attr("data",jstr);
+			$("#preFilterList"+preCurIndex).attr("data",jstr);
 		}
 	}
 	function clickDelPreFilter(index) {
@@ -1305,9 +1313,9 @@
 					if (preJsonObj != null) {
 						let preJson = {}
 						preJson.target = preJsonObj.preTarget;
-						preJson.action = preJsonObj.preAcction;
+						preJson.action = preJsonObj.preAction;
 						let patternJson = {};
-						patternJson.memory_bank = preJsonObj.preMemryBank;
+						patternJson.memory_bank = preJsonObj.preMemoryBank;
 						patternJson.data = preJsonObj.preData;
 						patternJson.data_offset = preJsonObj.preOffset;
 						preJson.tag_pattern = patternJson;
@@ -1540,10 +1548,14 @@
 			let target = "";
 			if ($("#rdoLock1").prop('checked')) {
 				target = "1"
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock2").prop('checked')) {
 				target = "2";
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock3").prop('checked')) {
 				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
 			}
 			accessJson.lock_target = target;
 			//readers-access-tag_pattern
@@ -1609,10 +1621,14 @@
 			let target = "";
 			if ($("#rdoLock1").prop('checked')) {
 				target = "1"
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock2").prop('checked')) {
 				target = "2";
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock3").prop('checked')) {
 				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
 			}
 			accessJson.lock_target = target;
 			//readers-access-tag_pattern
@@ -1706,10 +1722,14 @@
 			let target = "";
 			if ($("#rdoLock1").prop('checked')) {
 				target = "1"
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock2").prop('checked')) {
 				target = "2";
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock3").prop('checked')) {
 				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
 			}
 			accessJson.lock_target = target;
 			//readers-access-tag_pattern
@@ -1778,10 +1798,14 @@
 			let target = "";
 			if ($("#rdoLock1").prop('checked')) {
 				target = "1"
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock2").prop('checked')) {
 				target = "2";
-			} else if ($("#lockTargetEpc").prop('checked')) {
+			} else if ($("#rdoLock3").prop('checked')) {
 				target = "3";
+			} else if ($("#rdoLock4").prop('checked')) {
+				target = "4";
+			} else if ($("#rdoLock5").prop('checked')) {
+				target = "5";
 			}
 			accessJson.lock_target = target;
 			//readers-access-tag_pattern
@@ -2040,6 +2064,152 @@
 	
 	//チェック登録
 	$(validateForm());
+
+	function setPageContent(readerParam) {
+
+		//リーダー選択
+		let index1 = 0;
+		while (true) {
+			if ($('#readerImg' + index1).length) {
+
+				let ants = null;
+				for (let i = 0; i < readerParam.readers.length; i++) {
+					//console.log(readerParam.readers[i].hostName);
+					//console.log($('#readerImg' + index1).attr('ip'));
+					if ($('#readerImg' + index1).attr('ip') == readerParam.readers[i].hostName) {
+						$('#readerImg' + index1).prop("checked", true);
+						//パワー
+						$('#slider' + index1).val(readerParam.readers[i].power);
+						$('#sliderValue' + index1).html(readerParam.readers[i].power);
+						$('#sliderValue' + index1).attr("data", readerParam.readers[i].power);
+						ants = readerParam.readers[i].antennas;
+						break;
+					}
+				}
+				let index2 = 0;
+				while (true) {
+					if (ants == null) break;
+					if ($('#readerImg' + index1 + '_ant' + index2).length) {
+
+						for (let j = 0; j < ants.length; j++) {
+							if (ants[j] == index2 + 1) {
+								$('#readerImg' + index1 + '_ant' + index2).prop("checked", true);
+								break;
+							}
+						}
+					} else {
+						break;
+					}
+					index2++;
+				}
+			} else {
+				break;
+			}
+			index1++;
+		}
+		clickReaderSelect();
+
+		//ポストフィルタ
+		if (readerParam.readers[0].postfilter) {
+			$("#rdoRssiFilter").prop('checked', true);
+			clickRdoRssiFilter();
+			$("#matchRange").val(readerParam.readers[0].postfilter.rssi.match_range);
+			changeMatchRange();
+			$("#rssiValueLower").val(readerParam.readers[0].postfilter.rssi.lower_limit);
+			$("#rssiValueUpper").val(readerParam.readers[0].postfilter.rssi.upper_limit);
+			if (readerParam.readers[0].postfilter.match) {
+				$("#rdoPattern").prop('checked', true);
+				clickRdoPattern();
+				$("#matchPattern").val(readerParam.readers[0].postfilter.match);
+				changeMatchPattern();
+				$("#tagPatternAType").val(readerParam.readers[0].postfilter.tag_pattern_a.memory_bank);
+				$("#tagPatternAData").val(readerParam.readers[0].postfilter.tag_pattern_a.data);
+				$("#tagPatternAOffset").val(readerParam.readers[0].postfilter.tag_pattern_a.data_offset);
+				$("#tagPatternAMask").val(readerParam.readers[0].postfilter.tag_pattern_a.data_mask);
+				$("#tagPatternBType").val(readerParam.readers[0].postfilter.tag_pattern_b.memory_bank);
+				$("#tagPatternBData").val(readerParam.readers[0].postfilter.tag_pattern_b.data);
+				$("#tagPatternBOffset").val(readerParam.readers[0].postfilter.tag_pattern_b.data_offset);
+				$("#tagPatternBMask").val(readerParam.readers[0].postfilter.tag_pattern_b.data_mask);
+			}
+		}
+
+		//プレフィルタ
+		if (readerParam.readers[0].prefilters) {
+			preCurIndex = -1;
+			for (let j = 0; j < readerParam.readers[0].prefilters.length; j++) {
+				$("#rdoPreFilter").prop('checked', true);
+				clickRdoPreFilter();
+				let pre = readerParam.readers[0].prefilters[j];
+				$("#preName").val(j+1);
+				$("#preTarget").val(pre.target);
+				$("#preAction").val(pre.action);
+				$("#preMemoryBank").val(pre.tag_pattern.memory_bank);
+				$("#preData").val(pre.tag_pattern.data);
+				$("#preOffset").val(pre.tag_pattern.data_offset);
+				clickOKPreFilter();
+			}
+		}
+
+		//トリガー情報
+		if (readerParam.readers[0].trigger_info) {
+			let trigger = readerParam.readers[0].trigger_info;
+			$("#rdoTrigger").prop('checked', true);
+			clickRdoTrigger();
+			$("#tagReportTrigger").val(trigger.tag_report);
+			$("#triggerStart").val(trigger.start_type);
+			$("#triggerStop").val(trigger.stop_type);
+			$("#durationMil").val(trigger.duration_mil);
+		}
+		//access
+		if (readerParam.readers[0].access) {
+			let access = readerParam.readers[0].access;
+			//タグを読込
+			$('#readTagId').val(access.tag_id);
+			$('#readPwd').val(access.password);
+
+			//タグをロック
+			$('#lockTagId').val(access.tag_id);
+			$('#lockTagPwd').val(access.password);
+			$('#lockTagType').val(access.lock_type);
+			if (access.lock_target == "1") {
+				$("#rdoLock1").prop('checked', true);
+			} else if (access.lock_target == "2") {
+				$("#rdoLock2").prop('checked', true);
+			} else if (access.lock_target == "3") {
+				$("#rdoLock3").prop('checked', true);
+			} else if (access.lock_target == "4") {
+				$("#rdoLock4").prop('checked', true);
+			} else if (access.lock_target == "5") {
+				$("#rdoLock5").prop('checked', true);
+			}
+			//タグを書込み
+			$('#writeTagId').val(access.tag_id);
+			$('#writeTagPwd').val(access.password);
+			$('#writeTagType').val(access.tag_pattern.memory_bank);
+			$('#writeOffsetByte').val(access.tag_pattern.data_offset);
+			$('#writeLengthByte').val(access.tag_pattern.data_length);
+			$('#writeDataHex').val(access.tag_pattern.data);
+		}
+
+		if (readerParam.isGS1) {
+			$("#gridGs1").prop('checked', true);
+			$("#gridNoGs1").prop('checked', false);
+			clickGs1();
+			//GS1
+			$("#tagGs1").val(readerParam.tagGs1);
+			//epcCode1
+			$("#epcCode1").val(readerParam.epcCode1);
+			//epcCode2
+			$("#epcCode2").val(readerParam.epcCode2);
+			//epcCode3
+			$("#epcCode3").val(readerParam.epcCode3);
+		} else {
+			$("#gridNoGs1").prop('checked', true);
+			$("#gridGs1").prop('checked', false);
+			clickNoGs1();
+		}
+	}
+
 </script>
 
 </body>

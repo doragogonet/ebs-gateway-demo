@@ -16,6 +16,7 @@ import com.ebs.system.domain.GatewayReader;
 import com.ebs.system.domain.PageRfidData;
 import com.ebs.system.service.IGatewayService;
 import com.ebs.web.controller.tool.GS1Shift;
+import com.ebs.web.controller.tool.RfidParamJsonFileUtil;
 import org.apache.poi.ss.formula.functions.T;
 import org.epctagcoder.result.Base;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,11 @@ public class RfidController extends BaseController
         //リーダーリスト取得
         List<GatewayReader> list = this.gatewayService.selectReaderListAll(new GatewayReader());
         mmap.put("readList",list);
+        TagQuery tagQuery = RfidParamJsonFileUtil.loadJsonFile();
+        if (tagQuery != null) {
+            System.out.println("tagQuery:" + JSON.toJSONString(tagQuery));
+            mmap.put("readerParamInfo",tagQuery);
+        }
         this.setLoginInfo(mmap);
         return "system/rfid/tagSeek";
     }
@@ -75,6 +81,8 @@ public class RfidController extends BaseController
     {
         System.out.println("inventory start ");
         try {
+            //JSONファイルに画面値を書込み
+            RfidParamJsonFileUtil.writeJsonFile(query);
             //Inventory開始
             System.out.println(JSON.toJSONString(query));
             this.inventory = new Inventory(JSON.parseObject(JSON.toJSONString(query)));

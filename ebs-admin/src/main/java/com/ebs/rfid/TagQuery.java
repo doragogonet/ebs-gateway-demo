@@ -1,5 +1,6 @@
 package com.ebs.rfid;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import com.ebs.common.core.domain.BaseEntity;
 import com.ebs.rfid.zebra.model.Reader;
 import org.epctagcoder.result.Base;
 
-public class TagQuery extends BaseEntity {
+public class TagQuery implements Serializable {
 
     private static final long serialVersionUID = 1L;
 	private List<Reader> readers;

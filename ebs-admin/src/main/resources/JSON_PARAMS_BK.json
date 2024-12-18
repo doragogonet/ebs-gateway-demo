@@ -1,0 +1,61 @@
+{
+  "readers":[ 
+	{
+	    "hostname": "169.254.10.1",
+	    "port": "0",
+	    "antennas": ["1","2","3","4"],
+	    "power": "27.0",
+	    "prefilters":[{
+			"target":"1",
+			"action": "7",
+			"tag_pattern":{
+					"memory_bank":"0",
+					"data":"1",
+					"data_offset":"7"
+					}
+
+		}],
+		"trigger_info":{
+				"start_type":"0",
+				"stop_type":"0",
+				"duration_mil": "30000",
+	            "tag_report":"1"
+		 },
+		"postfilter":
+				{
+				"match":"1",
+				"tag_pattern_a":{
+					"memory_bank":"0",
+					"data":"1",
+					"data_offset":"7",
+					"data_mask":"1"
+					},
+				"tag_pattern_b":{	
+					"memory_bank":"0",
+					"data":"1",
+					"data_offset":"7",
+					"data_mask":"1"
+					},	
+				"rssi ":{
+						"match_range":"2",
+						"lower_limit":"-70",
+						"upper_limit":"-30"
+				       }
+
+				},
+		"access":{
+			"tag_id ":"0614141123456789",
+			"password":"00000000",
+			"lock_type":"0",
+			"lock_target":"1",
+			"tag_pattern":{
+					"memory_bank":"2",
+					"data":"1",
+					"data_offset":"7",
+					"data_length":"1"
+				}
+			}
+  	}
+   ],
+   "token":"QWE1234SD"
+}

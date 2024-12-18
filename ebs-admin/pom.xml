@@ -69,14 +69,6 @@
 
         <dependency>
             <groupId>ebs.ebs</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/log4j-1.2.17.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>ebs.ebs</groupId>
             <artifactId>ZebraWrapper_API3</artifactId>
             <version>1.0.0</version>
             <scope>system</scope>
@@ -100,6 +92,8 @@
                 <targetPath>/BOOT-INF/lib/</targetPath>
                 <includes>
                     <include>**/*.jar</include>
+                    <include>**/*.dll</include>
+                    <include>**/*.so</include>
                 </includes>
             </resource>
         </resources>
