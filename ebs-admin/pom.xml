@@ -92,8 +92,6 @@
                 <targetPath>/BOOT-INF/lib/</targetPath>
                 <includes>
                     <include>**/*.jar</include>
-                    <include>**/*.dll</include>
-                    <include>**/*.so</include>
                 </includes>
             </resource>
         </resources>
