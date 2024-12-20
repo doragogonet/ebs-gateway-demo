@@ -1356,6 +1356,7 @@
 			//readers-postfilter
 			let postJson = {};
 			if($("#rdoPattern").prop('checked')) {
+
 				postJson.match = $("#matchPattern").val();
 				//readers-postfilter-tag_pattern_a
 				let patternAJson = {};
@@ -2079,9 +2080,9 @@
 					if ($('#readerImg' + index1).attr('ip') == readerParam.readers[i].hostName) {
 						$('#readerImg' + index1).prop("checked", true);
 						//パワー
-						$('#slider' + index1).val(readerParam.readers[i].power);
-						$('#sliderValue' + index1).html(readerParam.readers[i].power);
-						$('#sliderValue' + index1).attr("data", readerParam.readers[i].power);
+						$('#slider' + index1).val((Number(readerParam.readers[i].power) + 100) / 10);
+						$('#sliderValue' + index1).html((Number(readerParam.readers[i].power) + 100) / 10);
+						$('#sliderValue' + index1).attr("data", (Number(readerParam.readers[i].power) + 100) / 10);
 						ants = readerParam.readers[i].antennas;
 						break;
 					}
