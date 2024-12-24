@@ -1,5 +1,6 @@
 package com.ebs;
 
+import com.alibaba.fastjson.JSON;
 import com.mot.rfid.api3.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,8 +16,10 @@ public class EbsApplication
 {
     public static void main(String[] args)
     {
+
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(EbsApplication.class, args);
         System.out.println("サーバー起動成功");
+
     }
 }

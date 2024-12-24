@@ -12,6 +12,7 @@ import com.ebs.rfid.TagQuery;
 import com.ebs.rfid.zebra.*;
 import com.ebs.rfid.zebra.model.JsonMain;
 import com.ebs.rfid.zebra.model.Reader;
+import com.ebs.rfid.zebra.util.UtilsZebra;
 import com.ebs.system.domain.GatewayReader;
 import com.ebs.system.domain.PageRfidData;
 import com.ebs.system.service.IGatewayService;
@@ -132,14 +133,8 @@ public class RfidController extends BaseController
                 }
             });
             System.out.println("inventory start ok！");
-//            try {
-//                Thread.sleep(5000);
-//            } catch (InterruptedException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
 
         System.out.println("inventory start end");
