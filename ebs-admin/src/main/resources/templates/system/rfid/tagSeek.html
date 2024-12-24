@@ -2111,7 +2111,7 @@
 		clickReaderSelect();
 
 		//ポストフィルタ
-		if (readerParam.readers[0].postfilter) {
+		if (readerParam.readers[0].postfilter && readerParam.readers[0].postfilter.match) {
 			$("#rdoRssiFilter").prop('checked', true);
 			clickRdoRssiFilter();
 			$("#matchRange").val(readerParam.readers[0].postfilter.rssi.match_range);
