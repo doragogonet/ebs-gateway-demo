@@ -1987,7 +1987,7 @@
 	}
 	var websock;
 	function initWebSocket() {
-		const wsuri = "ws://localhost/ws/ebs_rfid";  // WebSocketサーバーのURI
+		const wsuri = "ws://localhost/ws/ebs_rfid";  // WebSocketサーバーのURI /TODO localhost->実際サーバーのIP
 		if (typeof WebSocket === "undefined") {     // ブラウザがWebSocketをサポートしているかどうかを確認する
 			console.log("WebSocketはブラウザではサポートされていません");
 		} else {

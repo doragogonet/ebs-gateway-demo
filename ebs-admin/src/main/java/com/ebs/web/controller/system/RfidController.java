@@ -85,8 +85,11 @@ public class RfidController extends BaseController
             //JSONファイルに画面値を書込み
             RfidParamJsonFileUtil.writeJsonFile(query);
             //Inventory開始
-            System.out.println(JSON.toJSONString(query));
-            this.inventory = new Inventory(JSON.parseObject(JSON.toJSONString(query)));
+            String strJson = JSON.toJSONString(query);
+            System.out.println(strJson);
+            JsonMain jsonMain = JSON.parseObject(strJson, JsonMain.class);
+            System.out.println(JSON.toJSONString(jsonMain));
+            this.inventory = new Inventory(JSON.parseObject(JSON.toJSONString(jsonMain)));
             this.inventory.Start(new EventsListener(){
                 @Override
                 public void commonReadNotify(String jsonStr) {

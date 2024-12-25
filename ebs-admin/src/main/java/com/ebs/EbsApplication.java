@@ -1,10 +1,10 @@
 package com.ebs;
 
-import com.alibaba.fastjson.JSON;
-import com.mot.rfid.api3.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+
+import java.io.File;
 
 /**
  * 启动程序
@@ -18,6 +18,8 @@ public class EbsApplication
     {
 
         // System.setProperty("spring.devtools.restart.enabled", "false");
+        //logback.xmlのパスを変更
+        System.setProperty("logging.config", System.getProperty("user.dir") + File.separator + "logback.xml");
         SpringApplication.run(EbsApplication.class, args);
         System.out.println("サーバー起動成功");
 
