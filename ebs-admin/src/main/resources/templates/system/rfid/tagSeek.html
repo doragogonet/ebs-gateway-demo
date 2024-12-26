@@ -2017,6 +2017,10 @@
 		console.log(res.data);
 		var rfidData = [];
 		try {
+
+			if (res.data == '接続成功') {
+				return;
+			}
 			rfidData = JSON.parse(res.data);
 		} catch (error) {
 			console.log(error);
