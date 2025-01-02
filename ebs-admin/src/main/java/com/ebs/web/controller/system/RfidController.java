@@ -52,15 +52,31 @@ public class RfidController extends BaseController
     @GetMapping("/tagPrint/index")
     public String indexTagPrint(ModelMap mmap) {
 
+        this.setLoginInfo(mmap);
         return "system/rfid/tagPrint";
     }
 
     @GetMapping("/inventory/index")
     public String indexInventory(ModelMap mmap) {
 
+        this.setLoginInfo(mmap);
         return "system/rfid/inventory";
     }
 
+    @GetMapping("/inventorySearch/index")
+    public String indexInventorySearch(ModelMap mmap) {
+
+        //リーダーリスト取得
+        List<GatewayReader> list = this.gatewayService.selectReaderListAll(new GatewayReader());
+        mmap.put("readList",list);
+        TagQuery tagQuery = RfidParamJsonFileUtil.loadJsonFile();
+        if (tagQuery != null) {
+            System.out.println("tagQuery:" + JSON.toJSONString(tagQuery));
+            mmap.put("readerParamInfo",tagQuery);
+        }
+        this.setLoginInfo(mmap);
+        return "system/rfid/inventorySearch";
+    }
     @GetMapping("/tagSeek/index")
     public String indexTagSeek(ModelMap mmap) {
 
@@ -82,6 +98,7 @@ public class RfidController extends BaseController
     {
         System.out.println("inventory start ");
         try {
+            RfidParamJsonFileUtil.openRfidDataFile();
             //JSONファイルに画面値を書込み
             RfidParamJsonFileUtil.writeJsonFile(query);
             //Inventory開始
@@ -94,6 +111,7 @@ public class RfidController extends BaseController
                 @Override
                 public void commonReadNotify(String jsonStr) {
                     System.out.println(jsonStr);
+                    RfidParamJsonFileUtil.writeRfidDataToFile(jsonStr);
                     JSONObject obj = JSON.parseObject(jsonStr);
                     PageRfidData rfid = new PageRfidData();
                     rfid.setTagId(obj.getString("tagID"));
@@ -214,6 +232,7 @@ public class RfidController extends BaseController
                 this.inventory.Stop();
                 System.out.println("inventory stop ok!");
             }
+            RfidParamJsonFileUtil.closeRfidDataFile();
         } catch (Exception ex) {
 
         }
@@ -234,68 +253,7 @@ public class RfidController extends BaseController
     @ResponseBody
     public AjaxResult tagRead(@RequestBody TagQuery query)
     {
-        AjaxResult ajax = AjaxResult.success();
-        List<String> tagList = new ArrayList<String>();
-        try {
-            System.out.println("tagRead:" + JSON.toJSONString(query));
-            System.out.println("MEMORY_BANK_EPC");
-            //MEMORY_BANK.MEMORY_BANK_EPC
-            ActionRead read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
-            tagList = read.doTagRead();
-            for (String tag : tagList) {
-                System.out.println(tag);
-                JSONObject obj = JSON.parseObject(tag);
-                ajax.put("epc", obj.getString("memoryBankData"));
-                GS1Item gs1 = GS1Shift.decodeEpc(obj.getString("tagID"));
-                if (gs1 != null) {
-                    ajax.put("gs1Data", gs1.getJsonStr());
-                    ajax.put("gs1Name", gs1.getGs1Type().toUpperCase());
-                }
-            }
-
-            System.out.println("MEMORY_BANK_TID");
-            for (Reader r : query.getReaders()) {
-                r.getAccess().getTag_pattern().setMemory_bank("2");
-            }
-            //MEMORY_BANK.MEMORY_BANK_TID
-            read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
-            tagList = read.doTagRead();
-            for (String tag : tagList) {
-                System.out.println(tag);
-                JSONObject obj = JSON.parseObject(tag);
-                ajax.put("tid", obj.getString("memoryBankData"));
-            }
-
-            for (Reader r : query.getReaders()) {
-                r.getAccess().getTag_pattern().setMemory_bank("3");
-            }
-            System.out.println("MEMORY_BANK_USER");
-            //MEMORY_BANK.MEMORY_BANK_USER
-            read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
-            tagList = read.doTagRead();
-            for (String tag : tagList) {
-                System.out.println(tag);
-                JSONObject obj = JSON.parseObject(tag);
-                ajax.put("user", obj.getString("memoryBankData"));
-            }
-
-            for (Reader r : query.getReaders()) {
-                r.getAccess().getTag_pattern().setMemory_bank("0");
-            }
-            System.out.println("MEMORY_BANK_RESERVED");
-            //MEMORY_BANK.MEMORY_BANK_RESERVED
-            read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
-            tagList = read.doTagRead();
-            for (String tag : tagList) {
-                System.out.println(tag);
-                JSONObject obj = JSON.parseObject(tag);
-                ajax.put("reserved", obj.getString("memoryBankData"));
-            }
-        } catch (Exception ex) {
-
-        }
-
-        return success(ajax);
+        return success(this.readMemoryData(query, false));
     }
 
     @PostMapping("/tagSeek/tagLock")
@@ -363,19 +321,7 @@ public class RfidController extends BaseController
     @ResponseBody
     public AjaxResult tagCheck(@RequestBody TagQuery query)
     {
-        System.out.println(JSON.toJSONString(query));
-        AjaxResult ajax = AjaxResult.success();
-        List<String> tagList = new ArrayList<String>();
-        ActionRead read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
-        tagList = read.doTagRead();
-        for (String tag : tagList) {
-            System.out.println(tag);
-            JSONObject obj = JSON.parseObject(tag);
-            ajax.put("epc", obj.getString("memoryBankData"));
-
-        }
-        return success(ajax);
-
+        return success(this.readMemoryData(query, true));
     }
 
     @PostMapping("/tagSeek/tagEncode")
@@ -404,6 +350,88 @@ public class RfidController extends BaseController
         SysUser user = getSysUser();
 
         mmap.put("user", user);
+    }
+
+    private AjaxResult readMemoryData(TagQuery query, boolean isCheck) {
+        AjaxResult ajax = AjaxResult.success();
+        List<String> tagList = new ArrayList<String>();
+        try {
+            System.out.println("tagRead:" + JSON.toJSONString(query));
+            System.out.println("MEMORY_BANK_EPC");
+            //MEMORY_BANK.MEMORY_BANK_EPC
+            ActionRead read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
+            tagList = read.doTagRead();
+            for (String tag : tagList) {
+                try {
+                    System.out.println(tag);
+                    JSONObject obj = JSON.parseObject(tag);
+                    ajax.put("epc", obj.getString("memoryBankData"));
+                    if (!isCheck) {
+                        GS1Item gs1 = GS1Shift.decodeEpc(obj.getString("tagID"));
+                        if (gs1 != null) {
+                            ajax.put("gs1Data", gs1.getJsonStr());
+                            ajax.put("gs1Name", gs1.getGs1Type().toUpperCase());
+                        }
+                    }
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            System.out.println("MEMORY_BANK_TID");
+            for (Reader r : query.getReaders()) {
+                r.getAccess().getTag_pattern().setMemory_bank("2");
+            }
+            //MEMORY_BANK.MEMORY_BANK_TID
+            read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
+            tagList = read.doTagRead();
+            for (String tag : tagList) {
+                try {
+                    System.out.println(tag);
+                    JSONObject obj = JSON.parseObject(tag);
+                    ajax.put("tid", obj.getString("memoryBankData"));
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            for (Reader r : query.getReaders()) {
+                r.getAccess().getTag_pattern().setMemory_bank("3");
+            }
+            System.out.println("MEMORY_BANK_USER");
+            //MEMORY_BANK.MEMORY_BANK_USER
+            read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
+            tagList = read.doTagRead();
+            for (String tag : tagList) {
+                try {
+                    System.out.println(tag);
+                    JSONObject obj = JSON.parseObject(tag);
+                    ajax.put("user", obj.getString("memoryBankData"));
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            for (Reader r : query.getReaders()) {
+                r.getAccess().getTag_pattern().setMemory_bank("0");
+            }
+            System.out.println("MEMORY_BANK_RESERVED");
+            //MEMORY_BANK.MEMORY_BANK_RESERVED
+            read = new ActionRead(JSON.parseObject(JSON.toJSONString(query)));
+            tagList = read.doTagRead();
+            for (String tag : tagList) {
+                try {
+                    System.out.println(tag);
+                    JSONObject obj = JSON.parseObject(tag);
+                    ajax.put("reserved", obj.getString("memoryBankData"));
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return ajax;
     }
 
 }

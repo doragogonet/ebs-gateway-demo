@@ -11,6 +11,11 @@ public class RfidParamJsonFileUtil {
     private final static String JSON_FILE_NAME = "JSON_PARAMS.json";
     private final static String ROOT_JSON_FILE_NAME = System.getProperty("user.dir") + File.separator + JSON_FILE_NAME;
 
+    private final static String RFID_FILE_NAME = "RFID_DATA.json";
+    private final static String ROOT_RFID_FILE_NAME = System.getProperty("user.dir") + File.separator + RFID_FILE_NAME;
+
+    private static BufferedWriter rfidWriter;
+
     /**
      * jsonファイルから読み込んで、Reader classに転換する
      * @return
@@ -47,6 +52,42 @@ public class RfidParamJsonFileUtil {
                 }
             }
         } catch(Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean openRfidDataFile() {
+        try {
+            rfidWriter = new BufferedWriter(new FileWriter(ROOT_RFID_FILE_NAME, false));
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean writeRfidDataToFile(String jsonStr) {
+        try {
+            if (jsonStr != null && rfidWriter != null) {
+                rfidWriter.write(jsonStr);
+                rfidWriter.newLine();
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean closeRfidDataFile() {
+        try {
+            if (rfidWriter != null) {
+                rfidWriter.close();
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
             return false;
         }
         return true;

@@ -1,1 +1,1 @@
-{"epcCode1":"","epcCode2":"","epcCode3":"","extension":"","filter":"","isGS1":false,"readers":[{"antennas":["2"],"hostName":"169.254.10.1","port":"0","postfilter":{},"power":"188"}],"tagGs1":"gdti","token":"2024/12/23 08:58:18"}
+{"epcCode1":"","epcCode2":"","epcCode3":"","extension":"","filter":"","isGS1":false,"readers":[{"antennas":["2"],"hostName":"169.254.10.1","port":"0","postfilter":{},"power":"188"}],"token":"2025/1/2 16:22:48"}

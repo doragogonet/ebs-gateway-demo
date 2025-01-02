@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ebs.system.mapper.GatewayMapper">
+
+	<resultMap type="com.ebs.system.domain.GatewayReader" id="readerResult">
+		<id 	property="readerId"        column="reader_id"          />
+		<result property="readerName"      column="reader_name"        />
+		<result property="ipAddress"       column="ip_address"         />
+		<result property="serialNumber"    column="serial_number"      />
+		<result property="location"        column="location"    	   />
+		<result property="status"          column="status"             />
+		<result property="readerImage"     column="reader_image"       />
+		<result property="readerPort"     column="reader_port"       />
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayReader" id="readerAllResult">
+		<id 	property="readerId"        column="reader_id"          />
+		<result property="readerName"      column="reader_name"        />
+		<result property="ipAddress"       column="ip_address"         />
+		<result property="serialNumber"    column="serial_number"      />
+		<result property="location"        column="location"    	   />
+		<result property="status"          column="status"             />
+		<result property="readerImage"     column="reader_image"       />
+		<result property="readerPort"      column="reader_port"       />
+		<association column="reader_id" property="readerAntennaList"
+					 javaType="java.util.List"
+					 select="getReaderAntenna">
+		</association>
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayReaderAntenna" id="readerAntennaResult">
+		<id 	property="antennaId"       column="antenna_id"          />
+		<result	property="readerId"        column="reader_id"           />
+		<result property="antennaName"     column="antenna_name"        />
+		<result property="type"       	   column="type"         		/>
+		<result property="orientation"     column="orientation"         />
+		<result property="status"          column="status"              />
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayReaderPortAntenna" id="readerPortAntennaResult">
+		<id 	property="portAntennaId"        column="port_antenna_id"           />
+		<result property="antennaId"       column="antenna_id"          />
+		<result	property="readerId"        column="reader_id"           />
+		<result property="portNumber"     column="port_number"        />
+		<result property="connectionTimes"     column="connection_times"        />
+		<result property="disconnectionTimes"     column="disconnection_times"        />
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayReaderPortAntenna" id="readerPortAntennaAllResult">
+		<id 	property="portAntennaId"        column="port_antenna_id"           />
+		<result property="antennaId"       column="antenna_id"          />
+		<result	property="readerId"        column="reader_id"           />
+		<result property="portNumber"     column="port_number"        />
+		<result property="connectionTimes"     column="connection_times"        />
+		<result property="disconnectionTimes"     column="disconnection_times"        />
+		<association property="readerAntenna" javaType="com.ebs.system.domain.GatewayReaderAntenna">
+			<id 	property="antennaId"       column="antenna_id"          />
+			<result	property="readerId"        column="reader_id"           />
+			<result property="antennaName"     column="antenna_name"        />
+			<result property="type"       	   column="type"         		/>
+			<result property="orientation"     column="orientation"         />
+			<result property="status"          column="t3_status"              />
+		</association>
+		<association property="reader" javaType="com.ebs.system.domain.GatewayReader">
+			<id 	property="readerId"        column="reader_id"          />
+			<result property="readerName"      column="reader_name"        />
+			<result property="ipAddress"       column="ip_address"         />
+			<result property="serialNumber"    column="serial_number"      />
+			<result property="location"        column="location"    	   />
+			<result property="status"          column="t2_status"             />
+			<result property="readerImage"     column="reader_image"             />
+			<result property="readerPort"      column="reader_port"       />
+		</association>
+	</resultMap>
+
+	<select id="selectReaderList" parameterType="GatewayReader" resultMap="readerResult">
+		select reader_id,reader_name,ip_address,serial_number,location,status,reader_image,reader_port from readers
+	</select>
+
+	<select id="selectReaderListAll" parameterType="GatewayReader" resultMap="readerAllResult">
+		select reader_id,reader_name,ip_address,serial_number,location,status,reader_image,reader_port from readers
+	</select>
+	
+	<select id="selectReader" parameterType="String" resultMap="readerResult">
+ 		select reader_id,reader_name,ip_address,serial_number,location,status,reader_image,reader_port from readers where info_id = #{id}
+ 	</select>
+
+	<select id="selectReaderAntenna" parameterType="String" resultMap="readerAntennaResult">
+		select antenna_id,reader_id,antenna_name,type,orientation,status from antennas where antenna_id = #{id}
+	</select>
+
+	<select id="selectReaderAntennaList" parameterType="GatewayReaderAntenna" resultMap="readerAntennaResult">
+		select antenna_id,reader_id,antenna_name,type,orientation,status from antennas
+	</select>
+
+	<select id="selectReaderPortAntennaList" parameterType="GatewayReaderPortAntenna" resultMap="readerPortAntennaResult">
+		select port_antenna_id,reader_id,antenna_id,port_number,connectionTimes,disconnectionTimes from port_readers_connections
+	</select>
+
+	<select id="selectReaderPortAntennaListAll" parameterType="GatewayReaderPortAntenna" resultMap="readerPortAntennaAllResult">
+		select t1.port_antenna_id,t1.reader_id,t1.antenna_id,t1.port_number,t1.connectionTimes,t1.disconnectionTimes,
+			   t2.reader_name,t2.ip_address,t2.serial_number,t2.location,t2.status t2_status,
+			   t3.antenna_name,t3.type,t3.orientation,t3.status t3_status
+		from port_readers_connections t1
+		left outer join readers t2 on t1.reader_id = t2.reader_id
+		left outer join antennas t3 on t1.antenna_id = t3.antenna_id
+	</select>
+
+	<select id="selectReaderPortAntenna" parameterType="String" resultMap="readerPortAntennaResult">
+		select port_antenna_id,reader_id,antenna_id,port_number,connectionTimes,disconnectionTimes from port_readers_connections where port_antenna_id = #{id}
+	</select>
+
+	<select id="getReaderAntenna" parameterType="String" resultMap="readerAntennaResult">
+		select antenna_id,reader_id,antenna_name,type,orientation,status from antennas where reader_id = #{reader_id}
+	</select>
+
+	<resultMap type="com.ebs.system.domain.GatewayStorageStore" id="storeResult">
+		<id 	property="storeId"        column="store_id"          />
+		<result property="storeName"      column="store_name"        />
+		<result property="storeBarCode"   column="store_bar_code"    />
+		<result property="remark"      	  column="remark"        	 />
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayStorageStore" id="storeAllResult">
+		<id 	property="storeId"        column="store_id"          />
+		<result property="storeName"      column="store_name"        />
+		<result property="storeBarCode"   column="store_bar_code"    />
+		<result property="remark"      	  column="remark"        	 />
+		<association column="store_id" property="storageRackList"
+					 javaType="com.ebs.system.domain.GatewayStorageRack"
+					 select="getStorageRack">
+		</association>
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayStorageRack" id="rackResult">
+		<id     property="rackId"        column="rack_id"          />
+		<result property="storeId"       column="store_id"         />
+		<result property="rackName"      column="rack_name"    	   />
+		<result property="rackBarCode"   column="rack_bar_code"    />
+		<result property="remark"        column="remark"           />
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayStorageRack" id="rackAllResult">
+		<id     property="rackId"        column="rack_id"          />
+		<result property="storeId"       column="store_id"         />
+		<result property="rackName"      column="rack_name"    	   />
+		<result property="rackBarCode"   column="rack_bar_code"    />
+		<result property="remark"        column="remark"           />
+		<association column="rack_id" property="storageCellList"
+					 javaType="com.ebs.system.domain.GatewayStorageCell"
+					 select="getStorageCell">
+		</association>
+	</resultMap>
+
+	<resultMap type="com.ebs.system.domain.GatewayStorageCell" id="cellResult">
+		<id 	property="cellId"        column="cell_id"          />
+		<result property="rackId"        column="rack_id"          />
+		<result property="storeId"       column="store_id"         />
+		<result property="cellCode"      column="cell_code"        />
+		<result property="rackName"      column="rack_name"    	   />
+		<result property="cellBarCode"   column="cell_bar_code"    />
+		<result property="remark"        column="remark"           />
+	</resultMap>
+
+	<select id="selectStorageStoreList" parameterType="GatewayStorageStore" resultMap="storeResult">
+		select store_id,store_name,store_bar_code,remark from storage_store
+	</select>
+
+	<select id="selectStorageStoreListAll" parameterType="GatewayStorageStore" resultMap="storeAllResult">
+		select store_id,store_name,store_bar_code,remark from storage_store
+	</select>
+
+	<select id="selectStorageStore" parameterType="String" resultMap="storeResult">
+		select store_id,store_name,store_bar_code,remark from storage_store where store_id = #{id}
+	</select>
+
+	<select id="selectStorageRackList" parameterType="GatewayStorageRack" resultMap="rackResult">
+		select rack_id,store_id,rack_name,rack_bar_code,remark from storage_rack
+	</select>
+
+	<select id="selectStorageRackListAll" parameterType="GatewayStorageRack" resultMap="rackAllResult">
+		select rack_id,store_id,rack_name,rack_bar_code,remark from storage_rack
+	</select>
+
+	<select id="selectStorageRack" parameterType="String" resultMap="rackResult">
+		select rack_id,store_id,rack_name,rack_bar_code,remark from storage_rack where rack_id = #{id}
+	</select>
+
+	<select id="selectStorageCellList" parameterType="GatewayStorageCell" resultMap="cellResult">
+		select cell_id,rack_id,store_id,cell_code,rack_name,cell_bar_code,remark from storage_cell
+	</select>
+
+	<select id="selectStorageCell" parameterType="String" resultMap="cellResult">
+		select cell_id,rack_id,store_id,cell_code,rack_name,cell_bar_code,remark from storage_cell where cell_id = #{id}
+	</select>
+
+	<select id="getStorageRack" parameterType="String" resultMap="rackAllResult">
+		select rack_id,store_id,rack_name,rack_bar_code,remark from storage_rack where store_id = #{store_id}
+	</select>
+
+	<select id="getStorageCell" parameterType="String" resultMap="cellResult">
+		select cell_id,rack_id,store_id,cell_code,rack_name,cell_bar_code,remark from storage_cell where rack_id = #{rack_id}
+	</select>
+
+	<resultMap type="com.ebs.system.domain.PageRfidData" id="rfidResult">
+		<id 	property="id"        	 column="id"          		 />
+		<result property="readerIp"      column="reader_ip"          />
+		<result property="tagId"         column="tag_id"          	 />
+		<result property="tagRssi"       column="tag_rssi"         	 />
+		<result property="tagRssiLevel"  column="tag_rssi_level"     />
+		<result property="tagTime"       column="tag_time"    	   	 />
+	</resultMap>
+
+	<select id="selectRfidDataList" parameterType="PageRfidData" resultMap="rfidResult">
+		select id,reader_ip,tag_id,tag_rssi,tag_rssi_level,tag_time from rfid_data where id > #{id}
+	</select>
+
+	<update id="batchInsertRfidData">
+		<foreach collection="list" index="i" item="item" open="" separator="" close="">
+			insert into rfid_data(reader_ip,tag_id,tag_rssi,tag_rssi_level,tag_time,create_time,update_time)
+			values(#{item.readerIp},#{item.tagId},#{item.tagRssi},#{item.tagRssiLevel},#{item.tagTime},now(),now());
+		</foreach>
+	</update>
+
+	<delete id="deleteRfidDataById" parameterType="Long">
+		delete from rfid_data where id > #{id}
+	</delete>
+</mapper> 

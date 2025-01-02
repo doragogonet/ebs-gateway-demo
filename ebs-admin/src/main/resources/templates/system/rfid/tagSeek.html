@@ -27,13 +27,6 @@
   <!-- Template Main CSS File -->
   <link th:href="@{/assets/css/style.css}" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Mar 17 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
   <style>
   .my-div {
     height: 300px;
@@ -180,7 +173,7 @@
 							<form class="needs-validation" id="readerForm" autocomplete="off">
 									<div class="row mb-1" >
 										<div class="col-sm-2">
-										  <input class="form-check-input" type="radio" name="rdoGS" id="gridGs1" value="1" onclick="clickGs1();">
+										  <input class="form-check-input" type="radio" name="rdoGS" id="gridGs1" value="1" onclick="clickGs1Btn();">
 										  <label class="form-check-label" >
 											GS1規格
 										  </label>
@@ -335,7 +328,7 @@
 									<div class="row mb-1">
 										<label><strong>ポストフィルタ</strong></label>
 									</div>
-									<div class="row mb-4" style="align-items: center;">
+									<div class="row mb-1" style="align-items: center;">
 										<div class="col-sm-3" >
 											<div class="form-switch" style="align-items: center;">
 											  <input class="form-check-input" type="checkbox" id="rdoRssiFilter" onclick="clickRdoRssiFilter();">
@@ -343,7 +336,7 @@
 											</div>
 										</div>
 									</div>
-		                			<div class="row mb-3" style="align-items: center;">
+		                			<div class="row mb-1" style="align-items: center;">
 										<div class="col-sm-5">
 						                  <div class="input-group input-group-sm">
 						                  	<span class="input-group-text" style="font-size:12px !important;">マッチ範囲</span>
@@ -528,11 +521,10 @@
 						  <table id="detailList" class="table2" >
 						   <thead>
 							  <tr style="height:0px;display:none">
-								<th style="width:30%">リーダ/アンテナ</th>
 								<th >RFIDタグ</th>
-								<th style="width:30%"></th>
+								<th style="width:40%"></th>
 								<th style="width:15%"></th>
-								<th style="width:5%"></th>
+								<th style="width:10%"></th>
 							  </tr>
 							</thead>
 							<tbody style="vertical-align: middle;">
@@ -580,73 +572,79 @@
 					</div>
 					<div class="modal-body" >
 						<div class="row mb-1" >
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">タグID（Hex）</span>
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-9">
 								<input id="readTagId" type="text" placeholder="" class="form-control form-control-sm" >
 							</div>
 						</div>
 						<div class="row mb-1" >
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">パスワード（Hex）</span>
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-9">
 								<input id="readPwd" type="text" placeholder="" class="form-control form-control-sm" value="00000000">
 							</div>
 						</div>
 						<div class="row mb-1" >
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">TID</span>
 							</div>
-							<div class="col-sm-8" style="">
+							<div class="col-sm-9" style="">
 								<textarea id="readTid" class="form-control form-control-sm" style="height: 55px" disabled></textarea>
 							</div>
 						</div>
 						<div class="row mb-1" >
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">RESERVED</span>
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-9">
 								<input id="readReserved" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
 							</div>
 						</div>
 						<div class="row mb-1" >
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">EPC</span>
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-2" style="padding: 0px 2px 0px 12px">
+								<input id="readCRC" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+							</div>
+							<div class="col-sm-2" style="padding: 0px 2px 0px 0px">
+								<input id="readPC" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+							</div>
+							<div class="col-sm-5" style="padding: 0px 12px 0px 0px">
 								<input id="readEpc" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
 							</div>
 						</div>
-						<div class="row mb-3" >
-							<div class="col-sm-4">
+						<div class="row mb-1" >
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">USER</span>
 							</div>
-							<div class="col-sm-8" style="">
+							<div class="col-sm-9" style="">
 								<textarea id="readUser" class="form-control form-control-sm" style="height: 100px" disabled></textarea>
 							</div>
 						</div>
 						<div class="row mb-1" >
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">GS1 EPC標準</span>
 							</div>
-							<div class="col-sm-8">
+							<div class="col-sm-9">
 								<span id="readGS1"></span>
 							</div>
 						</div>
 						<div class="row mb-4" >
-							<div class="col-sm-4">
+							<div class="col-sm-3">
 								<span style="font-weight: bold;">EPC</span>
 							</div>
-							<div class="col-sm-8" style="word-wrap: break-word;">
+							<div class="col-sm-9" style="word-wrap: break-word;">
 								<textarea id="readDataHex" class="form-control form-control-sm" style="height: 200px" disabled></textarea>
 							</div>
 						</div>
 
 						<div class="row mb-1" style="width:100%;text-align:right;">
 							<div class="col-sm-12">
-								<button type="button" class="btn btn-primary" onclick="clickRead();">Read</button>
+								<button type="button" id="readTagBtn" class="btn btn-primary" onclick="clickRead();">Read</button>
 							</div>
 						</div>
 					</div>
@@ -776,7 +774,7 @@
 										<div class="card" style="margin-bottom: 10px;border-top-left-radius: 0px !important;">
 											<div class="card-body" style="padding:0 10px 10px 10px !important;">
 												<div class="row mb-1" style="margin-top:5px;">
-													<label  class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">メモリBank</label>
+													<label  class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">メモリBank</label>
 													<div class="col-sm-4">
 														 <select id="writeTagType" class="form-select form-select-sm"  style="font-size:12px !important;">
 															  <option selected value="0" >RESERVED</option>
@@ -786,27 +784,57 @@
 													</div>
 												</div>
 												<div class="row mb-1" >
-													<label  class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">オフセット（Bytes）</label>
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">データ(Hex）</label>
+													<div class="col-sm-6">
+														<input id="writeDataHex" type="text" placeholder="" class="form-control form-control-sm" >
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label  class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">オフセット（Bytes）</label>
 													<div class="col-sm-4">
 														 <input id="writeOffsetByte" type="text" placeholder="" class="form-control form-control-sm" >
 													</div>
 												</div>
 												<div class="row mb-1" >
-													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">長さ（Bytes）</label>
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">長さ（Bytes）</label>
 													<div class="col-sm-4">
 														 <input id="writeLengthByte" type="text" placeholder="" class="form-control form-control-sm" >
 													</div>
 												</div>
+												<div class="row mb-1" >
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">EPC</label>
+													<div class="col-sm-2" style="padding: 0px 2px 0px 12px">
+														<input id="writeCRC" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+													</div>
+													<div class="col-sm-2" style="padding: 0px 2px 0px 0px">
+														<input id="writePC" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+													</div>
+													<div class="col-sm-5" style="padding: 0px 12px 0px 0px">
+														<input id="writeEpc" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">TID</label>
+													<div class="col-sm-9">
+														<textarea id="writeTid" class="form-control form-control-sm" style="height: 55px" disabled></textarea>
+													</div>
+												</div>
+												<div class="row mb-1" >
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">USER</label>
+													<div class="col-sm-9">
+														<textarea id="writeUser" class="form-control form-control-sm" style="height: 100px" disabled></textarea>
+													</div>
+												</div>
 												<div class="row mb-4" >
-													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">データ(Hex）</label>
-													<div class="col-sm-8">
-														 <input id="writeDataHex" type="text" placeholder="" class="form-control form-control-sm" >
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">RESERVED</label>
+													<div class="col-sm-9">
+														<input id="writeReserved" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
 													</div>
 												</div>
 												<div class="row mb-1" style="width:100%;text-align:left;">
 													<div class="col-sm-12">
-														<button type="button" class="btn btn-primary" onclick="clickCheck();">チェック</button>
-														<button type="button" id="btnWrite2" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled >書込み</button>
+														<button type="button" id="btnCheck" class="btn btn-primary" onclick="clickCheck();">チェック</button>
+														<button type="button" id="btnWrite" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled >書込み</button>
 													</div>
 												</div>
 											</div>
@@ -913,8 +941,8 @@
 												</div>
 												<div class="row mb-1" style="width:100%;text-align:left;">
 													<div class="col-sm-12">
-														<button type="button" class="btn btn-primary" onclick="clickCheck();">チェック</button>
-														<button type="button" id="btnWrite" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled>書込み</button>
+														<button type="button" id="btnCheck2" class="btn btn-primary" onclick="clickCheck();">チェック</button>
+														<button type="button" id="btnWrite2" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled>書込み</button>
 													</div>
 												</div>
 											</div>
@@ -968,7 +996,7 @@
 	$(document).ready(function() {
 
 		  for (let i = 0; i < 39; i++) {
-			  $('#detailList').append("<tr><td></td><td></td><td></td><td></td><td></td></tr>");
+			  $('#detailList').append("<tr><td></td><td></td><td></td><td></td></tr>");
 		  }
 		  if (!isInitDetail) {
 				isInitDetail = true;
@@ -992,7 +1020,7 @@
 		  }
 	  });
 	//GS１選択
-	function clickGs1() {
+	function clickGs1Btn() {
 		  if($("#gridGs1").prop('checked')) {
 			  $("#tagGs1").prop("disabled", false);
 			  $("#epcCode1").prop("disabled", false);
@@ -1161,10 +1189,14 @@
 
 	//操作画面を表示
 	function openOperate(tagId) {
+		  if ($("#btnStart").prop("disabled") == true) {
+			return;
+		  }
+
 		  curTagId = tagId;
 		  let m = document.getElementById("divOperate");
 		  $(m).modal("show");
-	  }
+	}
 	//読み込み画面を表j
 	function openRead() {
 		  let m = document.getElementById("divRead");
@@ -1172,11 +1204,14 @@
 		  $("#readTagId").val(curTagId);
 		  $('#readPwd').val("00000000");
 		  $('#readTid').val("");
+		  $('#readCRC').val("");
+		  $('#readPC').val("");
 		  $('#readEpc').val("");
 		  $('#readUser').val("");
 		  $('#readReserved').val("");
 		  $('#readDataHex').val("");
 		  $('#readGS1').html("");
+		  clickRead();
 	  }
 	//書き込み画面を表示
 	function openWrite() {
@@ -1406,7 +1441,7 @@
 	function inventoryStart() {
 		$('#detailList').find('tbody').empty();
 		for (let i = 0; i < 39; i++) {
-			$('#detailList').append("<tr><td></td><td></td><td></td><td></td><td></td></tr>");
+			$('#detailList').append("<tr><td></td><td></td><td></td><td></td></tr>");
 		}
 
 		var index = 1;
@@ -1577,6 +1612,7 @@
 	}
 	//タグ読み込み
 	function clickRead() {
+		$('#readTagBtn').prop("disabled", true);
 		const jsonData = createTagReadJson();
 		console.log(JSON.stringify(jsonData));
 		  $.ajax({
@@ -1588,13 +1624,20 @@
 			  success: function(res) {
 				  console.log(res.data)
 				  if (res.data) {
+					  let epc = res.data.epc;
+					  let crc = epc.substr(0,4);
+					  let pc = epc.substr(4,4);
+					  let tagId = epc.substr(8);
 					  if (res.data.tid) $('#readTid').val(res.data.tid);
-					  if (res.data.epc) $('#readEpc').val(res.data.epc);
+					  if (res.data.epc) $('#readCRC').val(crc);
+					  if (res.data.epc) $('#readPC').val(pc);
+					  if (res.data.epc) $('#readEpc').val(tagId);
 					  if (res.data.user) $('#readUser').val(res.data.user);
 					  if (res.data.reserved) $('#readReserved').val(res.data.reserved);
 					  if (res.data.gs1Data) $('#readDataHex').val(res.data.gs1Data);
 					  if (res.data.gs1Name) $('#readGS1').html(res.data.gs1Name);
 				  }
+				  $('#readTagBtn').prop("disabled", false);
 			  }
 		  });
 	  }
@@ -1751,7 +1794,11 @@
 	}
 	//タグチェック
 	function clickCheck() {
-
+		if (curIndex == 1) {
+			$('#btnCheck').prop("disabled", true);
+		} else {
+			$('#btnCheck2').prop("disabled", true);
+		}
 		const jsonData = createTagCheckJson();
 		console.log(JSON.stringify(jsonData));
 		$.ajax({
@@ -1764,9 +1811,26 @@
 				console.log(res.data)
 				if (res.data && res.data.epc) {
 					console.log(res.data.epc)
+					if (curIndex == 1) {
+						let epc = res.data.epc;
+						let crc = epc.substr(0,4);
+						let pc = epc.substr(4,4);
+						let tagId = epc.substr(8);
+						if (res.data.tid) $('#writeTid').val(res.data.tid);
+						if (res.data.epc) $('#writeCRC').val(crc);
+						if (res.data.epc) $('#writePC').val(pc);
+						if (res.data.epc) $('#writeEpc').val(tagId);
+						if (res.data.user) $('#writeUser').val(res.data.user);
+						if (res.data.reserved) $('#writeReserved').val(res.data.reserved);
+					}
 
-					$('#btnWrite').prop("disabled", false);
-					$('#btnWrite2').prop("disabled", false);
+					if (curIndex == 1) {
+						$('#btnCheck').prop("disabled", false);
+						$('#btnWrite').prop("disabled", false);
+					} else {
+						$('#btnWrite2').prop("disabled", false);
+						$('#btnCheck2').prop("disabled", false);
+					}
 				}
 			}
 		});
@@ -1829,11 +1893,14 @@
 	}
 	//タグ書き込み
 	function clickWrite() {
+
 		let dataType;
 		let data;
 		let offset;
 		let count;
 		if (curIndex == 1) {
+			$('#btnWrite').prop("disabled", true);
+			$('#btnCheck').prop("disabled", true);
 			dataType = $('#writeTagType').val();
 			data = $('#writeDataHex').val();
 			offset = $('#writeOffsetByte').val();
@@ -1842,10 +1909,19 @@
 			//チェック
 			if (!checkWriteData(data,offset,count)) {
 
-				$.modal.msg("入力値が不正でした。");
+				//$.modal.msg("入力値が不正でした。");
+				if (curIndex == 1) {
+					$('#btnWrite').prop("disabled", false);
+					$('#btnCheck').prop("disabled", false);
+				} else {
+					$('#btnWrite2').prop("disabled", false);
+					$('#btnCheck2').prop("disabled", false);
+				}
 				return;
 			}
 		} else {
+			$('#btnWrite2').prop("disabled", true);
+			$('#btnCheck2').prop("disabled", true);
 			dataType = "1";
 			data = $('#writeDataHex2').val();
 			offset = 4 + '';
@@ -1853,6 +1929,13 @@
 			//チェック
 			if (!checkWriteData(data,offset,count)) {
 				$.modal.msg("入力値が不正でした。");
+				if (curIndex == 1) {
+					$('#btnWrite').prop("disabled", false);
+					$('#btnCheck').prop("disabled", false);
+				} else {
+					$('#btnWrite2').prop("disabled", false);
+					$('#btnCheck2').prop("disabled", false);
+				}
 				return;
 			}
 		}
@@ -1868,10 +1951,22 @@
 				console.log(res);
 				if (res.data == 1) {
 					$.modal.msg("タグ書き込みが成功しました");
-					$('#btnWrite').prop("disabled", true);
-					$('#btnWrite2').prop("disabled", true);
+					if (curIndex == 1) {
+						$('#btnWrite').prop("disabled", true);
+						$('#btnCheck').prop("disabled", false);
+					} else {
+						$('#btnWrite2').prop("disabled", true);
+						$('#btnCheck2').prop("disabled", false);
+					}
 				} else {
 					$.modal.msg("タグ書き込みが失敗しました");
+					if (curIndex == 1) {
+						$('#btnWrite').prop("disabled", false);
+						$('#btnCheck').prop("disabled", false);
+					} else {
+						$('#btnWrite2').prop("disabled", false);
+						$('#btnCheck2').prop("disabled", false);
+					}
 				}
 			}
 		});
@@ -1879,44 +1974,55 @@
 	}
 	//書き込み内容をチェック
 	function checkWriteData(value,offset,length) {
-		console.log("value:"+value)
-		console.log("offset:"+offset)
-		console.log("length:"+length)
+		console.log("value:"+value);
+		console.log("offset:"+offset);
+		console.log("length:"+length);
 		if (value == null || value.length == 0) {
+			$.modal.msg("データを入力してください。");
 			return false;
 		}
 		if (offset == null || offset.length == 0) {
+			$.modal.msg("オフセットを入力してください。");
 			return false;
 		}
 		if (length == null || length.length == 0) {
+			$.modal.msg("長さがを入力してください。");
 			return false;
 		}
 		//16進法チェック
 		if (!/^[A-Fa-f0-9]+$/.test(value)) {
 			console.log("1チェック error")
-
+			$.modal.msg("データが16進法半角数字で入力してください。");
 			return false;
 		}
 		//長さは必ず4の倍数
 		if (value.length % 4 != 0) {
 			console.log("2チェック error")
+			$.modal.msg("データの長さは必ず4の倍数ください。");
 			return false;
 		}
 		//数字チェック
 		if (!/^[0-9]+$/.test(offset)) {
 			console.log("3チェック error")
-
+			$.modal.msg("オフセットが数字で入力してください。");
+			return false;
+		}
+		//先頭の４byteがＣＲＣ＋ＰＣなので、
+		if (Number(offset) < 4) {
+			console.log("3チェック error")
+			$.modal.msg("オフセットの値が4より小さくできません。");
 			return false;
 		}
 		//数字チェック
 		if (!/^[0-9]+$/.test(length)) {
 			console.log("4チェック error")
-
+			$.modal.msg("長さが数字で入力してください。");
 			return false;
 		}
 		if (value.length / 2 != parseInt(length)) {
 			console.log("5チェック error")
-			console.log(value.length / 4)
+			//console.log(value.length / 2)
+			$.modal.msg("長さの入力値が不正でした。");
 			return false;
 		}
 		return true;
@@ -2040,7 +2146,11 @@
 				continue;
 			}
 			let html = '<tr id="rfid_' + rfidData[i].tagId + '">';
-			html += '<td className="td-padding" style="width:25%">' + ipMap.get(rfidData[i].readerIp) + '</td>';
+			let tadTime = "";
+			if (rfidData[i].tagTime && rfidData[i].tagTime.length > 10) {
+				tadTime = rfidData[i].tagTime.substr(10);
+			}
+			//html += '<td className="td-padding" style="width:25%">' + ipMap.get(rfidData[i].readerIp) + '</td>';
 			html += '<td className="td-padding">' + rfidData[i].tagId + '</td>';
 			html += '<td className="td-padding" style="width:25%">';
 			html += '<span>';
@@ -2049,7 +2159,7 @@
 			}
 			html += '</span>';
 			html += '</td>';
-			html += '<td className="td-padding" style="width:25%">' + rfidData[i].tagTime + '</td>';
+			html += '<td className="td-padding" style="width:25%">' + tadTime + '</td>';
 			html += '<td className="td-padding" style="width:5%"><a href="#" onClick="openOperate(\'' + rfidData[i].tagId + '\');" style="color:white">...</a></td>';
 			html += '</tr>';
 			$('#detailList tr:last').remove();
@@ -2199,7 +2309,7 @@
 		if (readerParam.isGS1) {
 			$("#gridGs1").prop('checked', true);
 			$("#gridNoGs1").prop('checked', false);
-			clickGs1();
+			clickGs1Btn();
 			//GS1
 			$("#tagGs1").val(readerParam.tagGs1);
 			//epcCode1

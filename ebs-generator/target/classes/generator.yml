@@ -1,0 +1,11 @@
+
+# コード生成
+gen:
+  # 作者
+  author: ebs
+  # デフォルトのパスのsystem 自分のモジュール名に変更する必要がある 例system monitor tool
+  packageName: com.ebs.system
+  # 表の先頭を自動削除、デフォルトfalse
+  autoRemovePre: false
+  # 表先頭（生成するクラス名に先頭を含まない、複数の場合がカンマで区切り）
+  tablePrefix: sys_

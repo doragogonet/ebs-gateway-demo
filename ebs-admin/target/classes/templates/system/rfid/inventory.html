@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="utf-8">
@@ -16,25 +16,17 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <!--<link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">-->
-  <link href="assets/css/datatables.css" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/css/datatables.css}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link th:href="@{/assets/css/style.css}" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Mar 17 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
   <style>
   .my-div {
     height: 300px;
@@ -93,16 +85,16 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="#" onclick="goHome();" class="logo d-flex align-items-center">
         <span class="d-lg-block">EBS-Gateway -&nbsp;</span>
       </a>
-      <a href="inventory.html" class="logo d-flex align-items-center">
+      <a href="/rfid/inventory/index" class="logo d-flex align-items-center">
         <span class="d-lg-block"> 入出庫 </span>
       </a>
     </div><!-- End Logo -->
      <div class="d-flex align-items-center justify-content-between" style="margin-left: 130px;">
-	     <button type="button" class="btn btn-outline-primary btn-lg" onclick="window.location.href='inventory3.html'" disabled>ダッシュボード</button>
-	     <button type="button" class="btn btn-outline-dark btn-lg" onclick="window.location.href='inventorySearch.html'" style="margin-left: 20px;" >入出庫</button>
+	     <button type="button" class="btn btn-outline-primary btn-lg" onclick="window.location.href='/rfid/inventory/index'" disabled>ダッシュボード</button>
+	     <button type="button" class="btn btn-outline-dark btn-lg" onclick="window.location.href='/rfid/inventorySearch/index'" style="margin-left: 20px;" >入出庫</button>
     </div>
 	<nav class="header-nav ms-auto">
 		<ul class="d-flex align-items-center">
@@ -110,49 +102,18 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <span class="d-none d-md-block dropdown-toggle ps-2">郭</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">[[${user.loginName}]]</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>郭</h6>
+              <h6>[[${user.loginName}]]</h6>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
-
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>プロファイル</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>設定</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>ヘルプ</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" th:href="@{logout}">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>ログアウト</span>
               </a>
@@ -374,29 +335,22 @@
 
   </main><!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      Copyright &copy; e-Business Solution Co.,Ltd. All Rights Reserved
-    </div>
-  </footer><!-- End Footer -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/quill/quill.min.js"></script>
-  <!--<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>-->
+  <script th:src="@{/assets/vendor/apexcharts/apexcharts.min.js}"></script>
+  <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/assets/vendor/quill/quill.min.js}"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/datatables.js"></script>
+  <script th:src="@{/assets/js/main.js}"></script>
+  <script th:src="@{/assets/js/jquery.min.js}"></script>
+  <script th:src="@{/assets/js/datatables.js}"></script>
   
-  <script>
-  var detailDt1;
-  var detailDt2;
+  <script th:inline="javascript">
+
+	  var ctx = [[@{/}]];
+	  var detailDt1;
+	  var detailDt2;
+
   $(document).ready(function() { 
 	  //$('.datatable-top').css("display","none");
 	  //$('.datatable-bottom .datatable-info').css("display","none");
@@ -466,6 +420,11 @@
 		
 	}
   }
+
+	  //インデックス画面へ
+	  function goHome() {
+		  window.location.href= ctx + "index";
+	  }
   
  </script>
 
