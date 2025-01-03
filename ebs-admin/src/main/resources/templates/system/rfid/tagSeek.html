@@ -374,11 +374,11 @@
 											<div class="input-group input-group-sm">
 												<span class="input-group-text" style="font-size:12px !important;">マッチパターン</span>
 												<select id="matchPattern" class="form-select form-select-sm " style="font-size:12px !important;" onchange="changeMatchPattern();" disabled>
-													<option selected value="0">A</option>
-													<option value="1">A_AND_B</option>
-													<option value="2">A_AND_NOTB</option>
-													<option value="3">NOTA_AND_B</option>
-													<option value="4">NOTA_AND_NOTB</option>
+													<option selected value="0">A_AND_B</option>
+													<option value="1">NOTA_AND_B</option>
+													<option value="2">NOTA_AND_NOTB</option>
+													<option value="3">A_AND_NOTB</option>
+													<option value="4">A</option>
 												</select>
 											</div>
 										</div>
@@ -479,9 +479,9 @@
 								                      <option value="1">GPI</option>
 								                      <option value="2">HANDHELD</option>
 								                      <option selected value="3">IMMEDIATE</option>
-								                      <option value="4">PERIODIC</option>
-								                      <option value="5">TIMELAPSE</option>
-								                      <option value="6">NONE</option>
+													  <option value="4">NONE</option>
+								                      <option value="5">PERIODIC</option>
+								                      <option value="6">TIMELAPSE</option>
 												</select>
 											</div>
 										</div>
@@ -697,12 +697,12 @@
 						
 						<div class="row mb-1" >
                     		<div class="col-sm-4">
-                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock1" value="0"   checked>&nbsp;KILL_PASSWORD</input>
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock1" value="0"  >&nbsp;KILL_PASSWORD</input>
                     		</div>
 				        </div>
 				        <div class="row mb-1" >
                     		<div class="col-sm-4">
-                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock2" value="1"   checked>&nbsp;ACCESS_PASSWORD</input>
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock2" value="1"  >&nbsp;ACCESS_PASSWORD</input>
                     		</div>
 				        </div>
 				        <div class="row mb-1" >
