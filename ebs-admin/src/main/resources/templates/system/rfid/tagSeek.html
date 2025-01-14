@@ -765,7 +765,7 @@
 
 						<div class="row mb-1" style="width:100%;text-align:right;">
 							<div class="col-sm-12">
-								<button type="button" id="readTagBtn rounded-pill" class="btn btn-primary" onclick="clickRead();">Read</button>
+								<button type="button" id="readTagBtn" class="btn btn-primary rounded-pill" onclick="clickRead();">Read</button>
 							</div>
 						</div>
 					</div>
@@ -844,7 +844,7 @@
 
 						<div class="row mb-1" style="width:100%;text-align:right;">
 							<div class="col-sm-12">
-								<button type="button" class="btn btn-primary rounded-pill" onclick="clickLockUnlock();">実行</button>
+								<button type="button" id="lockTagBtn" class="btn btn-primary rounded-pill" onclick="clickLockUnlock();">実行</button>
 							</div>
 						</div>
 					</div>
@@ -1626,6 +1626,7 @@
 			}
 			$("#btnStart").html('停止');
 		} else {
+			$(".spanPoint").css("display","block");
 			inventoryStop();
 			$("#btnStart").html('開始');
 		}
@@ -1984,6 +1985,12 @@
 						$('#btnWrite2').prop("disabled", false);
 						$('#btnCheck2').prop("disabled", false);
 					}
+				} else {
+					if (curIndex == 1) {
+						$('#btnCheck').prop("disabled", false);
+					} else {
+						$('#btnCheck2').prop("disabled", false);
+					}
 				}
 			}
 		});
@@ -2316,7 +2323,7 @@
 			//html += '<td className="td-padding" style="width:5%"><a href="#" onClick="openOperate(\'' + rfidData[i].tagId + '\');" style="color:white">...</a></td>';
 			html += '<td class="td-padding" style="width:5%">';
 			html += '<div class="popup-menu">';
-			html += '<span>...</span>';
+			html += '<span class="spanPoint" style="display:none">...</span>';
 			html += '<div class="mymenu" id="menu">';
 			html += '<a class="dropdown-item" href="#" onClick="openRead(\'' + rfidData[i].tagId + '\');">Read</a>';
 			html += '<a class="dropdown-item" href="#" onClick="openWrite(\'' + rfidData[i].tagId + '\');">Write</a>';
