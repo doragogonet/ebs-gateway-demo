@@ -75,14 +75,6 @@
             <systemPath>${project.basedir}/libs/Symbol.RFID.API3.jar</systemPath>
         </dependency>
 
-        <dependency>
-            <groupId>ebs.ebs</groupId>
-            <artifactId>ZebraWrapper</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/ZebraWrapper.jar</systemPath>
-        </dependency>
-
     </dependencies>
 
     <build>

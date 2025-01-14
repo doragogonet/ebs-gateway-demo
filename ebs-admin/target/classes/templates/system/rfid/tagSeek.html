@@ -69,6 +69,52 @@
 	  margin-right: 0px;
 	  /*border-bottom: 1px solid #ed5565;*/
 	}
+  	.popup-menu {
+	  position: relative;
+	  display: inline-block;
+	  }
+
+	  .mymenu {
+		  display: block;
+		  position: absolute;
+		  top: 100%;
+		  left: 0;
+		  background-color: white;
+		  border: 1px solid #ccc;
+		  border-radius: 3px;
+		  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		  z-index: 1000;
+		  min-width: 50px;
+		  opacity: 0;
+		  visibility: hidden;
+		  transition: opacity 2s ease-in-out, visibility 0.5s ease-in-out;
+	  }
+
+	  .popup-menu:hover .mymenu {
+		  opacity: 1;
+		  visibility: visible;
+	  }
+
+	  .mymenu a {
+		  display: block;
+		  padding: 10px;
+		  text-decoration: none;
+		  color: black;
+	  }
+
+	  .mymenu a:hover {
+		  background-color: #f0f0f0;
+		  color: black;
+	  }
+	  .div-label-center{
+		  display: flex;
+		  height: 30px;
+		  align-items: center;
+	  }
+
+	  label {
+		  white-space: nowrap;
+	  }
 </style>
 </head>
 
@@ -118,15 +164,15 @@
 					<div class="card">
 						<div class="card-body">
 							<div class="row mb-4" style="width:100%;text-align:right;margin-top:10px;margin-bottom:10px;margin-right:0px;">
-								<div class="col-sm-12" >
+								<div class="col-sm-12" style="padding-right:0px;">
 									<span id="selectedImgList"></span>
-									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#divReaderList" style="margin-right:40px;">リーダー選択</button>
-									<button type="button" id="btnStart" class="btn btn-primary" onclick="inventoryStart();" disabled>開始</button>
-									<button type="button" id="btnStop" class="btn btn-primary" onclick="inventoryStop();" disabled>停止</button>
+									<button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#divReaderList" style="margin-right:10px;">リーダー選択</button>
+									<button type="button" id="btnStart" class="btn btn-primary rounded-pill" onclick="inventoryStart();" disabled>開始</button>
+<!--									<button type="button" id="btnStop" class="btn btn-primary" onclick="inventoryStop();" disabled>停止</button>-->
 								  </div>
 							</div>
 							<!-- modal start -->
-							<div class="modal fade" id="divReaderList" tabindex="-1">
+							<div class="modal fade" id="divReaderList" tabindex="5">
 								<div class="modal-dialog modal-dialog-scrollable">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -161,8 +207,8 @@
 												</div>
 
 												<div class="modal-footer">
-												  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-												  <button type="button" class="btn btn-primary" onclick="clickReaderSelect();">選択</button>
+												  <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">閉じる</button>
+												  <button type="button" class="btn btn-primary rounded-pill" onclick="clickReaderSelect(true);">選択</button>
 												</div>
 										  	</div>
 										</div>
@@ -171,53 +217,80 @@
 							</div>
 							<!-- modal end -->
 							<form class="needs-validation" id="readerForm" autocomplete="off">
+								<div style="padding:10px;background-color:rgba(135, 206, 235, 0.3);border: 1px solid rgba(135, 206, 235);border-radius: 5px;">
 									<div class="row mb-1" >
-										<div class="col-sm-2">
-										  <input class="form-check-input" type="radio" name="rdoGS" id="gridGs1" value="1" onclick="clickGs1Btn();">
-										  <label class="form-check-label" >
-											GS1規格
-										  </label>
-										</div>
-										<div class="col-sm-2" >
-										  <input class="form-check-input" type="radio" name="rdoGS" id="gridNoGs1" value="2" onclick="clickNoGs1();" checked>
-										  <label class="form-check-label" >
-											非標準
-										  </label>
+<!--										<div class="col-sm-2">-->
+<!--										  <input class="form-check-input" type="radio" name="rdoGS" id="gridGs1" value="1" onclick="clickGs1Btn();">-->
+<!--										  <label class="form-check-label" >-->
+<!--											GS1規格-->
+<!--										  </label>-->
+<!--										</div>-->
+<!--										<div class="col-sm-2" >-->
+<!--										  <input class="form-check-input" type="radio" name="rdoGS" id="gridNoGs1" value="2" onclick="clickNoGs1();" checked>-->
+<!--										  <label class="form-check-label" >-->
+<!--											非標準-->
+<!--										  </label>-->
+<!--										</div>-->
+										<div class="col-sm-3">
+											<div class="form-switch" style="align-items: center;">
+												<input class="form-check-input" type="checkbox" id="gridGs1" onclick="clickGs1Btn();">
+												<label><strong>GS1規格</strong></label>
+											</div>
 										</div>
 									</div>
 									<div class="row mb-1" >
-										  <div class="col-sm-3">
-											 <select id="tagGs1" class="form-select form-select-sm"  style="font-size:12px !important;" disabled>
-												  <option selected value="gdti" >GDTI-96</option>
-							                      <option value="gsrn">GSRN-96</option>
-							                      <option value="sscc">SSCC-96</option>
-							                      <option value="sgtin">SGTIN-96</option>
-							                      <option value="sgln">SGLN-96</option>
-							                      <option value="grai">GRAI-96</option>
-							                      <option value="giai">GIAI-96</option>
-							                      <option value="cpi">CPI-96</option>
-							                      <option value="gsrnp">GSRNP-96</option>
-							                      <option value="gdti_174" >GDTI-174</option>
-							                      <option value="sgin_198">SGTIN-198</option>
-							                      <option value="sgln_195">SGLN-195</option>
-							                      <option value="grai_170">GRAI-170</option>
-							                      <option value="giai_202">GIAI-202</option>
-												</select>
-										  </div>
+										<div class="col-sm-2 div-label-center" style="">
+											<label>GS1</label>
+										</div>
+									  	<div class="col-sm-4" style="padding-left:0">
+										 	<select id="tagGs1" class="form-select form-select-sm"  style="font-size:12px !important;" disabled>
+											  <option selected value="gdti" >GDTI-96</option>
+											  <option value="gsrn">GSRN-96</option>
+											  <option value="sscc">SSCC-96</option>
+											  <option value="sgtin">SGTIN-96</option>
+											  <option value="sgln">SGLN-96</option>
+											  <option value="grai">GRAI-96</option>
+											  <option value="giai">GIAI-96</option>
+											  <option value="cpi">CPI-96</option>
+											  <option value="gsrnp">GSRNP-96</option>
+											  <option value="gdti_174" >GDTI-174</option>
+											  <option value="sgtin_198">SGTIN-198</option>
+											  <option value="sgln_195">SGLN-195</option>
+											  <option value="grai_170">GRAI-170</option>
+											  <option value="giai_202">GIAI-202</option>
+											</select>
+									  	</div>
 									</div>
-									<div class="row mb-4">
-										<div class="col-sm-12">
-										 <div class="input-group input-group-sm" >
-										  <input id="epcCode1" type="text" placeholder="企業コード" class="form-control " style="font-size:12px !important;" disabled>
-										  <span class="input-group-text" style="font-size:12px !important;">－</span>
-										  <input id="epcCode2" type="text" placeholder="物品コード" class="form-control" style="font-size:12px !important;" disabled>
-										  <span class="input-group-text" style="font-size:12px !important;">－</span>
-										  <input id="epcCode3" type="text" placeholder="シリアル#" class="form-control" style="font-size:12px !important;" disabled>
-										 </div>
+									<div class="row mb-1">
+										<div class="col-sm-2 div-label-center" >
+											<label>企業コード</label>
+										</div>
+										<div class="col-sm-4" style="padding-left:0">
+											<input id="epcCode1" type="text" placeholder="" class="form-control " style="font-size:12px !important;" disabled>
 										</div>
 									</div>
+									<div class="row mb-1">
+										<div class="col-sm-2 div-label-center">
+											<label>物品コード</label>
+										</div>
+										<div class="col-sm-4" style="padding-left:0">
+											<input id="epcCode2" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+										</div>
+									</div>
+									<div class="row mb-1">
+										<div class="col-sm-2 div-label-center">
+											<label>シリアル</label>
+										</div>
+										<div class="col-sm-4" style="padding-left:0px">
+											<input id="epcCode3" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+										</div>
+									</div>
+								</div>
+								<div class="row mb-2">
+								</div>
+								<div style="padding:10px;background-color:rgba(135, 206, 235, 0.3);border: 1px solid rgba(135, 206, 235);border-radius: 5px;">
 									<div class="row mb-1" style="align-items: center;">
-				                    	<div class="col-sm-3" >
+				                    	<div class="col-sm-4" >
 						            		<div class="form-switch" style="align-items: center;">
 						                      <input class="form-check-input" type="checkbox" id="rdoPreFilter" onclick="clickRdoPreFilter();">
 						                      <label><strong>プレフィルタ</strong></label>
@@ -227,7 +300,7 @@
 											<i id="addPreFilter" class="bx bx-plus-circle" style="font-size:25px;" onclick="openPreFilter(-1, null);"></i>
 										</div>
 					                </div>
-									<div class="row mb-3">
+									<div class="row">
 										<div class="col-sm-12" id="preFilterList">
 
 										</div>
@@ -242,54 +315,57 @@
 													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 												</div>
 												<div class="modal-body" >
+<!--													<div class="row mb-1">-->
+<!--														<div class="col-sm-5">-->
+<!--															<div class="input-group input-group-sm">-->
+<!--																<span class="input-group-text" style="font-size:12px !important;">プレフィルタ名</span>-->
+<!--																<input id="preName" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">-->
+<!--															</div>-->
+<!--														</div>-->
+<!--													</div>-->
 													<div class="row mb-1">
-														<div class="col-sm-5">
-															<div class="input-group input-group-sm">
-																<span class="input-group-text" style="font-size:12px !important;">プレフィルタ名</span>
-																<input id="preName" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;">
-															</div>
+														<div class="col-sm-2 div-label-center">
+															<label>Target</label>
 														</div>
-													</div>
-													<div class="row mb-1">
 														<div class="col-sm-3">
-															<div class="input-group input-group-sm">
-																<span class="input-group-text" style="font-size:12px !important;">Target</span>
-																<select id="preTarget" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
-																	<option value="0">SL</option>
-																	<option selected value="1">S0</option>
-																	<option value="2">S1</option>
-																	<option value="3">S2</option>
-																	<option value="4">S3</option>
-																</select>
-															</div>
+															<select id="preTarget" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																<option value="0">SL</option>
+																<option selected value="1">S0</option>
+																<option value="2">S1</option>
+																<option value="3">S2</option>
+																<option value="4">S3</option>
+															</select>
 														</div>
 													</div>
 													<div class="row mb-1">
+														<div class="col-sm-2 div-label-center">
+															<label>Action</label>
+														</div>
 														<div class="col-sm-7">
-															<div class="input-group input-group-sm">
-																<span class="input-group-text" style="font-size:12px !important;">Action</span>
-																<select id="preAction" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
-																	<option selected value="0">INV_A_NOT_INV_B</option>
-																	<option value="1">ASRT_SL_NOT_DSRT_SL</option>
-																	<option value="2">INV_A</option>
-																	<option value="3">ASRT_SL</option>
-																	<option value="4">NOT_INV_B</option>
-																	<option value="5">NOT_DSRT_SL</option>
-																	<option value="6">INV_A2BB2A</option>
-																	<option value="7">NEG_SL</option>
-																	<option value="8">INV_B_NOT_INV_A</option>
-																	<option value="9">DSRT_SL_NOT_ASRT_SL</option>
-																	<option value="10">INV_B</option>
-																	<option value="11">DSRT_SL</option>
-																	<option value="12">NOT_INV_A</option>
-																	<option value="13">NOT_ASRT_SL</option>
-																	<option value="14">NOT_INV_A2BB2A</option>
-																	<option value="15">NOT_NEG_SL</option>
-																</select>
-															</div>
+															<select id="preAction" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+																<option selected value="0">INV_A_NOT_INV_B</option>
+																<option value="1">ASRT_SL_NOT_DSRT_SL</option>
+																<option value="2">INV_A</option>
+																<option value="3">ASRT_SL</option>
+																<option value="4">NOT_INV_B</option>
+																<option value="5">NOT_DSRT_SL</option>
+																<option value="6">INV_A2BB2A</option>
+																<option value="7">NEG_SL</option>
+																<option value="8">INV_B_NOT_INV_A</option>
+																<option value="9">DSRT_SL_NOT_ASRT_SL</option>
+																<option value="10">INV_B</option>
+																<option value="11">DSRT_SL</option>
+																<option value="12">NOT_INV_A</option>
+																<option value="13">NOT_ASRT_SL</option>
+																<option value="14">NOT_INV_A2BB2A</option>
+																<option value="15">NOT_NEG_SL</option>
+															</select>
 														</div>
 													</div>
 													<div class="row mb-1">
+														<div class="col-sm-2 div-label-center">
+															<label>Memory Bank</label>
+														</div>
 														<div class="col-sm-3">
 															<select id="preMemoryBank" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
 																<option selected value="1">EPC</option>
@@ -298,69 +374,78 @@
 															</select>
 														</div>
 													</div>
-													<div class="row mb-4">
-														<div class="col-sm-5">
-															<div class="input-group input-group-sm">
-																<span class="input-group-text" style="font-size:12px !important;">データ</span>
-																<input id="preData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
-																<span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
-															</div>
+													<div class="row mb-1">
+														<div class="col-sm-2 div-label-center">
+															<label>データ</label>
 														</div>
-														<div class="col-sm-4">
-															<div class="input-group input-group-sm">
-																<span class="input-group-text" style="font-size:12px !important;">オフセット</span>
-																<input id="preOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
-																<span class="input-group-text" style="font-size:12px !important;">（bit）</span>
-															</div>
+														<div class="col-sm-5" style="padding-right:5px">
+															<input id="preData" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+														</div>
+														<div class="col-sm-1 div-label-center" style="padding:0">
+															<label>(Hex)</label>
+														</div>
+													</div>
+													<div class="row mb-3">
+														<div class="col-sm-2 div-label-center">
+															<label>オフセット</label>
+														</div>
+														<div class="col-sm-3" style="padding-right:5px">
+															<input id="preOffset" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+														</div>
+														<div class="col-sm-1 div-label-center" style="padding:0">
+															<label>(bit)</label>
 														</div>
 													</div>
 													<div class="modal-footer">
-														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-														<button type="button" class="btn btn-primary" onclick="clickOKPreFilter();">確定</button>
+														<button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">閉じる</button>
+														<button type="button" class="btn btn-primary rounded-pill" onclick="clickOKPreFilter();">確定</button>
 													</div>
 												</div>
-
 											</div>
 										</div>
 									</div>
 									<!-- PreFilter modal end -->
-
+								</div>
+								<div class="row mb-2">
+								</div>
+								<div style="padding:10px;background-color:rgba(135, 206, 235, 0.3);border: 1px solid rgba(135, 206, 235);border-radius: 5px;">
 									<div class="row mb-1">
 										<label><strong>ポストフィルタ</strong></label>
 									</div>
 									<div class="row mb-1" style="align-items: center;">
-										<div class="col-sm-3" >
+										<div class="col-sm-4" >
 											<div class="form-switch" style="align-items: center;">
 											  <input class="form-check-input" type="checkbox" id="rdoRssiFilter" onclick="clickRdoRssiFilter();">
 											  <label class="form-check-label" >RSSIフィルタ</label>
 											</div>
 										</div>
 									</div>
-		                			<div class="row mb-1" style="align-items: center;">
-										<div class="col-sm-5">
-						                  <div class="input-group input-group-sm">
-						                  	<span class="input-group-text" style="font-size:12px !important;">マッチ範囲</span>
-						                    <select id="matchRange" class="form-select form-select-sm " style="font-size:12px !important;" onchange="changeMatchRange();">
-						                      <option selected value="0">WITHIN_RANGE</option>
-						                      <option value="1">OUTSIDE_RANGE</option>
-						                      <option value="2">GREATER_THAN_LOWER_LIMIT</option>
-						                      <option value="3">LOWER_THAN_UPPER_LIMIT</option>
-						                    </select>
-						                  </div>
-					                  </div>
-										<div class="col-sm-2"  >
-										   <div class="input-group input-group-sm">
-						            		 	  <span class="input-group-text" style="font-size:12px !important;">下限</span>
-							                      <input id="rssiValueLower" type="number" placeholder="" class="form-control" style="font-size:12px !important;">
-						                     </div>
+		                			<div class="row mb-3" style="align-items: center;">
+										<div class="col-sm-2 div-label-center">
+											<label>マッチ範囲</label>
 										</div>
-										<div class="col-sm-2" >
-											 <div class="input-group input-group-sm">
-												  <span class="input-group-text" style="font-size:12px !important;">上限</span>
-												  <input id="rssiValueUpper" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
-											 </div>
+										<div class="col-sm-4" style="padding-left:0px">
+											<select id="matchRange" class="form-select form-select-sm " style="font-size:12px !important;" onchange="changeMatchRange();">
+												<option selected value="0">WITHIN_RANGE</option>
+												<option value="1">OUTSIDE_RANGE</option>
+												<option value="2">GREATER_THAN_LOWER_LIMIT</option>
+												<option value="3">LOWER_THAN_UPPER_LIMIT</option>
+											</select>
+					                  	</div>
+										<div class="col-sm-1 div-label-center" >
+											<label>下限</label>
+										</div>
+										<div class="col-sm-2" style="padding-left:0px">
+											<input id="rssiValueLower" type="number" placeholder="" class="form-control" style="font-size:12px !important;">
+										</div>
+										<div class="col-sm-1 div-label-center">
+											<label>上限</label>
+										</div>
+										<div class="col-sm-2" style="padding-left:0px">
+											<input id="rssiValueUpper" type="text" placeholder="" class="form-control" style="font-size:12px !important;">
 										</div>
 									</div>
+									<hr>
 									<div class="row mb-1" style="align-items: center;">
 				                    	<div class="col-sm-3" >
 						            		<div class="form-switch" style="align-items: center;">
@@ -369,25 +454,29 @@
 						                    </div>
 					                    </div>
 					                </div>
-									<div class="row mb-1">
-										<div class="col-sm-4">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">マッチパターン</span>
-												<select id="matchPattern" class="form-select form-select-sm " style="font-size:12px !important;" onchange="changeMatchPattern();" disabled>
-													<option selected value="0">A</option>
-													<option value="1">A_AND_B</option>
-													<option value="2">A_AND_NOTB</option>
-													<option value="3">NOTA_AND_B</option>
-													<option value="4">NOTA_AND_NOTB</option>
-												</select>
-											</div>
+									<div class="row mb-2">
+										<div class="col-sm-2 div-label-center">
+											<label>マッチパターン</label>
+										</div>
+										<div class="col-sm-4" style="padding-left:0px">
+											<select id="matchPattern" class="form-select form-select-sm " style="font-size:12px !important;" onchange="changeMatchPattern();" disabled>
+												<option selected value="0">A_AND_B</option>
+												<option value="1">NOTA_AND_B</option>
+												<option value="2">NOTA_AND_NOTB</option>
+												<option value="3">A_AND_NOTB</option>
+												<option value="4">A</option>
+											</select>
 										</div>
 									</div>
+									<hr>
 									<div class="row mb-1">
 										<label>パターンA</label>
 									</div>
 									<div class="row mb-1">
-										<div class="col-sm-3">
+										<div class="col-sm-2 div-label-center">
+											<label>Memory</label>
+										</div>
+										<div class="col-sm-3" style="padding-left:0px">
 											<select id="tagPatternAType" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
 												<option selected value="1">EPC</option>
 												<option value="2">TID</option>
@@ -396,33 +485,45 @@
 										</div>
 									</div>
 									<div class="row mb-1">
-										<div class="col-sm-4">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">データ</span> 
-												<input id="tagPatternAData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
-												<span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
-											</div>
+										<div class="col-sm-2 div-label-center">
+											<label>データ</label>
 										</div>
-										<div class="col-sm-3">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">オフセット</span>
-												<input id="tagPatternAOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
-												<span class="input-group-text" style="font-size:12px !important;">（bit）</span>
-											</div>
+										<div class="col-sm-5" style="padding-left:0px">
+											<input id="tagPatternAData" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
 										</div>
-										<div class="col-sm-4">
-					            		 <div class="input-group input-group-sm">
-					            		 	  <span class="input-group-text" style="font-size:12px !important;">マスク</span>
-						                      <input id="tagPatternAMask" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
-						                      <span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
-					                     </div>
-			                    	</div>
+										<div class="col-sm-1 div-label-center" style="padding:0">
+											<label>(Hex)</label>
+										</div>
 									</div>
+									<div class="row mb-1">
+										<div class="col-sm-2 div-label-center">
+											<label>オフセット</label>
+										</div>
+										<div class="col-sm-3" style="padding-left:0px">
+											<input id="tagPatternAOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+										</div>
+										<div class="col-sm-1 div-label-center" style="padding:0">
+											<label>(bit)</label>
+										</div>
+										<div class="col-sm-2 div-label-center" style="width:11%">
+											<label>マスク</label>
+										</div>
+										<div class="col-sm-3" style="padding-left:0px">
+											<input id="tagPatternAMask" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+										</div>
+										<div class="col-sm-1 div-label-center" style="padding:0">
+											<label>(Hex)</label>
+										</div>
+									</div>
+									<hr>
 									<div class="row mb-1">
 										<label>パターンB</label>
 									</div>
 									<div class="row mb-1">
-										<div class="col-sm-3">
+										<div class="col-sm-2 div-label-center">
+											<label>Memory</label>
+										</div>
+										<div class="col-sm-3" style="padding-left:0px">
 											<select id="tagPatternBType" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
 												<option selected value="1">EPC</option>
 												<option value="2">TID</option>
@@ -430,32 +531,43 @@
 											</select>
 										</div>
 									</div>
-									<div class="row mb-4">
-										<div class="col-sm-4">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">データ</span>
-												<input id="tagPatternBData" type="text" placeholder="" class="form-control" style="width:45%;font-size:12px !important;" disabled>
-												<span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
-											</div>
+									<div class="row mb-1">
+										<div class="col-sm-2 div-label-center">
+											<label>データ</label>
 										</div>
-										<div class="col-sm-3">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">オフセット</span>
-												<input id="tagPatternBOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
-												<span class="input-group-text" style="font-size:12px !important;">（bit）</span>
-											</div>
+										<div class="col-sm-5" style="padding-left:0px">
+											<input id="tagPatternBData" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
 										</div>
-										<div class="col-sm-4">
-					            		 <div class="input-group input-group-sm">
-					            		 	  <span class="input-group-text" style="font-size:12px !important;">マスク</span>
-						                      <input id="tagPatternBMask" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
-						                      <span class="input-group-text" style="font-size:12px !important;">（Hex）</span>
-					                     </div>
-			                    	</div>
+										<div class="col-sm-1 div-label-center" style="padding:0">
+											<label>(Hex)</label>
+										</div>
 									</div>
-
+									<div class="row mb-1">
+										<div class="col-sm-2 div-label-center">
+											<label>オフセット</label>
+										</div>
+										<div class="col-sm-3" style="padding-left:0px">
+											<input id="tagPatternBOffset" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+										</div>
+										<div class="col-sm-1 div-label-center" style="padding:0">
+											<label>(bit)</label>
+										</div>
+										<div class="col-sm-2 div-label-center" style="width:11%">
+											<label>マスク</label>
+										</div>
+										<div class="col-sm-3" style="padding-left:0px">
+											<input id="tagPatternBMask" type="text" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+			                    		</div>
+										<div class="col-sm-1 div-label-center" style="padding:0">
+											<label>(Hex)</label>
+										</div>
+									</div>
+								</div>
+								<div class="row mb-2">
+								</div>
+								<div style="padding:10px;background-color:rgba(135, 206, 235, 0.3);border: 1px solid rgba(135, 206, 235);border-radius: 5px;">
 									<div class="row mb-1" style="align-items: center;">
-				                    	<div class="col-sm-3" >
+				                    	<div class="col-sm-4" >
 						            		<div class="form-switch" style="align-items: center;">
 						                      <input class="form-check-input" type="checkbox" id="rdoTrigger" onclick="clickRdoTrigger();">
 						                      <label><strong>トリガー情報</strong></label>
@@ -463,54 +575,63 @@
 					                    </div>
 					                </div>
 					                <div class="row mb-1">
-						                  <div class="col-sm-3">
-							                  <div class="input-group input-group-sm">
-							                  	<span class="input-group-text" style="font-size:12px !important;">タグ報告トリガー</span>
-							                    <input id="tagReportTrigger" type="number" placeholder="" min="0" max="1" class="form-control" style="font-size:12px !important;" disabled>
-							                  </div>
-						                  </div>
+										<div class="col-sm-2 div-label-center">
+											<label>タグ報告</label>
+										</div>
+									  	<div class="col-sm-3" style="padding-left:0px">
+<!--										  <input id="tagReportTrigger" type="number" placeholder="" min="0" max="1" class="form-control" style="font-size:12px !important;" disabled>-->
+											<select id="tagReportTrigger" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+												<option value="0">0</option>
+												<option value="1" selected>1</option>
+											</select>
+									  	</div>
 							        </div>
 									<div class="row mb-1">
-										<div class="col-sm-5">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">開始トリガー</span>
-												<select id="triggerStart" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
-													  <option value="0">DISTANCE</option>
-								                      <option value="1">GPI</option>
-								                      <option value="2">HANDHELD</option>
-								                      <option selected value="3">IMMEDIATE</option>
-								                      <option value="4">PERIODIC</option>
-								                      <option value="5">TIMELAPSE</option>
-								                      <option value="6">NONE</option>
-												</select>
-											</div>
+										<div class="col-sm-2 div-label-center">
+											<label>開始トリガー</label>
+										</div>
+										<div class="col-sm-5" style="padding-left:0px">
+											<select id="triggerStart" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+												<option value="0">DISTANCE</option>
+												<option value="1">GPI</option>
+												<option value="2">HANDHELD</option>
+												<option selected value="3">IMMEDIATE</option>
+												<option value="4">NONE</option>
+												<option value="5">PERIODIC</option>
+												<option value="6">TIMELAPSE</option>
+											</select>
 										</div>
 									</div>
 									<div class="row mb-1">
-										<div class="col-sm-7">
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">停止トリガー</span>
-												<select id="triggerStop" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
-													 <option value="0">DURATION</option>
-								                      <option value="1">GPI_WITH_TIMEOUT</option>
-								                      <option value="2">HANDHELD_WITH_TIMEOUT</option>
-								                      <option selected value="3">IMMEDIATE</option>
-								                      <option value="4">N_ATTEMPTS_WITH_TIMEOUT</option>
-								                      <option value="5">NONE</option>
-								                      <option value="6">TAG_OBSERVATION_WITH_TIMEOUT</option>
-								                      <option value="7">TIMELAPSE</option>
-												</select>
-											</div>
+										<div class="col-sm-2 div-label-center">
+											<label>停止トリガー</label>
 										</div>
-										<div class="col-sm-3" >
-											<div class="input-group input-group-sm">
-												<span class="input-group-text" style="font-size:12px !important;">期間</span>
-												<input id="durationMil" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
-												<span class="input-group-text" style="font-size:12px !important;">ミリ秒</span>
-											</div>
+										<div class="col-sm-5" style="padding-left:0px">
+											<select id="triggerStop" class="form-select form-select-sm " style="font-size:12px !important;" disabled>
+												<option value="0">DURATION</option>
+												<option value="1">GPI_WITH_TIMEOUT</option>
+												<option value="2">HANDHELD_WITH_TIMEOUT</option>
+												<option selected value="3">IMMEDIATE</option>
+												<option value="4">N_ATTEMPTS_WITH_TIMEOUT</option>
+												<option value="5">NONE</option>
+												<option value="6">TAG_OBSERVATION_WITH_TIMEOUT</option>
+												<option value="7">TIMELAPSE</option>
+											</select>
+										</div>
+										<div class="col-sm-1 div-label-center">
+											<label>期間</label>
+										</div>
+										<div class="col-sm-2" style="padding-left:0px">
+											<input id="durationMil" type="number" placeholder="" class="form-control" style="font-size:12px !important;" disabled>
+										</div>
+										<div class="col-sm-1 div-label-center" style="padding:0">
+											<label>ミリ秒</label>
 										</div>
 									</div>
-								</form>
+								</div>
+								<div class="row mb-2">
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -573,7 +694,7 @@
 					<div class="modal-body" >
 						<div class="row mb-1" >
 							<div class="col-sm-3">
-								<span style="font-weight: bold;">タグID（Hex）</span>
+								<span style="font-weight: bold;">タグID(Hex)</span>
 							</div>
 							<div class="col-sm-9">
 								<input id="readTagId" type="text" placeholder="" class="form-control form-control-sm" >
@@ -581,7 +702,7 @@
 						</div>
 						<div class="row mb-1" >
 							<div class="col-sm-3">
-								<span style="font-weight: bold;">パスワード（Hex）</span>
+								<span style="font-weight: bold;">パスワード(Hex)</span>
 							</div>
 							<div class="col-sm-9">
 								<input id="readPwd" type="text" placeholder="" class="form-control form-control-sm" value="00000000">
@@ -644,7 +765,7 @@
 
 						<div class="row mb-1" style="width:100%;text-align:right;">
 							<div class="col-sm-12">
-								<button type="button" id="readTagBtn" class="btn btn-primary" onclick="clickRead();">Read</button>
+								<button type="button" id="readTagBtn rounded-pill" class="btn btn-primary" onclick="clickRead();">Read</button>
 							</div>
 						</div>
 					</div>
@@ -665,7 +786,7 @@
 					<div class="modal-body" >
 						<div class="row mb-4" >
 							<div class="col-sm-4">
-								<span style="font-weight: bold;">タグID（Hex）</span>
+								<span style="font-weight: bold;">タグID(Hex)</span>
 							</div>
 							<div class="col-sm-8">
 								<input id="lockTagId" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
@@ -673,7 +794,7 @@
 						</div>
 						<div class="row mb-4" >
 							<div class="col-sm-4" style="margin: auto;">
-								<span style="font-weight: bold;">パスワード（Hex）</span>
+								<span style="font-weight: bold;">パスワード(Hex)</span>
 							</div>
 							<div class="col-sm-8" >
 								<input id="lockTagPwd" type="text" placeholder="" class="form-control form-control-sm" value="00000000">
@@ -694,15 +815,15 @@
 									</select>
 							</div>
 						</div>
-						
+
 						<div class="row mb-1" >
                     		<div class="col-sm-4">
-                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock1" value="0"   checked>&nbsp;KILL_PASSWORD</input>
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock1" value="0"  >&nbsp;KILL_PASSWORD</input>
                     		</div>
 				        </div>
 				        <div class="row mb-1" >
                     		<div class="col-sm-4">
-                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock2" value="1"   checked>&nbsp;ACCESS_PASSWORD</input>
+                    			<input class="form-check-input" type="radio" name="rdoLock" id="rdoLock2" value="1"  >&nbsp;ACCESS_PASSWORD</input>
                     		</div>
 				        </div>
 				        <div class="row mb-1" >
@@ -723,7 +844,7 @@
 
 						<div class="row mb-1" style="width:100%;text-align:right;">
 							<div class="col-sm-12">
-								<button type="button" class="btn btn-primary" onclick="clickLockUnlock();">実行</button>
+								<button type="button" class="btn btn-primary rounded-pill" onclick="clickLockUnlock();">実行</button>
 							</div>
 						</div>
 					</div>
@@ -744,7 +865,7 @@
 					<div class="modal-body" >
 						<div class="row mb-1" >
 							<div class="col-sm-4">
-								<span style="font-weight: bold;">タグID（Hex）</span>
+								<span style="font-weight: bold;">タグID(Hex)</span>
 							</div>
 							<div class="col-sm-8">
 								<input id="writeTagId" type="text" placeholder="" class="form-control form-control-sm" value="" disabled>
@@ -752,7 +873,7 @@
 						</div>
 						<div class="row mb-4" >
 							<div class="col-sm-4" style="margin: auto;">
-								<span style="font-weight: bold;">パスワード（Hex）</span>
+								<span style="font-weight: bold;">パスワード(Hex)</span>
 							</div>
 							<div class="col-sm-8" >
 								<input id="writeTagPwd" type="text" placeholder="" class="form-control form-control-sm" value="00000000">
@@ -784,19 +905,19 @@
 													</div>
 												</div>
 												<div class="row mb-1" >
-													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">データ(Hex）</label>
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">データ(Hex)</label>
 													<div class="col-sm-6">
 														<input id="writeDataHex" type="text" placeholder="" class="form-control form-control-sm" >
 													</div>
 												</div>
 												<div class="row mb-1" >
-													<label  class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">オフセット（Bytes）</label>
+													<label  class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">オフセット(Bytes)</label>
 													<div class="col-sm-4">
 														 <input id="writeOffsetByte" type="text" placeholder="" class="form-control form-control-sm" >
 													</div>
 												</div>
 												<div class="row mb-1" >
-													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">長さ（Bytes）</label>
+													<label class="col-sm-3 col-form-label" align="left" style="font-weight: bold;">長さ(Bytes)</label>
 													<div class="col-sm-4">
 														 <input id="writeLengthByte" type="text" placeholder="" class="form-control form-control-sm" >
 													</div>
@@ -833,8 +954,8 @@
 												</div>
 												<div class="row mb-1" style="width:100%;text-align:left;">
 													<div class="col-sm-12">
-														<button type="button" id="btnCheck" class="btn btn-primary" onclick="clickCheck();">チェック</button>
-														<button type="button" id="btnWrite" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled >書込み</button>
+														<button type="button" id="btnCheck" class="btn btn-primary rounded-pill" onclick="clickCheck();">チェック</button>
+														<button type="button" id="btnWrite" class="btn btn-primary rounded-pill" style="margin-left:20px;" onclick="clickWrite();" disabled >書込み</button>
 													</div>
 												</div>
 											</div>
@@ -881,7 +1002,7 @@
 														 <select id="writeFilterType" class="form-select form-select-sm"  style="font-size:12px !important;">
 															  <option selected value="0" >All Others</option>
 															  <option value="1">Point of Sale (POS) Trade Item</option>
-															  <option value="2">Full Case forTransport</option>
+															  <option value="2">Full Case for Transport</option>
 															  <option value="3">Reserved 3</option>
 															  <option value="4">Inner Pack Trade Item Grouping for Handling</option>
 															  <option value="5">Reserved 5</option>
@@ -927,22 +1048,22 @@
 												</div>
 												<div class="row mb-1" style="width:100%;text-align:left;">
 													<div class="col-sm-5" style="">
-														<button type="button" class="btn btn-primary btn-sm" onclick="clickEncode();">エンコード</button>
+														<button type="button" class="btn btn-primary btn-sm rounded-pill" onclick="clickEncode();">エンコード</button>
 													</div>
 													<div class="col-sm-4 card-icon-tag rounded-circle d-flex " style="color: #012970;">
 														<i class="bx bxs-downvote"></i>
 													</div>
 												</div>
 												<div class="row mb-4" >
-													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">データ(Hex）</label>
+													<label class="col-sm-4 col-form-label" align="left" style="font-weight: bold;">データ(Hex)</label>
 													<div class="col-sm-8">
 														<input id="writeDataHex2" type="text" placeholder="" class="form-control form-control-sm" >
 													</div>
 												</div>
 												<div class="row mb-1" style="width:100%;text-align:left;">
 													<div class="col-sm-12">
-														<button type="button" id="btnCheck2" class="btn btn-primary" onclick="clickCheck();">チェック</button>
-														<button type="button" id="btnWrite2" class="btn btn-primary" style="margin-left:20px;" onclick="clickWrite();" disabled>書込み</button>
+														<button type="button" id="btnCheck2" class="btn btn-primary rounded-pill" onclick="clickCheck();">チェック</button>
+														<button type="button" id="btnWrite2" class="btn btn-primary rounded-pill" style="margin-left:20px;" onclick="clickWrite();" disabled>書込み</button>
 													</div>
 												</div>
 											</div>
@@ -1026,12 +1147,7 @@
 			  $("#epcCode1").prop("disabled", false);
 			  $("#epcCode2").prop("disabled", false);
 			  $("#epcCode3").prop("disabled", false);
-		  }
-	  }
-	//非GS１選択
-	function clickNoGs1() {
-		  if($("#gridNoGs1").prop('checked')) {
-
+		  } else {
 			  $("#tagGs1").prop("disabled", true);
 			  $("#epcCode1").prop("disabled", true);
 			  $("#epcCode2").prop("disabled", true);
@@ -1042,6 +1158,20 @@
 			  $("#epcCode3").val("");
 		  }
 	  }
+	// //非GS１選択
+	// function clickNoGs1() {
+	// 	  if($("#gridNoGs1").prop('checked')) {
+	//
+	// 		  $("#tagGs1").prop("disabled", true);
+	// 		  $("#epcCode1").prop("disabled", true);
+	// 		  $("#epcCode2").prop("disabled", true);
+	// 		  $("#epcCode3").prop("disabled", true);
+	// 		  $("#tagGs1").val("1");
+	// 		  $("#epcCode1").val("");
+	// 		  $("#epcCode2").val("");
+	// 		  $("#epcCode3").val("");
+	// 	  }
+	//   }
 	//フィルタ選択
 	function clickRdoRssiFilter() {
 		  if($("#rdoRssiFilter").prop('checked')) {
@@ -1063,9 +1193,10 @@
 			$("#triggerStop").prop("disabled", false);
 			$("#durationMil").prop("disabled", false);
 			$("#tagReportTrigger").prop("disabled", false);
+			$("#tagReportTrigger").val(1);
 		} else {
 			$("#durationMil").val("");
-			$("#tagReportTrigger").val("");
+			$("#tagReportTrigger").val("1");
 			$("#triggerStart").prop("disabled", true);
 			$("#triggerStop").prop("disabled", true);
 			$("#durationMil").prop("disabled", true);
@@ -1141,16 +1272,16 @@
 	var preCount = 0;
 	function clickOKPreFilter() {
 
-		let name = $("#preName").val();
-		if (name == "") {
-			alert("プレフィルタ名を入力してください。");
-			return;
-		}
+		// let name = $("#preName").val();
+		// if (name == "") {
+		// 	alert("プレフィルタ名を入力してください。");
+		// 	return;
+		// }
 		let m = document.getElementById("divPreFilter");
 		if (m) $(m).modal("hide");
 
 		let preJson = {};
-		preJson.preName = name;
+		//preJson.preName = name;
 		preJson.preTarget = $("#preTarget").val();
 		preJson.preAction = $("#preAction").val();
 		preJson.preMemoryBank = $("#preMemoryBank").val();
@@ -1161,8 +1292,10 @@
 		if (preCurIndex == -1) {
 			let html = "";
 			html = '<div class="row" id="preFilterList'+preCount+'" data=\''+jstr+'\'>';
-			html += '	<div class="col-sm-3"><label style="cursor:pointer" onclick="clickEditPreFilter('+preCount+');">'+name+'</label></div>';
-			html += '	<div class="col-sm-3"><i class="bx bx-trash" style="font-size:18px;cursor:pointer" onclick="clickDelPreFilter('+preCount+');"></i></div>';
+			html += '	<div class="col-sm-2"><label style="cursor:pointer" onclick="clickEditPreFilter('+preCount+');">'+$("#preTarget").find('option:selected').text()+'</label></div>';
+			html += '	<div class="col-sm-3"><label>'+$("#preAction").find('option:selected').text()+'</label></div>';
+			html += '	<div class="col-sm-2"><label>'+$("#preMemoryBank").find('option:selected').text()+'</label></div>';
+			html += '	<div class="col-sm-2"><i class="bx bx-trash" style="font-size:18px;cursor:pointer" onclick="clickDelPreFilter('+preCount+');"></i></div>';
 			html += '</div>';
 			$('#preFilterList').append(html);
 
@@ -1187,19 +1320,23 @@
 		openPreFilter(index,jsonObj);
 	}
 
-	//操作画面を表示
-	function openOperate(tagId) {
-		  if ($("#btnStart").prop("disabled") == true) {
-			return;
-		  }
-
-		  curTagId = tagId;
-		  let m = document.getElementById("divOperate");
-		  $(m).modal("show");
-	}
+	// //操作画面を表示
+	// function openOperate(tagId) {
+	// 	  if ($("#btnStart").html() == '停止') {
+	// 		return;
+	// 	  }
+	//
+	// 	  curTagId = tagId;
+	// 	  let m = document.getElementById("divOperate");
+	// 	  $(m).modal("show");
+	// }
 	//読み込み画面を表j
-	function openRead() {
-		  let m = document.getElementById("divRead");
+	function openRead(tagId) {
+		if ($("#btnStart").html() == '停止') {
+			return;
+		}
+		curTagId = tagId;
+		let m = document.getElementById("divRead");
 		  $(m).modal("show");
 		  $("#readTagId").val(curTagId);
 		  $('#readPwd').val("00000000");
@@ -1214,14 +1351,22 @@
 		  clickRead();
 	  }
 	//書き込み画面を表示
-	function openWrite() {
-		  let m = document.getElementById("divWrite");
+	function openWrite(tagId) {
+		if ($("#btnStart").html() == '停止') {
+			return;
+		}
+		curTagId = tagId;
+		let m = document.getElementById("divWrite");
 		  $(m).modal("show");
 		$("#writeTagId").val(curTagId);
 		$('#writeTagPwd').val("00000000");
 	  }
 	//ロック画面を表示
-	function openLock() {
+	function openLock(tagId) {
+		if ($("#btnStart").html() == '停止') {
+			return;
+		}
+		curTagId = tagId;
 		let m = document.getElementById("divLock");
 		$(m).modal("show");
 		$("#lockTagId").val(curTagId);
@@ -1232,46 +1377,46 @@
 		  let type = $('#writeSg1Type').val();
 
 		  switch (type) {
-			  case "1" :	//GDTI-96
+			  case "gdti" :	//GDTI-96
 				  $('#gs1HeaderBin').text("0010 1100");
 				  break;
-			  case "2" :	//GSRN-96
+			  case "gsrn" :	//GSRN-96
 				  $('#gs1HeaderBin').text("0010 1101");
 				  break;
-			  case "3" :	//SSCC-96
+			  case "sscc" :	//SSCC-96
 				  $('#gs1HeaderBin').text("0011 0001");
 				  break;
-			  case "4" :	//SGTIN-96
+			  case "sgtin" :	//SGTIN-96
 				  $('#gs1HeaderBin').text("0011 0000");
 				  break;
-			  case "5" :	//SGLN-96
+			  case "sgln" :	//SGLN-96
 				  $('#gs1HeaderBin').text("0011 0010");
 				  break;
-			  case "6" :	//GRAI-96
+			  case "grai" :	//GRAI-96
 				  $('#gs1HeaderBin').text("0011 0011");
 				  break;
-			  case "7" :	//GIAI-96
+			  case "giai" :	//GIAI-96
 				  $('#gs1HeaderBin').text("0011 0100");
 				  break;
-			  case "8" :	//CPI-96
+			  case "cpi" :	//CPI-96
 				  $('#gs1HeaderBin').text("0011 1100");
 				  break;
-			  case "9" :	//GSRNP-96
+			  case "gsrnp" :	//GSRNP-96
 				  $('#gs1HeaderBin').text("0010 1110");
 				  break;
-			  case "10" :	//GDTI-174
+			  case "gdti_174" :	//GDTI-174
 				  $('#gs1HeaderBin').text("0011 1110");
 				  break;
-			  case "11" :	//SGTIN-198
+			  case "sgtin_198" :	//SGTIN-198
 				  $('#gs1HeaderBin').text("0011 0110");
 				  break;
-			  case "12" :	//SGLN-195
+			  case "sgln_195" :	//SGLN-195
 				  $('#gs1HeaderBin').text("0011 1001");
 				  break;
-			  case "13" :	//GRAI-170
+			  case "grai_170" :	//GRAI-170
 				  $('#gs1HeaderBin').text("0011 0111");
 				  break;
-			  case "14" :	//GIAI-202
+			  case "giai_202" :	//GIAI-202
 				  $('#gs1HeaderBin').text("0011 1000");
 				  break;
 
@@ -1283,10 +1428,12 @@
 		  window.location.href= ctx + "index";
 	  }
 	//リーダーとアンテナ選択
-	function clickReaderSelect() {
+	function clickReaderSelect(isClick) {
 		  let isSelected = false;
-		  let m = document.getElementById("divReaderList");
-		  $(m).modal("hide");
+		  if (isClick) {
+			  let m = document.getElementById("divReaderList");
+			  $(m).modal("hide");
+		  }
 		  let index1 = 0;
 		  ipMap = new Map();
 		  $('#selectedImgList').empty();
@@ -1439,42 +1586,48 @@
 
 	//タグ検出開始
 	function inventoryStart() {
-		$('#detailList').find('tbody').empty();
-		for (let i = 0; i < 39; i++) {
-			$('#detailList').append("<tr><td></td><td></td><td></td><td></td></tr>");
-		}
-
-		var index = 1;
-	
-		if (validateForm().form()) {
-
-			$("#btnStart").prop("disabled", true)
-			$("#btnStop").prop("disabled", false)
-			
-			initWebSocket();
-		
-			let isGS1 = false;
-			if($("#gridGs1").prop('checked')) {
-				isGS1 = true;
+		if ($("#btnStart").html() == '開始') {
+			$('#detailList').find('tbody').empty();
+			for (let i = 0; i < 39; i++) {
+				$('#detailList').append("<tr><td></td><td></td><td></td><td></td></tr>");
 			}
 
-			const jsonData = createInventoryJson();
-			console.log(JSON.stringify(jsonData));
+			var index = 1;
 
-			$.ajax({
-				type: "post",
-				url: ctx + "rfid/tagSeek/startInventory",
-				contentType: 'application/json',
-				dataType: "json",
-				data: JSON.stringify(jsonData),
-				beforeSend: function () {
+			if (validateForm().form()) {
 
-				},
-				success: function(res) {
+				//$("#btnStart").prop("disabled", true)
+				//$("#btnStop").prop("disabled", false)
 
-					console.log("Inventory start response:" + res.data);
+				initWebSocket();
+
+				let isGS1 = false;
+				if ($("#gridGs1").prop('checked')) {
+					isGS1 = true;
 				}
-			});
+
+				const jsonData = createInventoryJson();
+				console.log(JSON.stringify(jsonData));
+
+				$.ajax({
+					type: "post",
+					url: ctx + "rfid/tagSeek/startInventory",
+					contentType: 'application/json',
+					dataType: "json",
+					data: JSON.stringify(jsonData),
+					beforeSend: function () {
+
+					},
+					success: function (res) {
+
+						console.log("Inventory start response:" + res.data);
+					}
+				});
+			}
+			$("#btnStart").html('停止');
+		} else {
+			inventoryStop();
+			$("#btnStart").html('開始');
 		}
 	}
 	// function inventoryStart_bk() {
@@ -1540,8 +1693,8 @@
 	// }
 	//タグ検出
 	function inventoryStop() {
-		$("#btnStart").prop("disabled", false);
-		$("#btnStop").prop("disabled", true);
+		//$("#btnStart").prop("disabled", false);
+		//$("#btnStop").prop("disabled", true);
 		if (websock) {
 			websock.close();
 		}
@@ -2064,7 +2217,7 @@
 	function changeMatchPattern() {
 		let match = $('#matchPattern').val();
 		let isDisabled = false;
-		if (match != '0') {
+		if (match != '4') {
 			isDisabled = false;
 		} else {
 			isDisabled = true;
@@ -2136,31 +2289,41 @@
 		for(let i = 0;i < rfidData.length;i++) {
 			let tb = $('#detailList');
 			let tr = tb.find('tr#rfid_' + rfidData[i].tagId);
+			let tadTime = "";
+			if (rfidData[i].tagTime && rfidData[i].tagTime.length > 10) {
+				tadTime = rfidData[i].tagTime.substr(10);
+			}
 			if (tr.length > 0) {
 				let td2Text = "";
 				for(let m = 0;m < rfidData[i].tagRssiLevel;m++) {
 					td2Text += '<div class="signalDiv"></div>';
 				}
-				$(tr).find('td:eq(2)').html(td2Text);
-				$(tr).find('td:eq(3)').html(rfidData[i].tagTime);
+				$(tr).find('td:eq(1)').html(td2Text);
+				$(tr).find('td:eq(2)').html(tadTime);
 				continue;
 			}
 			let html = '<tr id="rfid_' + rfidData[i].tagId + '">';
-			let tadTime = "";
-			if (rfidData[i].tagTime && rfidData[i].tagTime.length > 10) {
-				tadTime = rfidData[i].tagTime.substr(10);
-			}
 			//html += '<td className="td-padding" style="width:25%">' + ipMap.get(rfidData[i].readerIp) + '</td>';
-			html += '<td className="td-padding">' + rfidData[i].tagId + '</td>';
-			html += '<td className="td-padding" style="width:25%">';
+			html += '<td class="td-padding">' + rfidData[i].tagId + '</td>';
+			html += '<td class="td-padding" style="width:25%">';
 			html += '<span>';
 			for(let m = 0;m < rfidData[i].tagRssiLevel;m++) {
 				html += '<div class="signalDiv"></div>';
 			}
 			html += '</span>';
 			html += '</td>';
-			html += '<td className="td-padding" style="width:25%">' + tadTime + '</td>';
-			html += '<td className="td-padding" style="width:5%"><a href="#" onClick="openOperate(\'' + rfidData[i].tagId + '\');" style="color:white">...</a></td>';
+			html += '<td class="td-padding" style="width:25%">' + tadTime + '</td>';
+			//html += '<td className="td-padding" style="width:5%"><a href="#" onClick="openOperate(\'' + rfidData[i].tagId + '\');" style="color:white">...</a></td>';
+			html += '<td class="td-padding" style="width:5%">';
+			html += '<div class="popup-menu">';
+			html += '<span>...</span>';
+			html += '<div class="mymenu" id="menu">';
+			html += '<a class="dropdown-item" href="#" onClick="openRead(\'' + rfidData[i].tagId + '\');">Read</a>';
+			html += '<a class="dropdown-item" href="#" onClick="openWrite(\'' + rfidData[i].tagId + '\');">Write</a>';
+			html += '<a class="dropdown-item" href="#" onClick="openLock(\'' + rfidData[i].tagId + '\');">Lock/Unlock</a>';
+			html += '</div>';
+			html += '</div>';
+			html += '</td>';
 			html += '</tr>';
 			$('#detailList tr:last').remove();
 			$('#detailList').prepend(html);
@@ -2222,7 +2385,7 @@
 			}
 			index1++;
 		}
-		clickReaderSelect();
+		clickReaderSelect(false);
 
 		//ポストフィルタ
 		if (readerParam.readers[0].postfilter && readerParam.readers[0].postfilter.match) {
@@ -2308,7 +2471,7 @@
 
 		if (readerParam.isGS1) {
 			$("#gridGs1").prop('checked', true);
-			$("#gridNoGs1").prop('checked', false);
+			//$("#gridNoGs1").prop('checked', false);
 			clickGs1Btn();
 			//GS1
 			$("#tagGs1").val(readerParam.tagGs1);
@@ -2319,11 +2482,27 @@
 			//epcCode3
 			$("#epcCode3").val(readerParam.epcCode3);
 		} else {
-			$("#gridNoGs1").prop('checked', true);
+			//$("#gridNoGs1").prop('checked', true);
 			$("#gridGs1").prop('checked', false);
-			clickNoGs1();
+			clickGs1Btn();
 		}
 	}
+
+	$(document).ready(function(){
+		$('#divReaderList,#divPreFilter,#divDetail,#divOperate,#divRead,#divLock,#divWrite').modal({
+			backdrop: 'static'
+		});
+		$(".dropdown").hover(
+				function(){
+					$('.dropdown-menu', this).stop(true, true).fadeIn("fast");
+					$(this).toggleClass('open');
+				},
+				function(){
+					$('.dropdown-menu', this).stop(true, true).fadeOut("fast");
+					$(this).toggleClass('open');
+				}
+		);
+	});
 
 </script>
 
