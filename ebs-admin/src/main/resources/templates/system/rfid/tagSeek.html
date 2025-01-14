@@ -1355,6 +1355,7 @@
 		if ($("#btnStart").html() == '停止') {
 			return;
 		}
+		clearWriteData();
 		curTagId = tagId;
 		let m = document.getElementById("divWrite");
 		  $(m).modal("show");
@@ -2051,6 +2052,29 @@
 
 		return rootJson;
 	}
+	function clearWriteData() {
+		$('#writeTagId').val("");
+		$('#writeTagPwd').val("");
+		$('#writeTagType').val("0");
+		$('#writeDataHex').val("");
+		$('#writeOffsetByte').val("");
+		$('#writeLengthByte').val("");
+		$('#writeCRC').val("");
+		$('#writePC').val("");
+		$('#writeEpc').val("");
+		$('#writeTid').val("");
+		$('#writeUser').val("");
+		$('#writeReserved').val("");
+		$('#writeSg1Type').val("gdti");
+		changeWriteSg1Type();
+		$('#writeFilterType').val("0");
+		$('#writeExtension').val("0");
+		$('#writeCode1').val("");
+		$('#writeCode2').val("");
+		$('#writeCode3').val("");
+		$('#writeDataHex2').val("");
+
+	}
 	//タグ書き込み
 	function clickWrite() {
 
@@ -2130,7 +2154,6 @@
 				}
 			}
 		});
-
 	}
 	//書き込み内容をチェック
 	function checkWriteData(value,offset,length) {
@@ -2155,36 +2178,36 @@
 			$.modal.msg("データが16進法半角数字で入力してください。");
 			return false;
 		}
-		//長さは必ず4の倍数
-		if (value.length % 4 != 0) {
-			console.log("2チェック error")
-			$.modal.msg("データの長さは必ず4の倍数ください。");
-			return false;
-		}
+		// //長さは必ず4の倍数
+		// if (value.length % 4 != 0) {
+		// 	console.log("2チェック error")
+		// 	$.modal.msg("データの長さは必ず4の倍数ください。");
+		// 	return false;
+		// }
 		//数字チェック
 		if (!/^[0-9]+$/.test(offset)) {
 			console.log("3チェック error")
 			$.modal.msg("オフセットが数字で入力してください。");
 			return false;
 		}
-		//先頭の４byteがＣＲＣ＋ＰＣなので、
-		if (Number(offset) < 4) {
-			console.log("3チェック error")
-			$.modal.msg("オフセットの値が4より小さくできません。");
-			return false;
-		}
+		// //先頭の４byteがＣＲＣ＋ＰＣなので、
+		// if (Number(offset) < 4) {
+		// 	console.log("3チェック error")
+		// 	$.modal.msg("オフセットの値が4より小さくできません。");
+		// 	return false;
+		// }
 		//数字チェック
 		if (!/^[0-9]+$/.test(length)) {
 			console.log("4チェック error")
 			$.modal.msg("長さが数字で入力してください。");
 			return false;
 		}
-		if (value.length / 2 != parseInt(length)) {
-			console.log("5チェック error")
-			//console.log(value.length / 2)
-			$.modal.msg("長さの入力値が不正でした。");
-			return false;
-		}
+		// if (value.length / 2 != parseInt(length)) {
+		// 	console.log("5チェック error")
+		// 	//console.log(value.length / 2)
+		// 	$.modal.msg("長さの入力値が不正でした。");
+		// 	return false;
+		// }
 		return true;
 	}
 	//チェック方法
