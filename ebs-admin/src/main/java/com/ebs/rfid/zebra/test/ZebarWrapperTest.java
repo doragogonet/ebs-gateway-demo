@@ -17,7 +17,7 @@ public class ZebarWrapperTest {
 		JSONObject readersJson = new JSONObject();	
 		
 		//readers-hostname
-		readersJson.put("hostname","169.254.10.1");
+		readersJson.put("hostname","10.8.1.3");
 		//readers-port
 		readersJson.put("port","0");
 		
@@ -151,31 +151,30 @@ public class ZebarWrapperTest {
 //        System.out.println(localTime);  
 		
 		Inventory inventory = new Inventory(rootJson);
-		inventory.Start(new EventsListener(){
-			@Override
-			public void commonReadNotify(String jsonStr) {
-				System.out.println(jsonStr);
-				JSONObject obj = JSON.parseObject(jsonStr);
-				System.out.println("ip:" + obj.getString("hostName"));
+			inventory.Start(new EventsListener() {
+				@Override
+				public void commonReadNotify(String jsonStr) {
+					System.out.println(jsonStr);
+					JSONObject obj = JSON.parseObject(jsonStr);
+					System.out.println("ip:" + obj.getString("hostName"));
 //				String ymdhms = obj.getString("SeenTime");
 //				ymdhms += "/" + obj.getString("SeenTime.uTCTime.firstSeenTimeStamp.Month");
 //				ymdhms += "/" + obj.getString("SeenTime.uTCTime.firstSeenTimeStamp.Day");
 //				System.out.println("time:" + ymdhms);
-				System.out.println("getPeakRSSI:" + obj.getString("peakRSSI"));
-				System.out.println("getTagID:" + obj.getString("tagID"));
-				System.out.println("seenTime:" + obj.getString("seenTime"));
-				System.out.println("relativeDistance:" + obj.getString("relativeDistance"));
-				System.out.println("phase:" + obj.getString("phase"));
-			}											
-		});
-		try {
-			Thread.sleep(7000);
-			inventory.Stop();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+					System.out.println("getPeakRSSI:" + obj.getString("peakRSSI"));
+					System.out.println("getTagID:" + obj.getString("tagID"));
+					System.out.println("seenTime:" + obj.getString("seenTime"));
+					System.out.println("relativeDistance:" + obj.getString("relativeDistance"));
+					System.out.println("phase:" + obj.getString("phase"));
+				}
+			});
+			try {
+				Thread.sleep(7000);
+				inventory.Stop();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 //		String json = "{";
 //		json +=	  "\"readers\":";
 //		json +=	  "		[";

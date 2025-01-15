@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ebs.rfid.readersRFIDManager;
 import com.mot.rfid.api3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,22 +31,31 @@ public class ActionLock {
     
 	//ログ処理
     private static final Logger logger = LoggerFactory.getLogger(ActionLock.class);
+	private RFIDReader reader;
+	private readersRFIDManager rm;
 
 	//引数JSONからデータ中から抽出、各リーダーに接続する
 	public ActionLock( JSONObject json ){
 		this.mainConfig = JSON.parseObject(JSON.toJSONString(json), JsonMain.class);
 	}
-	
+
 	public List<String> doTagLock() {
 		//結果内容
 		List<String> retStatus = new ArrayList<>();
 
 		for (Reader r : mainConfig.getReaders()) {
 			try{
-				RFIDReader reader = new RFIDReader();
-				reader.setHostName(r.getHostName());
-				reader.setPort(Integer.parseInt(r.getPort()));
-				reader.setTimeout(5000);
+				rm = readersRFIDManager.getInstance();
+				reader = rm.getReader(r.getHostName());
+				if(reader == null){
+					reader = new RFIDReader();
+					reader.setHostName(r.getHostName());
+					reader.setPort(Integer.parseInt(r.getPort()));
+					reader.setTimeout(5000);
+					rm.addReader(r.getHostName(), reader);
+				}else {
+					System.out.println("reader ==" + reader.toString());
+				}
 				readers.add(reader);
 				 
 				//リーダ接続と設定

@@ -3,6 +3,7 @@ package com.ebs.rfid.zebra;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ebs.rfid.readersRFIDManager;
 import com.mot.rfid.api3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ public class ActionWrite {
 	private List<RFIDReader>  readers = new ArrayList<>();
 	//JSONデータ
 	private JsonMain mainConfig;
+	private RFIDReader reader;
+	private readersRFIDManager rm;
 
 
 	//引数JSONからデータ中から抽出、各リーダーに接続する
@@ -39,10 +42,17 @@ public class ActionWrite {
 
 		for (Reader r : mainConfig.getReaders()) {
 			try{
-				RFIDReader reader = new RFIDReader();
-				reader.setHostName(r.getHostName());
-				reader.setPort(Integer.parseInt(r.getPort()));
-				reader.setTimeout(5000);
+				rm = readersRFIDManager.getInstance();
+				reader = rm.getReader(r.getHostName());
+				if(reader == null){
+					reader = new RFIDReader();
+					reader.setHostName(r.getHostName());
+					reader.setPort(Integer.parseInt(r.getPort()));
+					reader.setTimeout(5000);
+					rm.addReader(r.getHostName(), reader);
+				}else {
+					System.out.println("reader ==" + reader.toString());
+				}
 				readers.add(reader);
 				 
 				//リーダ接続と設定

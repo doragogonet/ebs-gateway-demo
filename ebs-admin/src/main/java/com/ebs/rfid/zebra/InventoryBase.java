@@ -3,6 +3,7 @@ package com.ebs.rfid.zebra;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.ebs.rfid.readersRFIDManager;
 import com.mot.rfid.api3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,8 @@ public class InventoryBase {
 	private List<RFIDReader>  readers = new ArrayList<>();
 	//JSONデータ
 	private JsonMain mainConfig	;
-
+    private RFIDReader reader;
+	private readersRFIDManager rm;
 	//重複tag対策
     private Map<String, TagData> uniqueTags = Collections.synchronizedMap(new HashMap<String, TagData>());
         
@@ -42,6 +44,8 @@ public class InventoryBase {
     
 	//ログ処理
     private static final Logger logger = LoggerFactory.getLogger(InventoryBase.class);
+
+
 
 	//引数JSONからデータ中から抽出、各リーダーに接続する
 	public InventoryBase( JSONObject json ){
@@ -51,13 +55,18 @@ public class InventoryBase {
 
 	//複数リーダーに接続するInventory開始
 	protected void StartInventory(EventsListener event) {
-
+		rm = readersRFIDManager.getInstance();
 		for (Reader r : mainConfig.getReaders()) {
-
-			RFIDReader reader = new RFIDReader();
-			reader.setHostName(r.getHostName());
-			reader.setPort(Integer.parseInt(r.getPort()));
-			reader.setTimeout(5000);
+			reader = rm.getReader(r.getHostName());
+			if(reader == null){
+				reader = new RFIDReader();
+				reader.setHostName(r.getHostName());
+				reader.setPort(Integer.parseInt(r.getPort()));
+				reader.setTimeout(5000);
+				rm.addReader(r.getHostName(), reader);
+			}else {
+				System.out.println("reader ==" + reader.toString());
+			}
 			readers.add(reader);
 
             new Thread(() -> {
@@ -214,7 +223,7 @@ public class InventoryBase {
 			if (!reader.isConnected()){
 				continue;
 			} 
-	     //   new Thread(() -> {
+	        new Thread(() -> {
 	            try {
 						reader.Actions.Inventory.stop();
 						logger.info("stop reader: " + reader.getHostName());
@@ -225,10 +234,10 @@ public class InventoryBase {
 		            } catch (Exception e) {
 		                logger.error("Unexpected error when disconnecting reader: " + reader.getHostName());
 		            }
-		  //      }).start();
+		        }).start();
 	
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

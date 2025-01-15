@@ -43,7 +43,9 @@ public class ConfigureReader {
         int maxRetries = 3;
         int attempt = 0;
         boolean isConnected = false;
-        
+
+		if(reader.isConnected()) return;
+		
         while (attempt < maxRetries && !isConnected) {
             try {
                 reader.connect();
