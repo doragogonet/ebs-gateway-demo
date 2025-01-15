@@ -49,6 +49,8 @@ public class RfidController extends BaseController
 
     private Inventory inventory;
 
+    private List<String> tagDataList = new ArrayList<>();
+
     @GetMapping("/tagPrint/index")
     public String indexTagPrint(ModelMap mmap) {
 
@@ -98,7 +100,7 @@ public class RfidController extends BaseController
     {
         System.out.println("inventory start ");
         try {
-            RfidParamJsonFileUtil.openRfidDataFile();
+            this.tagDataList.clear();
             //JSONファイルに画面値を書込み
             RfidParamJsonFileUtil.writeJsonFile(query);
             //Inventory開始
@@ -111,7 +113,7 @@ public class RfidController extends BaseController
                 @Override
                 public void commonReadNotify(String jsonStr) {
                     System.out.println(jsonStr);
-                    RfidParamJsonFileUtil.writeRfidDataToFile(jsonStr);
+                    tagDataList.add(jsonStr);
                     JSONObject obj = JSON.parseObject(jsonStr);
                     PageRfidData rfid = new PageRfidData();
                     rfid.setTagId(obj.getString("tagID"));
@@ -231,6 +233,10 @@ public class RfidController extends BaseController
             if (this.inventory != null) {
                 this.inventory.Stop();
                 System.out.println("inventory stop ok!");
+            }
+            RfidParamJsonFileUtil.openRfidDataFile();
+            for (String jsonStr : this.tagDataList) {
+                RfidParamJsonFileUtil.writeRfidDataToFile(jsonStr);
             }
             RfidParamJsonFileUtil.closeRfidDataFile();
         } catch (Exception ex) {
