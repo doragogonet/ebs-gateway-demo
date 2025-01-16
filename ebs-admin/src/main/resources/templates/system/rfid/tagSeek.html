@@ -115,6 +115,16 @@
 	  label {
 		  white-space: nowrap;
 	  }
+
+	  .centered-div {
+		  position: fixed;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-60%, -100%);
+		  width: 200px;
+		  height: 100px;
+		  color: green;
+	  }
 </style>
 </head>
 
@@ -166,8 +176,8 @@
 							<div class="row mb-4" style="width:100%;text-align:right;margin-top:10px;margin-bottom:10px;margin-right:0px;">
 								<div class="col-sm-12" style="padding-right:0px;">
 									<span id="selectedImgList"></span>
-									<button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#divReaderList" style="margin-right:10px;">リーダー選択</button>
-									<button type="button" id="btnStart" class="btn btn-primary rounded-pill" onclick="inventoryStart();" disabled>開始</button>
+									<button type="button" id="readersSet" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#divReaderList" style="width:80px;margin-right:10px;">リーダー</button>
+									<button type="button" id="btnStart" class="btn btn-success rounded-pill" style="width:80px" onclick="inventoryStart();" disabled>開始</button>
 <!--									<button type="button" id="btnStop" class="btn btn-primary" onclick="inventoryStop();" disabled>停止</button>-->
 								  </div>
 							</div>
@@ -1080,6 +1090,25 @@
 			  </div>
 			<!-- write modal end -->
 
+			<div class="modal" id="loadingModal"  tabindex="1">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content centered-div" style="border:0; background-color: rgba(255, 255, 255, 0);">
+						<div class="modal-body text-center">
+							<div class="spinner-border text-success" role="status">
+								<span class="visually-hidden">Loading...</span>
+							</div>
+							<p>Loading...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="loadDiv" class="centered-div text-center" style="display:none">
+				<div class="spinner-border text-success" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+				<p>Loading...</p>
+			</div>
 		</section>
 	</main><!-- End #main -->
 
@@ -1588,6 +1617,8 @@
 	//タグ検出開始
 	function inventoryStart() {
 		if ($("#btnStart").html() == '開始') {
+			$('#loadDiv').css('display', 'block');
+			$('#readersSet').prop('disabled', true);
 			$('#detailList').find('tbody').empty();
 			for (let i = 0; i < 39; i++) {
 				$('#detailList').append("<tr><td></td><td></td><td></td><td></td></tr>");
@@ -1627,6 +1658,8 @@
 			}
 			$("#btnStart").html('停止');
 		} else {
+			$('#loadDiv').css('display', 'none');
+			$('#readersSet').prop('disabled', false);
 			$(".spanPoint").css("display","block");
 			inventoryStop();
 			$("#btnStart").html('開始');
@@ -1767,6 +1800,7 @@
 	}
 	//タグ読み込み
 	function clickRead() {
+		$('#loadingModal').modal('show');
 		$('#readTagBtn').prop("disabled", true);
 		const jsonData = createTagReadJson();
 		console.log(JSON.stringify(jsonData));
@@ -1793,6 +1827,10 @@
 					  if (res.data.gs1Name) $('#readGS1').html(res.data.gs1Name);
 				  }
 				  $('#readTagBtn').prop("disabled", false);
+				  $('#loadingModal').modal('hide');
+			  },
+			  error: function(err) {
+				  $('#loadingModal').modal('hide');
 			  }
 		  });
 	  }
@@ -1847,7 +1885,7 @@
 	}
 	//ロックとアンロック
 	function clickLockUnlock() {
-
+		$('#loadingModal').modal('show');
 		  let taskTxt = "Lock";
 		  let action = "tagLock";
 		  let type = $('#lockTagType').val();
@@ -1866,11 +1904,16 @@
 				  console.log(res);
 				  $.modal.msg(taskTxt + "が成功しました");
 				  console.log(taskTxt + "success");
+				  $('#loadingModal').modal('hide');
+			  },
+			  error: function(err) {
+				  $('#loadingModal').modal('hide');
 			  }
 		  });
 	  }
 	//タグエンコード
 	function clickEncode() {
+		$('#loadingModal').modal('show');
 		const jsonData = {};
 		jsonData.tagGs1 = $('#writeSg1Type').val();
 		jsonData.epcCode1 = $('#writeCode1').val();
@@ -1892,7 +1935,10 @@
 					$('#writeDataHex2').val(res.data.epc);
 					console.log("tagEncode success");
 				}
-
+				$('#loadingModal').modal('hide');
+			},
+			error: function(err) {
+				$('#loadingModal').modal('hide');
 			}
 		});
 	}
@@ -1949,6 +1995,7 @@
 	}
 	//タグチェック
 	function clickCheck() {
+		$('#loadingModal').modal('show');
 		if (curIndex == 1) {
 			$('#btnCheck').prop("disabled", true);
 		} else {
@@ -1993,6 +2040,10 @@
 						$('#btnCheck2').prop("disabled", false);
 					}
 				}
+				$('#loadingModal').modal('hide');
+			},
+			error: function(err) {
+				$('#loadingModal').modal('hide');
 			}
 		});
 	}
@@ -2077,7 +2128,7 @@
 	}
 	//タグ書き込み
 	function clickWrite() {
-
+		$('#loadingModal').modal('show');
 		let dataType;
 		let data;
 		let offset;
@@ -2152,6 +2203,10 @@
 						$('#btnCheck2').prop("disabled", false);
 					}
 				}
+				$('#loadingModal').modal('hide');
+			},
+			error: function(err) {
+				$('#loadingModal').modal('hide');
 			}
 		});
 	}
