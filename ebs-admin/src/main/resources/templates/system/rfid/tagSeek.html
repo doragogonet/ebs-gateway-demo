@@ -177,7 +177,7 @@
 								<div class="col-sm-12" style="padding-right:0px;">
 									<span id="selectedImgList"></span>
 									<button type="button" id="readersSet" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#divReaderList" style="width:80px;margin-right:10px;">リーダー</button>
-									<button type="button" id="btnStart" class="btn btn-success rounded-pill" style="width:80px" onclick="inventoryStart();" disabled>開始</button>
+									<button type="button" id="btnStart" class="btn btn-success rounded-pill" style="width:80px;background:#33CC00;border-color:#33CC00" onclick="inventoryStart();" disabled>開始</button>
 <!--									<button type="button" id="btnStop" class="btn btn-primary" onclick="inventoryStop();" disabled>停止</button>-->
 								  </div>
 							</div>
@@ -1095,9 +1095,9 @@
 					<div class="modal-content centered-div" style="border:0; background-color: rgba(255, 255, 255, 0);">
 						<div class="modal-body text-center">
 							<div class="spinner-border text-success" role="status">
-								<span class="visually-hidden">作業中...</span>
+								<span class="visually-hidden">読取中...</span>
 							</div>
-							<p>作業中...</p>
+							<p>読取中...</p>
 						</div>
 					</div>
 				</div>
@@ -1105,9 +1105,9 @@
 
 			<div id="loadDiv" class="centered-div text-center" style="display:none">
 				<div class="spinner-border text-success" role="status">
-					<span class="visually-hidden">作業中...</span>
+					<span class="visually-hidden">読取中...</span>
 				</div>
-				<p>作業中...</p>
+				<p>読取中...</p>
 			</div>
 		</section>
 	</main><!-- End #main -->
@@ -1617,6 +1617,8 @@
 	//タグ検出開始
 	function inventoryStart() {
 		if ($("#btnStart").html() == '開始') {
+			$('#btnStart').css('background', '#FF0000');
+			$('#btnStart').css('border-color', '#FF0000');
 			$('#loadDiv').css('display', 'block');
 			$('#readersSet').prop('disabled', true);
 			$('#detailList').find('tbody').empty();
@@ -1658,6 +1660,8 @@
 			}
 			$("#btnStart").html('停止');
 		} else {
+			$('#btnStart').css('background', '#33CC00');
+			$('#btnStart').css('border-color', '#33CC00');
 			$('#loadDiv').css('display', 'none');
 			$('#readersSet').prop('disabled', false);
 			$(".spanPoint").css("display","block");
